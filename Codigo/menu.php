@@ -10,12 +10,12 @@
             margin: 0;
         }
         body {
-        display: flex;
-        flex-direction: column;
-        justify-content: center;
-        align-items: center;
-        position: relative;
-        font-family: Hack, monospace;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            position: relative;
+            font-family: Hack, monospace;
         }
 
         nav {
@@ -34,48 +34,46 @@
 
         .menuItems li {
             margin: 30px;
+            position: relative; /* Posição relativa para o efeito de traço */
         }
 
-.menuItems a {
-  text-decoration: none;
-  color: #8f8f8f;
-  font-size: 24px;
-  font-weight: 400;
-  transition: all 0.5s ease-in-out;
-  position: relative;
-  text-transform: uppercase;
-}
+        .menuItems a {
+            text-decoration: none;
+            color: #8f8f8f;
+            font-size: 24px;
+            font-weight: 400;
+            text-transform: uppercase;
+            position: relative;
+        }
 
-.menuItems a::before {
-  content: attr(data-item);
-  transition: 0.5s;
-  color: #8254ff;
-  position: absolute;
-  top: 0;
-  bottom: 0;
-  left: 0;
-  right: 0;
-  width: 0;
-  overflow: hidden;
-}
+        .menuItems a::before {
+            content: '';
+            position: absolute;
+            width: 100%;
+            height: 3px; /* Altura do traço */
+            bottom: -6px; /* Posicionamento abaixo da palavra */
+            background: linear-gradient(90deg, #fe797b, #ffb750, #ffea56, #8fe968, #36cedc, #a587ca); /* Gradiente arco-íris */
+            visibility: hidden;
+            transform: scaleX(0); /* Inicia sem visibilidade */
+            transition: transform 0.3s ease, visibility 0s linear 0.3s;
+        }
 
-.menuItems a:hover::before {
-  width: 100%;
-  transition: all 0.5s ease-in-out;
-}
-
+        .menuItems a:hover::before {
+            visibility: visible;
+            transform: scaleX(1); /* Exibe o traço ao passar o mouse */
+            transition: transform 0.3s ease, visibility 0s linear;
+        }
     </style>
 </head>
 <body>
-<nav>
-    <ul class="menuItems">
-      <li><a href='#' data-item='Home'>Home</a></li>
-      <li><a href='#' data-item='About'>About</a></li>
-      <li><a href='#' data-item='Projects'>Projects</a></li>
-      <li><a href='#' data-item='Blog'>Blog</a></li>
-      <li><a href='#' data-item='Contact'>Contact</a></li>
-    </ul>
-  </nav>
-
+    <nav>
+        <ul class="menuItems">
+            <li><a href='#' data-item='Home'>Home</a></li>
+            <li><a href='#' data-item='About'>About</a></li>
+            <li><a href='#' data-item='Projects'>Projects</a></li>
+            <li><a href='#' data-item='Blog'>Blog</a></li>
+            <li><a href='#' data-item='Contact'>Contact</a></li>
+        </ul>
+    </nav>
 </body>
 </html>
