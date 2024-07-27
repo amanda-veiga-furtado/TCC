@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="../css/style.css">
+    <!-- <link rel="stylesheet" href="../css/style.css"> -->
 </head>
 <body>
     <nav>
@@ -14,6 +14,7 @@
             <li><a href='#' data-item='Projects'>Projects</a></li>
             <li><a href='#' data-item='Blog'>Blog</a></li> 
             <li><a href='#' data-item='Contact'>Contact</a></li>
+            <li><a href='../usuario/login.php' data-item='Login | Cadastro'>Login | Cadastro</a></li>
         </ul>
     </nav>
 </body>
