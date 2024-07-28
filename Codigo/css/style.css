@@ -6,16 +6,17 @@
         Verde:      #8fe968
         Azul:       #36cedc
         Roxo        #a587ca
-                    8c6db6      (Cor secundaria botão)
+                    #8c6db6     (Cor secundaria botão)
         Cinza       #f9f9f9     (Cor de fundo da barra de navegação)
                     #8f8f8f     (Cor do texto dos links da barra de navegação)
 ****************************************************************************************************************************************************/
 * {
-    padding: 0;
-    margin: 0;
+    padding: 0; /* Remove o padding padrão de todos os elementos */
+    margin: 0; /* Remove a margem padrão de todos os elementos */
+    box-sizing: border-box; /* Inclui padding e border na largura e altura total dos elementos */
 }
 
-/* menu.php */
+/*menu.php******************************************************************************************************************************************/
 
     nav {
         display: flex; /* Usa flexbox para alinhar conteúdo verticalmente */
@@ -26,21 +27,21 @@
         font-family: Hack, monospace; /* Define a fonte para todo o documento */
         width: 100%; /* Faz a navbar preencher toda a largura da tela */
         margin: 0px; /* Margem zero para remover espaçamento padrão */
-        /* background: red; */ /* Comentado: fundo vermelho desativado */
         background: #f9f9f9; /* Cor de fundo da barra de navegação */
         padding: 0px; /* Padding zero para remover espaçamento interno */
     }
-
     .menuItems {
         list-style: none; /* Remove marcadores de lista */
         display: flex; /* Usa flexbox para alinhar itens da lista */
         justify-content: center; /* Centraliza horizontalmente os itens da lista */
     }
     .menuItems li {
+        display: flex; /* Adiciona flexbox ao li */
+        align-items: center; /* Centraliza verticalmente os itens */
         margin: 30px; /* Margem entre os itens da lista */
         position: relative; /* Define a posição relativa para os itens da lista */
+        text-align: center;
     }
-
     .menuItems a {
         text-decoration: none; /* Remove sublinhado dos links */
         color: #8f8f8f; /* Cor do texto dos links */
@@ -49,7 +50,6 @@
         text-transform: uppercase; /* Transforma o texto em maiúsculas */
         position: relative; /* Define a posição relativa para os links */
     }
-
     .menuItems a::before {
         content: ''; /* Conteúdo vazio para o pseudoelemento ::before */
         position: absolute; /* Posição absoluta para o pseudoelemento */
@@ -67,13 +67,134 @@
         transition: transform 0.3s ease, visibility 0s linear; /* Transição suave */
     }
 
-    /* sugestao.php */
-        .container_sugestao {
-            width: 100vw;
-            height: 85.3vh;
-            background: url('../css/img/fundo/1.jpg');
-            background-size: cover;
-            background-position: center;
+/*sugestao.php**************************************************************************************************************************************/
+
+    .container_sugestao {
+        width: 100vw;
+        height: 85.3vh;
+        background: url('../css/img/fundo/1.jpg');
+        background-size: cover;
+        background-position: center;
         }
+
+/*login.php*****************************************************************************************************************************************/
+
+    .container_form {
+        width: 100vw;
+        height: 85.3vh;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        background-size: cover;
+        background-position: center;
+        background: linear-gradient(90deg, #fe797b, #ffb750, #ffea56, #8fe968, #36cedc, #a587ca);
+
+    }
+    .whitecard_form {
+        font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        position: relative;
+        background: white;
+        padding: 30px;
+        border-radius: 12px;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        width: 710px;
+        height: 410px;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        box-shadow: 25px 30px 55px #5557;
+        border-radius: 13px;
+        overflow: hidden;
+    }
+    .container_login {
+        position: relative;
+        width: 100%;
+    }
+    .form-toggle {
+        display: flex;
+        justify-content: space-between;
+        margin-bottom: 25px;
+        width: 100%;
+        position: relative;
+        
+    }
+    .form-toggle button {
+        background: none;
+        border: none;
+        font-size: 18px;
+        cursor: pointer;
+        padding: 10px 20px;
+        color: #888;
+        transition: color 0.3s;
+        flex-grow: 1;
+        text-align: center;
+            /* font-family: Hack, monospace; */
+
+    }
+    .form-toggle button:hover,
+    .form-toggle button:focus {
+        color: #333;
+    }
+    .toggle-line {
+        position: absolute;
+        bottom: -5px;
+        left: 0;
+        width: 50%;
+        height: 3px;
+        background: linear-gradient(90deg, #fe797b, #ffb750, #ffea56, #8fe968, #36cedc, #a587ca);
+        transition: transform 0.3s;
+    }
+    .form {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        width: 100%;
+    }
+    .form h2 {
+        margin-bottom: 15px;
+        color: #333;
+        font-size: 24px;
+    }
+    .form input {
+        margin-bottom: 15px;
+        padding: 12px;
+        border: 1px solid #ccc;
+        border-radius: 8px;
+        font-size: 16px;
+        width: 100%;
+        box-sizing: border-box;
+    }
+    .form input:focus {
+        border-color: #36cedc;
+        outline: none;
+    }
+    .form button {
+        padding: 12px;
+        border: none;
+        border-radius: 8px;
+        background-color: #a587ca;
+        color: white;
+        font-size: 18px;
+        cursor: pointer;
+        transition: background-color 0.3s;
+        width: 100%;
+    }
+    .form button:hover {
+        background-color: #8c6db6;
+    }
+    .div_link{
+        margin-top: 0.3cm;
+        text-align: center;
+
+    }
+    a {
+        color: #8c6db6;
+        text-decoration: none;
+    }
+    a.forgot {
+        padding-bottom: 3px;
+        border-bottom: 2px solid #a587ca;
+    }
+
 
 
