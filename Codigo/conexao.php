@@ -8,6 +8,8 @@
     try{
         //Conexao com a porta
             $conn = new PDO("mysql:host=$host;port=$port;dbname=".$dbname, $user, $pass);
+            $conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+
             // echo "<p style='color: green; margin-left: 10px;'><br>Conexão com banco de dados realizada com sucesso";
 
         //Conexao sem a porta
