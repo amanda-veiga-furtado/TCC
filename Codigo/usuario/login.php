@@ -2,6 +2,38 @@
     include_once '../menu.php'; 
     include_once '../conexao.php'; 
     session_start(); // Inicia a sessão
+
+    // Verifica se o formulário de login foi enviado
+    if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['SendLogin'])) {
+        $email_usuario = $_POST['email_usuario'];
+        $senha_usuario = $_POST['senha_usuario'];
+
+        try {
+            // Prepara a consulta SQL para selecionar o usuário
+            $stmt = $conn->prepare("SELECT id_usuario, senha_usuario FROM usuario WHERE email_usuario = :email_usuario");
+            $stmt->bindParam(':email_usuario', $email_usuario);
+            $stmt->execute();
+
+            // Verifica se o usuário foi encontrado
+            if ($stmt->rowCount() > 0) {
+                $usuario = $stmt->fetch(PDO::FETCH_ASSOC);
+                // Verifica a senha
+                if (password_verify($senha_usuario, $usuario['senha_usuario'])) {
+                    // Define variáveis de sessão
+                    $_SESSION['id_usuario'] = $usuario['id_usuario'];
+                    $_SESSION['email_usuario'] = $email_usuario;
+                    header("Location: dashboard.php"); // Redireciona para a página de dashboard
+                    exit();
+                } else {
+                    $_SESSION['mensagem'] = "Senha incorreta!";
+                }
+            } else {
+                $_SESSION['mensagem'] = "Usuário não encontrado!";
+            }
+        } catch (PDOException $e) {
+            $_SESSION['mensagem'] = "Erro ao verificar o usuário!";
+        }
+    }
 ?>
 
 <!DOCTYPE html>
@@ -24,16 +56,26 @@
                     <div id="toggleLine" class="toggle-line"></div> <!-- Linha colorida para indicar a seleção atual -->
                 </div>
                 
-                <!-- Login -->
-                <form id="loginForm" class="form" style="display: block;">
+                <!-- Login ------------------------------------------------------------------------------------------------------------------------->
+                <?php
+                    // Exibe a mensagem de erro, se existir
+                    if (isset($_SESSION['mensagem'])) {
+                        echo "<p>" . $_SESSION['mensagem'] . "</p>";
+                        unset($_SESSION['mensagem']); // Limpa a mensagem da sessão
+                    }
+                ?>
+                                
+                <form id="loginForm" class="form" method="POST" action="" style="display: block;">
                     <h2>Login</h2> <!-- Título do formulário de login -->
-                    <input type="text" placeholder="Email" required> <!-- Campo de entrada para email -->
-                    <input type="password" placeholder="Senha" required> <!-- Campo de entrada para senha -->
-                    <button type="submit">Entrar</button> <!-- Botão para enviar o formulário de login -->
-                    <div class="div_link"><a href="">Recuperar Acesso</a></div>
+                    <input type="email" name="email_usuario"  placeholder="Email" required> <!-- Campo de entrada para email -->
+                    <input type="password" name="senha_usuario" placeholder="Senha" required> <!-- Campo de entrada para senha -->
+
+                    <button type="submit" name="SendLogin">Entrar</button> <!-- Botão para enviar o formulário de login -->
+                    
+                    <div class="div_link"><a href="recuperar_senha.php">Recuperar Acesso</a></div>
                 </form>
 
-                <!-- Cadastro -->
+                <!-- Cadastro ---------------------------------------------------------------------------------------------------------------------->
                 <?php
                     // Verifica se o formulário foi enviado
                     if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['CadUsuario'])) {
@@ -43,7 +85,7 @@
                         $senha_usuario = $_POST['senha_usuario'];
 
                         // Hash da senha para armazenamento seguro
-                        $senha_hash = password_hash($senha_usuario, PASSWORD_BCRYPT);
+                        $senha_hash = password_hash($senha_usuario, PASSWORD_DEFAULT);
 
                         try {
                             // Prepara a consulta SQL para inserção
@@ -65,14 +107,6 @@
                         // Redireciona para a mesma página para limpar o formulário
                         header("Location: " . $_SERVER['PHP_SELF']);
                         exit();
-                    }
-                ?>
-
-                <?php
-                    // Exibe a mensagem de sucesso ou erro, se existir
-                    if (isset($_SESSION['mensagem'])) {
-                        echo "<p>" . $_SESSION['mensagem'] . "</p>";
-                        unset($_SESSION['mensagem']); // Limpa a mensagem da sessão
                     }
                 ?>
 
