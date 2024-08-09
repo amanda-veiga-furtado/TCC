@@ -1,4 +1,4 @@
-/****************************************************************************************************************************************************
+/*************************************************************************************************************************************
     Paletada de Cores
         Vermelho:   #fe797b
         Laranja:    #ffb750
@@ -9,14 +9,14 @@
                     #8c6db6     (Cor secundaria botão)
         Cinza       #f9f9f9     (Cor de fundo da barra de navegação)
                     #8f8f8f     (Cor do texto dos links da barra de navegação)
-****************************************************************************************************************************************************/
+*************************************************************************************************************************************/
 * {
     padding: 0; /* Remove o padding padrão de todos os elementos */
     margin: 0; /* Remove a margem padrão de todos os elementos */
     box-sizing: border-box; /* Inclui padding e border na largura e altura total dos elementos */
 }
 
-/*menu.php******************************************************************************************************************************************/
+/*menu.php***************************************************************************************************************************/
 
     nav {
         display: flex; /* Usa flexbox para alinhar conteúdo verticalmente */
@@ -67,17 +67,7 @@
         transition: transform 0.3s ease, visibility 0s linear; /* Transição suave */
     }
 
-/*sugestao.php**************************************************************************************************************************************/
-
-    .container_sugestao {
-        width: 100vw;
-        height: 85.3vh;
-        background: url('../css/img/fundo/1.jpg');
-        background-size: cover;
-        background-position: center;
-        }
-
-/*login.php*****************************************************************************************************************************************/
+/*login.php**************************************************************************************************************************/
 
     .container_form {
         width: 100vw;
@@ -128,7 +118,7 @@
         transition: color 0.3s;
         flex-grow: 1;
         text-align: center;
-            /* font-family: Hack, monospace; */
+        /* font-family: Hack, monospace; */
 
     }
     .form-toggle button:hover,
@@ -144,6 +134,7 @@
         background: linear-gradient(90deg, #fe797b, #ffb750, #ffea56, #8fe968, #36cedc, #a587ca);
         transition: transform 0.3s;
     }
+
     .form {
         display: flex;
         flex-direction: column;

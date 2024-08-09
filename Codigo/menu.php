@@ -8,13 +8,15 @@
 <body>
     <nav>
         <ul class="menuItems">
-            <li><a href='#' data-item='Home'>Home</a></li>
-            <li><a href='#' data-item='Livro de Receitas'>Livro de Receitas</a></li>
-            <li><a href='#' data-item='About'>About</a></li>
-            <li><a href='#' data-item='Projects'>Projects</a></li>
-            <li><a href='#' data-item='Blog'>Blog</a></li> 
-            <li><a href='#' data-item='Contact'>Contact</a></li>
+            <!-- <li><a href='#' data-item='Home'>Home</a></li> -->
+            <!-- <li><a href='#' data-item='Livro de Receitas'>Livro de Receitas</a></li> -->
+            <!-- <li><a href='#' data-item='About'>About</a></li> -->
+            <!-- <li><a href='#' data-item='Projects'>Projects</a></li> -->
+            <!-- <li><a href='#' data-item='Blog'>Blog</a></li>  -->
+            <!-- <li><a href='#' data-item='Contact'>Contact</a></li> -->
             <li><a href='../usuario/login.php' data-item='Login | Cadastro'>Login | Cadastro</a></li>
+            <li><a href='../receita/sugestao.php' data-item='Sugestão'>Sugestão</a></li>
+
         </ul>
     </nav>
 </body>

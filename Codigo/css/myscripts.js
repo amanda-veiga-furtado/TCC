@@ -6,13 +6,8 @@
     }
 
     function showSignup() {
-        document.getElementById('loginForm').style.display = 'none'; // Esconde o formulário de login -->
-        document.getElementById('signupForm').style.display = 'block'; // Mostra o formulário de cadastro 
-        document.getElementById('toggleLine').style.transform = 'translateX(100%)'; // Move a linha indicadora para a posição do cadastro
+         document.getElementById('loginForm').style.display = 'none'; // Esconde o formulário de login -->
+         document.getElementById('signupForm').style.display = 'block'; // Mostra o formulário de cadastro 
+         document.getElementById('toggleLine').style.transform = 'translateX(100%)'; // Move a linha indicadora para a posição do cadastro
         
-    }
-
-
-
-
-
+    }    

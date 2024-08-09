@@ -1,6 +1,9 @@
 <?php
     include_once '../menu.php'; 
     include_once '../conexao.php'; 
+
+    $images = range(1, 12); // Array com o nome das imagens
+    $randomImage = $images[array_rand($images)]; // Seleciona uma imagem aleatória
 ?>
 
 <!DOCTYPE html>
@@ -11,22 +14,19 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="../css/style.css">
+    <style>
+        .container_sugestao {
+            width: 100vw;
+            height: 85.3vh;
+            background: url('../css/img/fundo/<?php echo $randomImage; ?>.jpg');
+            background-size: cover;
+            background-position: center;
+        }
+    </style>
 </head>
 <body>
     <div class="container_sugestao">
-     <!--       <div class="box_sugestao">
-            <h1>SUGERIR</h1>
-            <form name="send-sugerir" method="POST" action="">
-                <input type="text" name="nome_sugestao" id="nome_sugestao" placeholder="Digite Sua Sugestão ❤">
-                <select name="categoria_sugestao" id="categoria_sugestao">
-                    <option value="Ingrediente">Ingrediente</option>
-                    <option value="Categoria de Ingrediente">Categoria de Ingrediente</option>
-                    <option value="Categoria Culinaria">Categoria Culinaria</option>
-                </select>
-                <input type="submit" value="Sugerir" name="SendSugerir" class="botao_comum">
-            </form>
-        </div> -->
+
     </div>
 </body>
 </html>
-
