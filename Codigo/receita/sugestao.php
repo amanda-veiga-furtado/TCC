@@ -2,7 +2,7 @@
     include_once '../menu.php'; 
     include_once '../conexao.php'; 
 
-    $images = range(1, 12); // Array com o nome das imagens
+    $images = range(1, 13); // Array com o nome das imagens
     $randomImage = $images[array_rand($images)]; // Seleciona uma imagem aleatória
 ?>
 

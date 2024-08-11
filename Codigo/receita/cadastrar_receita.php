@@ -2,6 +2,7 @@
 session_start();
 ob_start();
 
+include_once '../menu.php';
 include_once '../conexao.php';
 
 // Função para converter frações
@@ -20,14 +21,12 @@ function converteFracao($numero) {
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $dados = filter_input_array(INPUT_POST, FILTER_DEFAULT); // Recebe os dados do formulário
 
-    // Concatenação
-    $tempo_preparo = "";
-
     if (!empty($dados['CadReceita'])) {
         // Porção
         $numero_porcoes = converteFracao($dados['quantidadePorcao']) . ' ' . $dados['tipoPorcao'];
 
         // Tempo de Preparo
+        $tempo_preparo = "";
         if (!empty($dados['horas']) || !empty($dados['minutos'])) {
             $horas_texto = ($dados['horas'] == 1) ? 'Hora' : 'Horas';
             $minutos_texto = ($dados['minutos'] == 1) ? 'Minuto' : 'Minutos';
@@ -36,6 +35,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         }
 
         // Imagem
+        $caminho_imagem = '';
         if (isset($_FILES['imagem_receita']) && $_FILES['imagem_receita']['error'] === UPLOAD_ERR_OK) {
             $imagem_temp = $_FILES['imagem_receita']['tmp_name'];
             $nome_imagem = $_FILES['imagem_receita']['name'];
@@ -45,11 +45,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             if ($check !== false) {
                 $caminho_imagem = '../css/img/receita/' . $nome_imagem;
                 move_uploaded_file($imagem_temp, $caminho_imagem);
-            } else {
-                $caminho_imagem = ''; // Se o arquivo não é uma imagem válida
             }
-        } else {
-            $caminho_imagem = ''; // Se nenhum upload foi feito
         }
 
         try {
@@ -64,7 +60,33 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
             // Executa a inserção
             if ($cad_receita->execute()) {
-                echo "<p style='color: green; margin-left: 10px;'>Receita cadastrada com sucesso!</p>";
+                // Obtém o ID da receita recém-criada
+                $id_receita = $conn->lastInsertId();
+
+                // Insere os ingredientes
+                $nome_ingrediente = $dados['nome_ingrediente'];
+                $qtdIngrediente_lista = converteFracao($dados['quantidadeIngrediente']) . ' ' . $dados['tipoIngrediente'];
+
+                // Obtém o ID do ingrediente selecionado
+                $query_id_ingrediente = "SELECT id_ingrediente FROM ingrediente WHERE id_ingrediente = :nome_ingrediente";
+                $stmt = $conn->prepare($query_id_ingrediente);
+                $stmt->bindParam(':nome_ingrediente', $nome_ingrediente);
+                $stmt->execute();
+                $resultado = $stmt->fetch(PDO::FETCH_ASSOC);
+                $id_ingrediente = $resultado['id_ingrediente'];
+
+                // Insere os dados na tabela lista_de_ingredientes
+                $query_ingredientes = "INSERT INTO lista_de_ingredientes (fk_id_receita, fk_id_ingrediente, qtdIngrediente_lista) VALUES (:fk_id_receita, :fk_id_ingrediente, :qtdIngrediente_lista)";
+                $cad_ingredientes = $conn->prepare($query_ingredientes);
+                $cad_ingredientes->bindParam(':fk_id_receita', $id_receita);
+                $cad_ingredientes->bindParam(':fk_id_ingrediente', $id_ingrediente);
+                $cad_ingredientes->bindParam(':qtdIngrediente_lista', $qtdIngrediente_lista);
+
+                if ($cad_ingredientes->execute()) {
+                    echo "<p style='color: green; margin-left: 10px;'>Receita e ingredientes cadastrados com sucesso!</p>";
+                } else {
+                    echo "<p style='color: red; margin-left: 10px;'>Erro ao cadastrar os ingredientes. Por favor, tente novamente.</p>";
+                }
             } else {
                 echo "<p style='color: red; margin-left: 10px;'>Erro ao cadastrar a receita. Por favor, tente novamente.</p>";
             }
@@ -74,6 +96,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     }
 }
 ?>
+
 
 <!DOCTYPE html>
 <html lang="pt-br">
