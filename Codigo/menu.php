@@ -17,7 +17,6 @@
             <li><a href='../usuario/login.php' data-item='Login | Cadastro'>Login | Cadastro</a></li>
             <li><a href='../receita/cadastrar_receita.php' data-item='Compartilhar Receita'>Compartilhar Receita</a></li>
             <li><a href='../receita/sugestao.php' data-item='Sugestão'>Sugestão</a></li>
-
         </ul>
     </nav>
 </body>

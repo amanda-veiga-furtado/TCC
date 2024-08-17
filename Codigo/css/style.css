@@ -146,6 +146,11 @@
         color: #333;
         font-size: 24px;
     }
+    .form h3 {
+        margin-bottom: 15px;
+        color: #333;
+        font-size: 20px;
+    }
     .form input {
         margin-bottom: 15px;
         padding: 12px;
@@ -159,20 +164,47 @@
         border-color: #36cedc;
         outline: none;
     }
-    .form button {
+    .form select {
+        margin-bottom: 15px;
         padding: 12px;
-        border: none;
+        border: 1px solid #ccc;
         border-radius: 8px;
-        background-color: #a587ca;
-        color: white;
-        font-size: 18px;
-        cursor: pointer;
-        transition: background-color 0.3s;
+        font-size: 16px;
+        box-sizing: border-box;
+    }
+    .form select:focus {
+        border-color: #36cedc;
+        outline: none;
+    }
+    .form textarea {
+        margin-bottom: 15px;
+        padding: 12px;
+        border: 1px solid #ccc;
+        border-radius: 8px;
+        font-size: 16px;
         width: 100%;
+        height: 600px;
+        box-sizing: border-box;
     }
-    .form button:hover {
-        background-color: #8c6db6;
+    .form textarea:focus {
+        border-color: #36cedc;
+        outline: none;
     }
+
+        .botao-enviar{
+            padding: 12px;
+            border: none;
+            border-radius: 8px;
+            background-color: #a587ca;
+            color: white;
+            font-size: 18px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+            width: 100%;   
+        }
+        .botao-enviar:hover {
+            background-color: #8c6db6;
+        }
     .div_link{
         margin-top: 0.3cm;
         text-align: center;

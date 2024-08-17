@@ -71,7 +71,7 @@
                         <input type="email" name="email_usuario"  placeholder="Email" required> <!-- Campo de entrada para email -->
                         <input type="password" name="senha_usuario" placeholder="Senha" required> <!-- Campo de entrada para senha -->
 
-                        <button type="submit" name="SendLogin">Entrar</button> <!-- Botão para enviar o formulário de login -->
+                        <input type="submit" name="SendLogin" value="Entrar" class="botao-enviar"> <!-- Botão para enviar o formulário de login -->
                         
                         <div class="div_link"><a href="recuperar_senha.php">Recuperar Acesso</a></div>
                     </form>
@@ -116,7 +116,9 @@
                         <input type="text" name="nome_usuario" id="nome_usuario" placeholder="Nome de Usuario" required> <!-- Campo de entrada para nome de usuário -->
                         <input type="email" name="email_usuario" id="email_usuario" placeholder="Email" required> <!-- Campo de entrada para email -->
                         <input type="password" name="senha_usuario" id="senha_usuario" placeholder="Senha" required> <!-- Campo de entrada para senha -->
-                        <button type="submit" name="CadUsuario">Cadastrar</button> <!-- Botão para enviar o formulário de cadastro -->
+
+                        <input type="submit" name="CadUsuario" value="Cadastrar" class="botao-enviar"> <!-- Botão para enviar o formulário de cadastro -->
+
                     </form>
                 </div>
             </div>
