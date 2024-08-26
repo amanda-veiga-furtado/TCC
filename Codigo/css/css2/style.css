@@ -137,14 +137,7 @@ ul {
 /* Receita */
 
     /* listagem_receita.php */
-        .lista-receita-imagem {
-            /* background-position: center; */
-            justify-content: center; /* centraliza os itens horizontalmente */
-            align-items: center; /* centraliza os itens verticalmente */
-            /* background-size: cover; */
-            width: 100%;
-        }
-
+ 
     /* registro_receita.php */
         .banner {
             /* background-image: url(../css/img/receita/imagem.png); */

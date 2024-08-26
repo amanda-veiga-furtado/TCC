@@ -25,7 +25,7 @@
                         <div id="toggleLine" class="toggle-line"></div> <!-- Linha colorida para indicar a seleção atual -->
                     </div>
                     
-                    <!-- Login ------------------------------------------------------------------------------------------------------------------------->
+                    <!-- Login --------------------------------------------------------------------------->
                     <?php
                         // Verifica se o formulário de login foi enviado
                         if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['SendLogin'])) {
@@ -89,22 +89,33 @@
                             $senha_hash = password_hash($senha_usuario, PASSWORD_DEFAULT);
 
                             try {
-                                // Prepara a consulta SQL para inserção
-                                $stmt = $conn->prepare("INSERT INTO usuario (nome_usuario, email_usuario, senha_usuario) VALUES (:nome_usuario, :email_usuario, :senha_usuario)");
-
-                                // Vincula os parâmetros e executa a consulta
+                                // Verifica se o nome de usuário ou email já existe
+                                $stmt = $conn->prepare("SELECT COUNT(*) FROM usuario WHERE nome_usuario = :nome_usuario OR email_usuario = :email_usuario");
                                 $stmt->bindParam(':nome_usuario', $nome_usuario);
                                 $stmt->bindParam(':email_usuario', $email_usuario);
-                                $stmt->bindParam(':senha_usuario', $senha_hash);
                                 $stmt->execute();
+                                $count = $stmt->fetchColumn();
 
-                                // Mensagem de sucesso
-                                $_SESSION['mensagem'] = "Usuário cadastrado com sucesso!";
+                                if ($count > 0) {
+                                    $_SESSION['mensagem'] = "Erro: Nome de usuário ou email já cadastrados!";
+                                } else {
+                                    // Prepara a consulta SQL para inserção
+                                    $stmt = $conn->prepare("INSERT INTO usuario (nome_usuario, email_usuario, senha_usuario) VALUES (:nome_usuario, :email_usuario, :senha_usuario)");
+
+                                    // Vincula os parâmetros e executa a consulta
+                                    $stmt->bindParam(':nome_usuario', $nome_usuario);
+                                    $stmt->bindParam(':email_usuario', $email_usuario);
+                                    $stmt->bindParam(':senha_usuario', $senha_hash);
+                                    $stmt->execute();
+
+                                    // Mensagem de sucesso
+                                    $_SESSION['mensagem'] = "Usuário cadastrado com sucesso!";
+                                }
                             } catch (PDOException $e) {
                                 // Mensagem de erro
                                 $_SESSION['mensagem'] = "Erro: Usuário não cadastrado com sucesso!";
                             }
-                            
+
                             // Redireciona para a mesma página para limpar o formulário
                             header("Location: " . $_SERVER['PHP_SELF']);
                             exit();
@@ -118,7 +129,6 @@
                         <input type="password" name="senha_usuario" id="senha_usuario" placeholder="Senha" required> <!-- Campo de entrada para senha -->
 
                         <input type="submit" name="CadUsuario" value="Cadastrar" class="botao-enviar"> <!-- Botão para enviar o formulário de cadastro -->
-
                     </form>
                 </div>
             </div>
