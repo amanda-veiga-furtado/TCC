@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1:3306
--- Tempo de geração: 23/08/2024 às 20:13
+-- Tempo de geração: 26/08/2024 às 17:52
 -- Versão do servidor: 8.2.0
 -- Versão do PHP: 8.2.13
 
@@ -244,70 +244,55 @@ CREATE TABLE IF NOT EXISTS `lista_de_ingredientes` (
 --
 
 INSERT INTO `lista_de_ingredientes` (`fk_id_receita`, `fk_id_ingrediente`, `qtdIngrediente_lista`) VALUES
-(60, 3, '2 quilograma(s)'),
-(61, 95, '1 colher(es) de café'),
-(61, 96, '1 colher(es) de café'),
-(61, 118, '1 colher(es) de café'),
-(61, 48, '1 colher(es) de café'),
-(62, 95, '1 colher(es) de café'),
-(62, 96, '1 colher(es) de café'),
-(62, 118, '1 colher(es) de café'),
-(62, 48, '1 colher(es) de café'),
-(63, 95, '1 colher(es) de café'),
-(63, 96, '1 colher(es) de café'),
-(63, 118, '1 colher(es) de café'),
-(63, 48, '1 colher(es) de café'),
-(93, 98, '1 grama(s)'),
-(93, 1, '1 colher(es) de café'),
-(93, 17, '1 colher(es) de café'),
-(94, 96, '4 e 1/2 punhado(s)'),
-(94, 13, '1 '),
-(95, 96, '4 e 1/2 punhado(s)'),
-(95, 13, '1 '),
-(96, 96, '4 e 1/2 punhado(s)'),
-(96, 13, '1 '),
-(107, 111, '1 xícara(s) de chá'),
-(107, 48, '1 '),
-(108, 111, '1 xícara(s) de chá'),
-(108, 48, '1 '),
-(109, 111, '1 xícara(s) de chá'),
-(109, 48, '1 '),
-(110, 13, '1 colher(es) de café'),
-(110, 95, '1 '),
-(111, 13, '1 colher(es) de café'),
-(111, 95, '1 '),
-(112, 13, '1 colher(es) de café'),
-(112, 95, '1 '),
-(116, 94, '1 colher(es) de café'),
-(116, 52, '1 a gosto'),
-(117, 12, '1 colher(es) de café'),
-(119, 163, '1 colher(es) de café'),
-(119, 163, '1 colher(es) de café'),
-(120, 163, '1 colher(es) de café'),
-(120, 163, '1 colher(es) de café'),
-(124, NULL, 'Array Array'),
-(125, NULL, '1 Array'),
-(128, 96, '1 colher(es) de café'),
-(129, 114, '1 colher(es) de café'),
-(130, 17, '1 colher(es) de café'),
-(131, 96, '1 colher(es) de café'),
-(134, 96, '1 colher(es) de café'),
-(142, 96, '1 pacote(s)'),
-(154, 96, '1 colher(es) de café'),
-(154, 48, '1 colher(es) de café'),
-(155, 96, '1 colher(es) de café'),
-(155, 48, '1 colher(es) de café'),
-(156, 52, '1 colher(es) de café'),
-(157, 52, '1 colher(es) de café'),
-(158, 52, '1 colher(es) de café'),
-(159, 52, '1 colher(es) de café'),
-(160, 52, '1 colher(es) de café'),
-(161, 52, '1 colher(es) de café'),
-(162, 52, '1 colher(es) de café'),
-(163, 52, '1 colher(es) de café'),
-(164, 52, '1 colher(es) de café'),
-(165, 52, '1 colher(es) de café'),
-(166, 110, '1 colher(es) de café');
+(200, 95, '2 colher(es) de café'),
+(201, 111, '1 colher(es) de café'),
+(202, 94, '1 colher(es) de café'),
+(208, 18, '3 colher(es) de chá'),
+(209, 52, '1 colher(es) de café'),
+(210, 94, '1 10');
+
+-- --------------------------------------------------------
+
+--
+-- Estrutura para tabela `porcao_quantidade`
+--
+
+DROP TABLE IF EXISTS `porcao_quantidade`;
+CREATE TABLE IF NOT EXISTS `porcao_quantidade` (
+  `id_porcao` int NOT NULL AUTO_INCREMENT,
+  `nome_singular_porcao` varchar(40) COLLATE utf8mb3_unicode_ci NOT NULL,
+  `nome_plural_porcao` varchar(40) COLLATE utf8mb3_unicode_ci NOT NULL,
+  PRIMARY KEY (`id_porcao`)
+) ENGINE=InnoDB AUTO_INCREMENT=24 DEFAULT CHARSET=utf8mb3 COLLATE=utf8mb3_unicode_ci;
+
+--
+-- Despejando dados para a tabela `porcao_quantidade`
+--
+
+INSERT INTO `porcao_quantidade` (`id_porcao`, `nome_singular_porcao`, `nome_plural_porcao`) VALUES
+(1, 'porção', 'porções'),
+(2, 'pedaço', 'pedaços'),
+(3, 'prato', 'pratos'),
+(4, 'fatia', 'fatias'),
+(5, 'pessoa', 'pessoas'),
+(6, 'quilo', 'quilos'),
+(7, 'grama', 'gramas'),
+(8, 'unidade', 'unidades'),
+(9, 'copo', 'copos'),
+(10, 'litro', 'litros'),
+(11, 'mililitro', 'mililitros'),
+(12, 'colher de café', 'colheres de café'),
+(13, 'colher de chá', 'colheres de chá'),
+(14, 'colher de sobremesa', 'colheres de sobremesa'),
+(15, 'colher de sopa', 'colheres de sopa'),
+(16, 'copo americano', 'copos americanos'),
+(17, 'copo requeijão', 'copos de requeijão'),
+(18, 'xícara de chá', 'xícaras de chá'),
+(19, 'punhado', 'punhados'),
+(20, 'pitada', 'pitadas'),
+(21, 'a gosto', 'a gosto'),
+(22, 'pacote', 'pacotes'),
+(23, '', '');
 
 -- --------------------------------------------------------
 
@@ -319,35 +304,25 @@ DROP TABLE IF EXISTS `receita`;
 CREATE TABLE IF NOT EXISTS `receita` (
   `id_receita` int NOT NULL AUTO_INCREMENT,
   `nome_receita` varchar(220) CHARACTER SET utf8mb3 COLLATE utf8mb3_unicode_ci NOT NULL,
-  `numeroPorcao_receita` decimal(65,4) NOT NULL,
-  `tipoPorcao_receita` varchar(30) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `tempoPreparo_receita` varchar(23) CHARACTER SET utf8mb3 COLLATE utf8mb3_unicode_ci NOT NULL,
-  `modoPreparo_receita` varchar(2000) CHARACTER SET utf8mb3 COLLATE utf8mb3_unicode_ci NOT NULL,
+  `numeroPorcao_receita` decimal(10,3) NOT NULL,
+  `tipoPorcao_receita` int NOT NULL,
+  `tempoPreparoHora_receita` decimal(4,0) NOT NULL,
+  `tempoPreparoMinuto_receita` decimal(4,0) NOT NULL,
+  `modoPreparo_receita` text CHARACTER SET utf8mb3 COLLATE utf8mb3_unicode_ci NOT NULL,
   `imagem_receita` varchar(220) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   PRIMARY KEY (`id_receita`)
-) ENGINE=InnoDB AUTO_INCREMENT=183 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=211 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 --
 -- Despejando dados para a tabela `receita`
 --
 
-INSERT INTO `receita` (`id_receita`, `nome_receita`, `numeroPorcao_receita`, `tipoPorcao_receita`, `tempoPreparo_receita`, `modoPreparo_receita`, `imagem_receita`) VALUES
-(167, '1', 2.0000, '3', '4', '5', '6'),
-(168, '1', 2.0000, '3', '4', '5', '6'),
-(169, '1', 2.0000, '3', '4', '5', '6'),
-(170, '1', 2.0000, '3', '4', '5', '6'),
-(171, '1', 2.0000, '3', '4', '5', '6'),
-(172, '1', 2.0000, '3', '4', '5', '6'),
-(173, '1', 2.0000, '3', '4', '5', '6'),
-(174, '1', 2.0000, '3', '4', '5', '6'),
-(175, '1', 2.0000, '3', '4', '5', '6'),
-(176, '1', 2.0000, '3', '4', '5', '6'),
-(177, '1', 2.0000, '3', '4', '5', '6'),
-(178, '1', 2.0000, '3', '4', '5', '6'),
-(179, '1', 2.0000, '3', '4', '5', '6'),
-(180, '1', 2.0000, '3', '4', '5', '6'),
-(181, '1', 2.0000, '3', '4', '5', '6'),
-(182, '1', 2.0000, '3', '4', '5', '6');
+INSERT INTO `receita` (`id_receita`, `nome_receita`, `numeroPorcao_receita`, `tipoPorcao_receita`, `tempoPreparoHora_receita`, `tempoPreparoMinuto_receita`, `modoPreparo_receita`, `imagem_receita`) VALUES
+(198, 'hhhhhhhhhhh', 1.000, 0, 2, 0, 'nnnn', ''),
+(199, 'hhhhhhhhhhh', 1.000, 0, 2, 0, 'nnnn', ''),
+(200, 'aaaaaaaaaaaaaaaaaaaaaaaaa', 1.050, 0, 1, 4, 'mmmmmmmmmmmmmm', '../css/img/receita/bolo-de-cenoura.png'),
+(209, 'aaaaaaaaaaaaa', 1.040, 7, 3, 3, 'aaa', '../css/img/receita/soda.png'),
+(210, 'aaaaaaa', 1.004, 10, 1, 1, 'aaaaaaaaaaaa', '../css/img/receita/creme-da-novica.jpg');
 
 -- --------------------------------------------------------
 
@@ -394,23 +369,23 @@ INSERT INTO `sugestao` (`id_sugestao`, `nome_sugestao`, `categoria_sugestao`) VA
 DROP TABLE IF EXISTS `usuario`;
 CREATE TABLE IF NOT EXISTS `usuario` (
   `id_usuario` int NOT NULL AUTO_INCREMENT,
-  `nome_usuario` varchar(220) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `email_usuario` varchar(220) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `senha_usuario` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `recuperar_senha` varchar(220) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `imagem_usuario` varchar(220) COLLATE utf8mb4_unicode_ci NOT NULL,
-  PRIMARY KEY (`id_usuario`)
-) ENGINE=InnoDB AUTO_INCREMENT=148 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+  `nome_usuario` varchar(220) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
+  `email_usuario` varchar(220) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
+  `senha_usuario` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
+  `recuperar_senha` varchar(220) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `imagem_usuario` varchar(220) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
+  PRIMARY KEY (`id_usuario`),
+  UNIQUE KEY `unique_nome_usuario` (`nome_usuario`),
+  UNIQUE KEY `unique_email_usuario` (`email_usuario`)
+) ENGINE=InnoDB AUTO_INCREMENT=152 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 --
 -- Despejando dados para a tabela `usuario`
 --
 
 INSERT INTO `usuario` (`id_usuario`, `nome_usuario`, `email_usuario`, `senha_usuario`, `recuperar_senha`, `imagem_usuario`) VALUES
-(144, 'a@a.com', 'a@a.com', '$2y$10$Pl5gLBdV86k2Nb5Dm8/o.utGzhEdLmtpcFfrjXZc7FayVeWFVYvpa', NULL, ''),
-(145, 'aamanda18/08', 'amanda@amanda.com', '$2y$10$c3utx84Ax62ZmkBqLxBFEuSWVYwtIKM5omBfbnNlhvrsXamX7eBJa', NULL, ''),
-(146, '666666666', '6666666@66.com', '$2y$10$UsUad9wUKQEL.WrODIUx2uAqIYywhrASr01XtiDIsfpe/YUZ4wr8G', NULL, ''),
-(147, 'aaaaaa99', 'aaaaaa99@aaaaaa99.com', '$2y$10$C8T6LTOZVrdokTgqxgKsw.dDdsHOv7iuTAiXnh6HyNQpXBkR9c91K', NULL, '');
+(150, 'Amanda', 'amanda@amanda.com', '$2y$10$LZizzKhOKDamLUPvIFwS7.9jAYYJ2rcMq8SZpTnTNPbToAYlTGK8m', NULL, ''),
+(151, 'Amanda25/08', 'Amanda25/08@Amanda2508.com', '$2y$10$kbXYUO/.XU7v13RyQrGQoOheyTxpoxYZDv43wJMkW.msaSrzXUFwe', NULL, '');
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;

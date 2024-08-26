@@ -23,17 +23,17 @@ $erro = "";
 $dados = [];
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-    $dados = filter_input_array(INPUT_POST, FILTER_DEFAULT); // Recebe os dados do formulário
+    $dados = filter_input_array(INPUT_POST, FILTER_DEFAULT);
 
     if (!empty($dados['CadReceita'])) {
 
         // Porção
-        $numeroPorcao_receita = isset($dados['numeroPorcao_receita']) ? $dados['numeroPorcao_receita'] : null;
-        $tipoPorcao_receita = isset($dados['tipoPorcao_receita']) ? $dados['tipoPorcao_receita'] : null;
+        $numeroPorcao_receita = $dados['numeroPorcao_receita'] ?? null;
+        $tipoPorcao_receita = $dados['tipoPorcao_receita'] ?? null;
 
         // Tempo de Preparo
-        $tempoPreparoHora = isset($dados['tempoPreparoHora_receita']) ? $dados['tempoPreparoHora_receita'] : 0;
-        $tempoPreparoMinuto = isset($dados['tempoPreparoMinuto_receita']) ? $dados['tempoPreparoMinuto_receita'] : 0;
+        $tempoPreparoHora = $dados['tempoPreparoHora_receita'] ?? 0;
+        $tempoPreparoMinuto = $dados['tempoPreparoMinuto_receita'] ?? 0;
 
         // Validação do tempo de preparo
         if (($tempoPreparoHora == 0 && $tempoPreparoMinuto == 0) ||
@@ -41,83 +41,71 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $erro = "Formato de tempo inválido. Verifique os valores de horas e minutos.";
         }
 
-        if (empty($erro)) {
-            // Imagem
-            $caminho_imagem = '';
-            if (isset($_FILES['imagem_receita']) && $_FILES['imagem_receita']['error'] === UPLOAD_ERR_OK) {
-                $imagem_temp = $_FILES['imagem_receita']['tmp_name'];
-                $nome_imagem = $_FILES['imagem_receita']['name'];
+        // Validação da Imagem
+        $caminho_imagem = '';
+        if (empty($erro) && isset($_FILES['imagem_receita']) && $_FILES['imagem_receita']['error'] === UPLOAD_ERR_OK) {
+            $imagem_temp = $_FILES['imagem_receita']['tmp_name'];
+            $nome_imagem = basename($_FILES['imagem_receita']['name']);
+            $mime_types = ['image/jpeg', 'image/png', 'image/gif'];
 
-                // Verifica se o arquivo é uma imagem válida
-                $check = getimagesize($imagem_temp);
-                if ($check !== false) {
-                    $caminho_imagem = '../css/img/receita/' . basename($nome_imagem);
-                    if (!move_uploaded_file($imagem_temp, $caminho_imagem)) {
-                        $erro = "Erro ao mover o arquivo da imagem. Por favor, tente novamente.";
-                    }
+            if (in_array(mime_content_type($imagem_temp), $mime_types)) {
+                $caminho_imagem = '../css/img/receita/' . $nome_imagem;
+                if (!move_uploaded_file($imagem_temp, $caminho_imagem)) {
+                    $erro = "Erro ao mover o arquivo da imagem. Por favor, tente novamente.";
                 }
+            } else {
+                $erro = "Formato de imagem inválido. Use JPEG, PNG ou GIF.";
             }
+        }
 
-            if (empty($erro)) {
-                // Insere os dados no banco de dados
-                try {
-                    $query_receita = "INSERT INTO receita (nome_receita, numeroPorcao_receita, tipoPorcao_receita, tempoPreparoHora_receita, tempoPreparoMinuto_receita, modoPreparo_receita, imagem_receita) 
-                                      VALUES (:nome_receita, :numeroPorcao_receita, :tipoPorcao_receita, :tempoPreparoHora_receita, :tempoPreparoMinuto_receita, :modoPreparo_receita, :imagem_receita)";
-                                      
-                    $cad_receita = $conn->prepare($query_receita);
-                    $cad_receita->bindParam(':nome_receita', $dados['nome_receita']);
-                    $cad_receita->bindParam(':numeroPorcao_receita', $numeroPorcao_receita);
-                    $cad_receita->bindParam(':tipoPorcao_receita', $tipoPorcao_receita);
-                    $cad_receita->bindParam(':tempoPreparoHora_receita', $tempoPreparoHora);
-                    $cad_receita->bindParam(':tempoPreparoMinuto_receita', $tempoPreparoMinuto);
-                    $cad_receita->bindParam(':modoPreparo_receita', $dados['modoPreparo_receita']);
-                    $cad_receita->bindParam(':imagem_receita', $caminho_imagem);
+        // Inserir dados no banco de dados
+        if (empty($erro)) {
+            try {
+                $query_receita = "INSERT INTO receita (nome_receita, numeroPorcao_receita, tipoPorcao_receita, tempoPreparoHora_receita, tempoPreparoMinuto_receita, modoPreparo_receita, imagem_receita) 
+                                  VALUES (:nome_receita, :numeroPorcao_receita, :tipoPorcao_receita, :tempoPreparoHora_receita, :tempoPreparoMinuto_receita, :modoPreparo_receita, :imagem_receita)";
+                $cad_receita = $conn->prepare($query_receita);
+                $cad_receita->bindParam(':nome_receita', $dados['nome_receita']);
+                $cad_receita->bindParam(':numeroPorcao_receita', $numeroPorcao_receita);
+                $cad_receita->bindParam(':tipoPorcao_receita', $tipoPorcao_receita);
+                $cad_receita->bindParam(':tempoPreparoHora_receita', $tempoPreparoHora);
+                $cad_receita->bindParam(':tempoPreparoMinuto_receita', $tempoPreparoMinuto);
+                $cad_receita->bindParam(':modoPreparo_receita', $dados['modoPreparo_receita']);
+                $cad_receita->bindParam(':imagem_receita', $caminho_imagem);
 
-                    // Executa a inserção
-                    if ($cad_receita->execute()) {
-                        // Obtém o ID da receita recém-criada
-                        $id_receita = $conn->lastInsertId();
+                if ($cad_receita->execute()) {
+                    $id_receita = $conn->lastInsertId();
 
-                        // Insere os ingredientes
-                        $nome_ingredientes = isset($dados['nome_ingrediente']) ? (array) $dados['nome_ingrediente'] : [];
-                        $quantidade_ingredientes = isset($dados['quantidadeIngrediente']) ? (array) $dados['quantidadeIngrediente'] : [];
-                        $tipo_ingredientes = isset($dados['tipoIngrediente']) ? (array) $dados['tipoIngrediente'] : [];
+                    // Insere os ingredientes
+                    $nome_ingredientes = $dados['nome_ingrediente'] ?? [];
+                    $quantidade_ingredientes = $dados['quantidadeIngrediente'] ?? [];
+                    $tipo_ingredientes = $dados['tipoIngrediente'] ?? [];
 
-                        foreach ($nome_ingredientes as $index => $nome_ingrediente) {
-                            if (!empty($nome_ingrediente)) {
-                                $qtdIngrediente_lista = converteFracao($quantidade_ingredientes[$index]) . ' ' . $tipo_ingredientes[$index];
+                    foreach ($nome_ingredientes as $index => $nome_ingrediente) {
+                        if (!empty($nome_ingrediente)) {
+                            $qtdIngrediente_lista = converteFracao($quantidade_ingredientes[$index]) . ' ' . $tipo_ingredientes[$index];
 
-                                // Obtém o ID do ingrediente selecionado
-                                $query_id_ingrediente = "SELECT id_ingrediente FROM ingrediente WHERE id_ingrediente = :nome_ingrediente";
-                                $stmt = $conn->prepare($query_id_ingrediente);
-                                $stmt->bindParam(':nome_ingrediente', $nome_ingrediente);
-                                $stmt->execute();
-                                $resultado = $stmt->fetch(PDO::FETCH_ASSOC);
-                                $id_ingrediente = $resultado['id_ingrediente'];
+                            $query_ingredientes = "
+                                INSERT INTO lista_de_ingredientes (fk_id_receita, fk_id_ingrediente, qtdIngrediente_lista) 
+                                VALUES (:fk_id_receita, :fk_id_ingrediente, :qtdIngrediente_lista)";
+                            $cad_ingredientes = $conn->prepare($query_ingredientes);
+                            $cad_ingredientes->bindParam(':fk_id_receita', $id_receita);
+                            $cad_ingredientes->bindParam(':fk_id_ingrediente', $nome_ingrediente); // assumes nome_ingrediente is an id
+                            $cad_ingredientes->bindParam(':qtdIngrediente_lista', $qtdIngrediente_lista);
 
-                                // Insere os dados na tabela lista_de_ingredientes
-                                $query_ingredientes = "INSERT INTO lista_de_ingredientes (fk_id_receita, fk_id_ingrediente, qtdIngrediente_lista) 
-                                                       VALUES (:fk_id_receita, :fk_id_ingrediente, :qtdIngrediente_lista)";
-                                $cad_ingredientes = $conn->prepare($query_ingredientes);
-                                $cad_ingredientes->bindParam(':fk_id_receita', $id_receita);
-                                $cad_ingredientes->bindParam(':fk_id_ingrediente', $id_ingrediente);
-                                $cad_ingredientes->bindParam(':qtdIngrediente_lista', $qtdIngrediente_lista);
-
-                                if (!$cad_ingredientes->execute()) {
-                                    $erro = "Erro ao cadastrar um ou mais ingredientes. Por favor, tente novamente.";
-                                }
+                            if (!$cad_ingredientes->execute()) {
+                                $erro = "Erro ao cadastrar um ou mais ingredientes. Por favor, tente novamente.";
                             }
                         }
-
-                        if (empty($erro)) {
-                            echo "<p style='color: green; margin-left: 10px;'>Receita e ingredientes cadastrados com sucesso!</p>";
-                        }
-                    } else {
-                        $erro = "Erro ao cadastrar a receita. Por favor, tente novamente.";
                     }
-                } catch (PDOException $err) {
-                    $erro = "Erro: " . $err->getMessage();
+
+                    if (empty($erro)) {
+                        echo "<p style='color: green; margin-left: 10px;'>Receita e ingredientes cadastrados com sucesso!</p>";
+                    }
+                } else {
+                    $erro = "Erro ao cadastrar a receita. Por favor, tente novamente.";
                 }
+            } catch (PDOException $err) {
+                $erro = "Erro: " . $err->getMessage();
             }
         }
     }
@@ -154,17 +142,23 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
                 <!-- Porção -->
                 <h2>Porção</h2>
-                <input type="number" name="numeroPorcao_receita" id="numeroPorcao_receita" min="0" step="0.01" value="<?php echo isset($dados['numeroPorcao_receita']) ? htmlspecialchars($dados['numeroPorcao_receita'], ENT_QUOTES) : '1'; ?>" style="width: 13%;">
+                <input type="number" name="numeroPorcao_receita" id="numeroPorcao_receita" min="0" step="0.001" value="<?php echo isset($dados['numeroPorcao_receita']) ? htmlspecialchars($dados['numeroPorcao_receita'], ENT_QUOTES) : '1'; ?>" style="width: 13%;">
                 <select name="tipoPorcao_receita" id="tipoPorcao_receita" style="width: 25%;">
-                    <option value="porção(ões)" <?php echo (isset($dados['tipoPorcao_receita']) && $dados['tipoPorcao_receita'] === 'porção(ões)') ? 'selected' : ''; ?>>porção(ões)</option>
-                    <option value="pedaço(s)" <?php echo (isset($dados['tipoPorcao_receita']) && $dados['tipoPorcao_receita'] === 'pedaço(s)') ? 'selected' : ''; ?>>pedaço(s)</option>
-                    <option value="prato(s)" <?php echo (isset($dados['tipoPorcao_receita']) && $dados['tipoPorcao_receita'] === 'prato(s)') ? 'selected' : ''; ?>>prato(s)</option>
-                    <option value="fatia(s)" <?php echo (isset($dados['tipoPorcao_receita']) && $dados['tipoPorcao_receita'] === 'fatia(s)') ? 'selected' : ''; ?>>fatia(s)</option>
-                    <option value="pessoa(s)" <?php echo (isset($dados['tipoPorcao_receita']) && $dados['tipoPorcao_receita'] === 'pessoa(s)') ? 'selected' : ''; ?>>pessoa(s)</option>
-                    <option value="quilo(s)" <?php echo (isset($dados['tipoPorcao_receita']) && $dados['tipoPorcao_receita'] === 'quilo(s)') ? 'selected' : ''; ?>>quilo(s)</option>
-                    <option value="grama(s)" <?php echo (isset($dados['tipoPorcao_receita']) && $dados['tipoPorcao_receita'] === 'grama(s)') ? 'selected' : ''; ?>>grama(s)</option>
-                    <option value="unidade(s)" <?php echo (isset($dados['tipoPorcao_receita']) && $dados['tipoPorcao_receita'] === 'unidade(s)') ? 'selected' : ''; ?>>unidade(s)</option>
-                    <option value="copo(s)" <?php echo (isset($dados['tipoPorcao_receita']) && $dados['tipoPorcao_receita'] === 'copo(s)') ? 'selected' : ''; ?>>copo(s)</option>
+                    <option value="1" <?php echo (isset($dados['tipoPorcao_receita']) && $dados['tipoPorcao_receita'] === 'porção(ões)') ? 'selected' : ''; ?>>porção(ões)</option>
+                    <option value="2" <?php echo (isset($dados['tipoPorcao_receita']) && $dados['tipoPorcao_receita'] === 'pedaço(s)') ? 'selected' : ''; ?>>pedaço(s)</option>
+                    <option value="3" <?php echo (isset($dados['tipoPorcao_receita']) && $dados['tipoPorcao_receita'] === 'prato(s)') ? 'selected' : ''; ?>>prato(s)</option>
+                    <option value="4" <?php echo (isset($dados['tipoPorcao_receita']) && $dados['tipoPorcao_receita'] === 'fatia(s)') ? 'selected' : ''; ?>>fatia(s)</option>
+                    <option value="5" <?php echo (isset($dados['tipoPorcao_receita']) && $dados['tipoPorcao_receita'] === 'pessoa(s)') ? 'selected' : ''; ?>>pessoa(s)</option>
+                    <option value="6" <?php echo (isset($dados['tipoPorcao_receita']) && $dados['tipoPorcao_receita'] === 'quilo(s)') ? 'selected' : ''; ?>>quilo(s)</option>
+                    <option value="7" <?php echo (isset($dados['tipoPorcao_receita']) && $dados['tipoPorcao_receita'] === 'grama(s)') ? 'selected' : ''; ?>>grama(s)</option>
+                    <option value="8" <?php echo (isset($dados['tipoPorcao_receita']) && $dados['tipoPorcao_receita'] === 'unidade(s)') ? 'selected' : ''; ?>>unidade(s)</option>
+                    <option value="9" <?php echo (isset($dados['tipoPorcao_receita']) && $dados['tipoPorcao_receita'] === 'copo(s)') ? 'selected' : ''; ?>>copo(s)</option>
+
+                    <option value="10" <?php echo (isset($dados['tipoPorcao_receita']) && $dados['tipoPorcao_receita'] === 'litro(s)') ? 'selected' : ''; ?>>litro(s)</option>
+
+                    <option value="11" <?php echo (isset($dados['tipoPorcao_receita']) && $dados['tipoPorcao_receita'] === 'mililitro(s)') ? 'selected' : ''; ?>>mililitro(s)</option>
+
+
                 </select><br>
 
                 <!-- Tempo de Preparo -->
@@ -180,9 +174,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 <h2>Ingrediente</h2>
                 <div id="ingredientes-container">
                     <?php
-                    $nome_ingredientes = isset($dados['nome_ingrediente']) ? (array) $dados['nome_ingrediente'] : [];
-                    $quantidade_ingredientes = isset($dados['quantidadeIngrediente']) ? (array) $dados['quantidadeIngrediente'] : [];
-                    $tipo_ingredientes = isset($dados['tipoIngrediente']) ? (array) $dados['tipoIngrediente'] : [];
+                    $nome_ingredientes = $dados['nome_ingrediente'] ?? [];
+                    $quantidade_ingredientes = $dados['quantidadeIngrediente'] ?? [];
+                    $tipo_ingredientes = $dados['tipoIngrediente'] ?? [];
 
                     if (count($nome_ingredientes) > 0) {
                         foreach ($nome_ingredientes as $index => $nome_ingrediente) {
@@ -200,16 +194,22 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                                     ?>
                                 </select>
                                 <input class="input-field" type="number" name="quantidadeIngrediente[]" min="0.5" step="0.5" value="<?php echo htmlspecialchars($quantidade_ingredientes[$index], ENT_QUOTES); ?>" style="width: 50px;">
+
                                 <select class="select-field" name="tipoIngrediente[]">
-                                    <option value="colher(es) de café" <?php echo ($tipo_ingredientes[$index] == 'colher(es) de café') ? 'selected' : ''; ?>>colher de café</option>
+
+                                    <option value="2" <?php echo ($tipo_ingredientes[$index] == 'pedaço(s)') ? 'selected' : ''; ?>>pedaço(s)</option>
+
+
+                                    <option value="colher(es) de café" <?php echo ($tipo_ingredientes[$index] == 'colher(es) de café') ? 'selected' : ''; ?>>colher(es) de café</option>
+
                                     <option value="colher(es) de chá" <?php echo ($tipo_ingredientes[$index] == 'colher(es) de chá') ? 'selected' : ''; ?>>colher de chá</option>
                                     <!-- Add other options similarly -->
                                 </select>
+
                             </div>
                             <?php
                         }
                     } else {
-                        // Default one ingredient field
                         ?>
                         <div class="ingrediente">
                             <select name="nome_ingrediente[]" class="select-field">
@@ -217,13 +217,51 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                                 <?php
                                 $query = $conn->query("SELECT id_ingrediente, nome_ingrediente FROM ingrediente ORDER BY nome_ingrediente ASC");
                                 $registros = $query->fetchAll(PDO::FETCH_ASSOC);
-                                foreach ($registros as $option):
-                                    ?>
-                                    <option value="<?php echo $option['id_ingrediente']; ?>"><?php echo $option['nome_ingrediente']; ?></option>
-                                <?php endforeach; ?>
+                                foreach ($registros as $option) {
+                                    echo "<option value='{$option['id_ingrediente']}'>{$option['nome_ingrediente']}</option>";
+                                }
+                                ?>
                             </select>
                             <input class="input-field" type="number" name="quantidadeIngrediente[]" min="0.5" step="0.5" value="1" style="width: 50px;">
                             <select class="select-field" name="tipoIngrediente[]">
+
+                                <option value="2">pedaço(s)</option>
+                                <option value="3">prato(s)</option>
+                                <option value="4">fatia(s)</option>
+                                <option value="5">pessoa(s)</option>
+                                <option value="6">quilos(s)</option>
+                                <option value="7">grama(s)</option>
+                                <option value="8">unidade(s)</option>
+                                <option value="9">copo(s)</option>
+                                <option value="10">litro(s)</option>
+                                <option value="11">mililitro(s)</option>
+                                <option value="12"></option>
+                                <option value="13"></option>
+                                <option value="14"></option>
+                                <option value="15"></option>
+                                <option value="16"></option>
+                                <option value="17"></option>
+                                <option value="18"></option>
+                                <option value="19"></option>
+                                <option value="20"></option>
+                                <option value="21"></option>
+                                <option value="22"></option>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
                                 <option value="colher(es) de café">colher de café</option>
                                 <!-- Add other options -->
                             </select>
@@ -262,11 +300,9 @@ document.addEventListener('DOMContentLoaded', function () {
             const newIngrediente = document.createElement('div');
             newIngrediente.className = 'ingrediente';
 
-            // Clone options from the first select elements
             const selectIngredienteOptions = cloneSelectOptions(document.querySelector('.ingrediente select[name="nome_ingrediente[]"]'));
             const selectTipoOptions = cloneSelectOptions(document.querySelector('.ingrediente select[name="tipoIngrediente[]"]'));
 
-            // Set the new innerHTML including both selects and the input
             newIngrediente.innerHTML = `
                 <select name="nome_ingrediente[]" class="select-field">${selectIngredienteOptions}</select>
                 <input class="input-field" type="number" name="quantidadeIngrediente[]" min="0.5" step="0.5" value="1" style="width: 50px;">
