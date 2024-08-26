@@ -20,6 +20,7 @@ ob_start();
 //     return $numero;
 // }
 
+
 // Sanitiza e valida o ID da receita recebido via GET
 $id_receita = filter_input(INPUT_GET, 'id_receita', FILTER_SANITIZE_NUMBER_INT);
 
