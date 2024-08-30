@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1:3306
--- Tempo de geração: 26/08/2024 às 17:52
+-- Tempo de geração: 28/08/2024 às 20:58
 -- Versão do servidor: 8.2.0
 -- Versão do PHP: 8.2.13
 
@@ -73,6 +73,61 @@ INSERT INTO `categoria_ingrediente` (`id_categoria_ingrediente`, `nome_categoria
 -- --------------------------------------------------------
 
 --
+-- Estrutura para tabela `categoria_receita`
+--
+
+DROP TABLE IF EXISTS `categoria_receita`;
+CREATE TABLE IF NOT EXISTS `categoria_receita` (
+  `id_categoria_receita` int NOT NULL AUTO_INCREMENT,
+  `nome_categoria_receita` varchar(100) COLLATE utf8mb3_unicode_ci NOT NULL,
+  PRIMARY KEY (`id_categoria_receita`),
+  UNIQUE KEY `nome_categoria_receita` (`nome_categoria_receita`)
+) ENGINE=InnoDB AUTO_INCREMENT=36 DEFAULT CHARSET=utf8mb3 COLLATE=utf8mb3_unicode_ci;
+
+--
+-- Despejando dados para a tabela `categoria_receita`
+--
+
+INSERT INTO `categoria_receita` (`id_categoria_receita`, `nome_categoria_receita`) VALUES
+(34, 'Aperitivos e Petiscos'),
+(25, 'Bebidas\r\n'),
+(35, 'Conservas e Compotas\r\n'),
+(20, 'Culinária Alemã'),
+(17, 'Culinária Argentina'),
+(10, 'Culinária Brasileira'),
+(5, 'Culinária Chinesa'),
+(11, 'Culinária Coreana'),
+(9, 'Culinária Espanhola'),
+(15, 'Culinária Etíope'),
+(2, 'Culinária Francesa'),
+(12, 'Culinária Grega'),
+(6, 'Culinária Indiana'),
+(1, 'Culinária Italiana'),
+(3, 'Culinária Japonesa'),
+(8, 'Culinária Libanesa'),
+(13, 'Culinária Marroquina'),
+(4, 'Culinária Mexicana'),
+(16, 'Culinária Peruana'),
+(19, 'Culinária Russa'),
+(7, 'Culinária Tailandesa'),
+(14, 'Culinária Turca\r\n'),
+(18, 'Culinária Vietnamita'),
+(28, 'Fitness\r\n'),
+(33, 'Gourmet\r\n'),
+(27, 'Low Carb\r\n'),
+(32, 'Receitas para Crianças\r\n'),
+(31, 'Receitas Rápidas\r\n'),
+(30, 'Receitas Saudáveis\r\n'),
+(24, 'Sem Glúten'),
+(23, 'Sem Lactose\r\n'),
+(29, 'Sobremesas\r\n'),
+(21, 'Vegano\r\n'),
+(22, 'Vegetariano\r\n'),
+(26, 'Vitaminas');
+
+-- --------------------------------------------------------
+
+--
 -- Estrutura para tabela `comentario`
 --
 
@@ -80,14 +135,14 @@ DROP TABLE IF EXISTS `comentario`;
 CREATE TABLE IF NOT EXISTS `comentario` (
   `id_comentario` int NOT NULL AUTO_INCREMENT,
   `qtd_estrelas` tinyint DEFAULT NULL,
-  `texto_comentario` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `texto_comentario` varchar(255) COLLATE utf8mb3_unicode_ci DEFAULT NULL,
   `data_comentario` date DEFAULT NULL,
   `fk_id_receita` int DEFAULT NULL,
   `fk_id_usuario` int DEFAULT NULL,
   PRIMARY KEY (`id_comentario`),
   KEY `fk_id_usuario` (`fk_id_usuario`),
   KEY `fk_id_receita` (`fk_id_receita`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3 COLLATE=utf8mb3_unicode_ci;
 
 -- --------------------------------------------------------
 
@@ -234,22 +289,30 @@ DROP TABLE IF EXISTS `lista_de_ingredientes`;
 CREATE TABLE IF NOT EXISTS `lista_de_ingredientes` (
   `fk_id_receita` int DEFAULT NULL,
   `fk_id_ingrediente` int DEFAULT NULL,
-  `qtdIngrediente_lista` varchar(220) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `qtdIngrediente_lista` decimal(10,3) DEFAULT NULL,
+  `tipoQtdIngrediente_lista` int NOT NULL,
   KEY `FK_lista_de_ingredientes_1` (`fk_id_receita`),
   KEY `FK_lista_de_ingredientes_2` (`fk_id_ingrediente`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3 COLLATE=utf8mb3_unicode_ci;
 
 --
 -- Despejando dados para a tabela `lista_de_ingredientes`
 --
 
-INSERT INTO `lista_de_ingredientes` (`fk_id_receita`, `fk_id_ingrediente`, `qtdIngrediente_lista`) VALUES
-(200, 95, '2 colher(es) de café'),
-(201, 111, '1 colher(es) de café'),
-(202, 94, '1 colher(es) de café'),
-(208, 18, '3 colher(es) de chá'),
-(209, 52, '1 colher(es) de café'),
-(210, 94, '1 10');
+INSERT INTO `lista_de_ingredientes` (`fk_id_receita`, `fk_id_ingrediente`, `qtdIngrediente_lista`, `tipoQtdIngrediente_lista`) VALUES
+(217, 94, 2.500, 0),
+(218, 17, 2.000, 0),
+(219, 17, 2.000, 0),
+(220, 1, 1.000, 0),
+(221, 110, 1.000, 0),
+(221, 111, 1.000, 0),
+(222, 110, 1.000, 0),
+(222, 111, 1.000, 0),
+(223, 111, 1.000, 0),
+(224, 111, 1.000, 0),
+(225, 113, 1.000, 22),
+(225, 111, 4.000, 17),
+(226, 110, 7.000, 15);
 
 -- --------------------------------------------------------
 
@@ -263,7 +326,7 @@ CREATE TABLE IF NOT EXISTS `porcao_quantidade` (
   `nome_singular_porcao` varchar(40) COLLATE utf8mb3_unicode_ci NOT NULL,
   `nome_plural_porcao` varchar(40) COLLATE utf8mb3_unicode_ci NOT NULL,
   PRIMARY KEY (`id_porcao`)
-) ENGINE=InnoDB AUTO_INCREMENT=24 DEFAULT CHARSET=utf8mb3 COLLATE=utf8mb3_unicode_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=27 DEFAULT CHARSET=utf8mb3 COLLATE=utf8mb3_unicode_ci;
 
 --
 -- Despejando dados para a tabela `porcao_quantidade`
@@ -291,8 +354,7 @@ INSERT INTO `porcao_quantidade` (`id_porcao`, `nome_singular_porcao`, `nome_plur
 (19, 'punhado', 'punhados'),
 (20, 'pitada', 'pitadas'),
 (21, 'a gosto', 'a gosto'),
-(22, 'pacote', 'pacotes'),
-(23, '', '');
+(22, 'pacote', 'pacotes');
 
 -- --------------------------------------------------------
 
@@ -309,20 +371,11 @@ CREATE TABLE IF NOT EXISTS `receita` (
   `tempoPreparoHora_receita` decimal(4,0) NOT NULL,
   `tempoPreparoMinuto_receita` decimal(4,0) NOT NULL,
   `modoPreparo_receita` text CHARACTER SET utf8mb3 COLLATE utf8mb3_unicode_ci NOT NULL,
-  `imagem_receita` varchar(220) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  PRIMARY KEY (`id_receita`)
-) ENGINE=InnoDB AUTO_INCREMENT=211 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
-
---
--- Despejando dados para a tabela `receita`
---
-
-INSERT INTO `receita` (`id_receita`, `nome_receita`, `numeroPorcao_receita`, `tipoPorcao_receita`, `tempoPreparoHora_receita`, `tempoPreparoMinuto_receita`, `modoPreparo_receita`, `imagem_receita`) VALUES
-(198, 'hhhhhhhhhhh', 1.000, 0, 2, 0, 'nnnn', ''),
-(199, 'hhhhhhhhhhh', 1.000, 0, 2, 0, 'nnnn', ''),
-(200, 'aaaaaaaaaaaaaaaaaaaaaaaaa', 1.050, 0, 1, 4, 'mmmmmmmmmmmmmm', '../css/img/receita/bolo-de-cenoura.png'),
-(209, 'aaaaaaaaaaaaa', 1.040, 7, 3, 3, 'aaa', '../css/img/receita/soda.png'),
-(210, 'aaaaaaa', 1.004, 10, 1, 1, 'aaaaaaaaaaaa', '../css/img/receita/creme-da-novica.jpg');
+  `imagem_receita` varchar(220) CHARACTER SET utf8mb3 COLLATE utf8mb3_unicode_ci DEFAULT NULL,
+  `fk_id_categoria_receita` int NOT NULL,
+  PRIMARY KEY (`id_receita`),
+  KEY `fk_id_categoria_receita` (`fk_id_categoria_receita`)
+) ENGINE=InnoDB AUTO_INCREMENT=227 DEFAULT CHARSET=utf8mb3 COLLATE=utf8mb3_unicode_ci;
 
 -- --------------------------------------------------------
 
@@ -333,10 +386,10 @@ INSERT INTO `receita` (`id_receita`, `nome_receita`, `numeroPorcao_receita`, `ti
 DROP TABLE IF EXISTS `sugestao`;
 CREATE TABLE IF NOT EXISTS `sugestao` (
   `id_sugestao` int NOT NULL AUTO_INCREMENT,
-  `nome_sugestao` varchar(220) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `categoria_sugestao` varchar(220) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `nome_sugestao` varchar(220) COLLATE utf8mb3_unicode_ci NOT NULL,
+  `categoria_sugestao` varchar(220) COLLATE utf8mb3_unicode_ci NOT NULL,
   PRIMARY KEY (`id_sugestao`)
-) ENGINE=InnoDB AUTO_INCREMENT=40 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=40 DEFAULT CHARSET=utf8mb3 COLLATE=utf8mb3_unicode_ci;
 
 --
 -- Despejando dados para a tabela `sugestao`
@@ -369,15 +422,15 @@ INSERT INTO `sugestao` (`id_sugestao`, `nome_sugestao`, `categoria_sugestao`) VA
 DROP TABLE IF EXISTS `usuario`;
 CREATE TABLE IF NOT EXISTS `usuario` (
   `id_usuario` int NOT NULL AUTO_INCREMENT,
-  `nome_usuario` varchar(220) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
-  `email_usuario` varchar(220) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
-  `senha_usuario` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
-  `recuperar_senha` varchar(220) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `imagem_usuario` varchar(220) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
+  `nome_usuario` varchar(220) CHARACTER SET utf8mb3 COLLATE utf8mb3_unicode_ci NOT NULL,
+  `email_usuario` varchar(220) CHARACTER SET utf8mb3 COLLATE utf8mb3_unicode_ci NOT NULL,
+  `senha_usuario` varchar(255) CHARACTER SET utf8mb3 COLLATE utf8mb3_unicode_ci NOT NULL,
+  `recuperar_senha` varchar(220) CHARACTER SET utf8mb3 COLLATE utf8mb3_unicode_ci DEFAULT NULL,
+  `imagem_usuario` varchar(220) CHARACTER SET utf8mb3 COLLATE utf8mb3_unicode_ci NOT NULL,
   PRIMARY KEY (`id_usuario`),
   UNIQUE KEY `unique_nome_usuario` (`nome_usuario`),
   UNIQUE KEY `unique_email_usuario` (`email_usuario`)
-) ENGINE=InnoDB AUTO_INCREMENT=152 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=152 DEFAULT CHARSET=utf8mb3 COLLATE=utf8mb3_unicode_ci;
 
 --
 -- Despejando dados para a tabela `usuario`
@@ -386,6 +439,16 @@ CREATE TABLE IF NOT EXISTS `usuario` (
 INSERT INTO `usuario` (`id_usuario`, `nome_usuario`, `email_usuario`, `senha_usuario`, `recuperar_senha`, `imagem_usuario`) VALUES
 (150, 'Amanda', 'amanda@amanda.com', '$2y$10$LZizzKhOKDamLUPvIFwS7.9jAYYJ2rcMq8SZpTnTNPbToAYlTGK8m', NULL, ''),
 (151, 'Amanda25/08', 'Amanda25/08@Amanda2508.com', '$2y$10$kbXYUO/.XU7v13RyQrGQoOheyTxpoxYZDv43wJMkW.msaSrzXUFwe', NULL, '');
+
+--
+-- Restrições para tabelas despejadas
+--
+
+--
+-- Restrições para tabelas `receita`
+--
+ALTER TABLE `receita`
+  ADD CONSTRAINT `fk_id_categoria_receita` FOREIGN KEY (`fk_id_categoria_receita`) REFERENCES `categoria_receita` (`id_categoria_receita`) ON DELETE CASCADE ON UPDATE CASCADE;
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;

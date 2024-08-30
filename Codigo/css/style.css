@@ -75,9 +75,16 @@
         display: flex;
         justify-content: center;
         align-items: center;
+        /* background: linear-gradient(90deg, #fe797b, #ffb750, #ffea56, #8fe968, #36cedc, #a587ca); */
+
+
+        background: url('../css/img/fundo/1.jpg') no-repeat center center;
         background-size: cover;
         background-position: center;
-        background: linear-gradient(90deg, #fe797b, #ffb750, #ffea56, #8fe968, #36cedc, #a587ca);
+        background-attachment: fixed;
+
+
+
     }
 
     .whitecard_form {
@@ -99,6 +106,7 @@
     .container_login {
         position: relative;
         width: 100%;
+
     }
     .form-toggle {
         display: flex;
@@ -132,7 +140,7 @@
     .form-toggle button {
         background: none;
         border: none;
-        font-size: 18px;
+        font-size: 20px;
         cursor: pointer;
         padding: 10px 20px;
         color: #888;
@@ -180,7 +188,7 @@
         outline: none;
     }
     .div_link{
-        margin-top: 0.3cm;
+        /* margin-top: 0.3cm; */
         text-align: center;
     }
     a {

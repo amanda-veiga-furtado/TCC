@@ -320,6 +320,22 @@ function insertIngredientes($dados, $id_receita, &$erro) {
                 <h2>Modo de Preparo</h2>
                 <textarea name="modoPreparo_receita" id="modoPreparo_receita" placeholder="<?php echo htmlspecialchars($placeholder_text, ENT_QUOTES, 'UTF-8'); ?>" required><?php echo isset($dados['modoPreparo_receita']) ? htmlspecialchars($dados['modoPreparo_receita'], ENT_QUOTES) : ''; ?></textarea><br>
 
+
+
+                <h2>Categoria</h2>
+                <select name="nome_categoria_receita" id="nome_categoria_receita"
+                style="width: 25%;">
+                    <option value="1" <?php echo (isset($dados['nome_categoria_receita']) && $dados['nome_categoria_receita'] === 'Culinária Italiana') ? 'selected' : ''; ?>>Culinária Italiana</option>
+
+                    <option value="2" <?php echo (isset($dados['nome_categoria_receita']) && $dados['nome_categoria_receita'] === 'Culinária Francesa') ? 'selected' : ''; ?>>Culinária Francesa</option>
+
+                    <option value="3" <?php echo (isset($dados['nome_categoria_receita']) && $dados['nome_categoria_receita'] === 'Culinária Japonesa') ? 'selected' : ''; ?>>Culinária Japonesa</option>
+
+                    
+                </select><br>
+
+
+
                 <input type="submit" name="CadReceita" value="Cadastrar Receita" class="botao-enviar">
             </form>
         </div>

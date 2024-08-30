@@ -19,10 +19,12 @@
             <div class="whitecard_form">
                 <div class="container_login">
                     <div class="form-toggle">
-                        <button id="loginBtn" onclick="showLogin()">Login</button> <!-- Botão para exibir o formulário de login -->
 
-                        <button id="signupBtn" onclick="showSignup()">Cadastro</button> <!-- Botão para exibir o formulário de cadastro -->
-                        <div id="toggleLine" class="toggle-line"></div> <!-- Linha colorida para indicar a seleção atual -->
+                        <button id="loginBtn" onclick="showLogin()">Login</button> <!-- Exibir o formulário de login -->
+                        <button id="signupBtn" onclick="showSignup()">Cadastro</button> <!-- Exibir form de cadastro -->
+
+                        <div id="toggleLine" class="toggle-line"></div> <!-- Linha colorida de seleção atual -->
+
                     </div>
                     
                     <!-- Login --------------------------------------------------------------------------->
@@ -76,7 +78,7 @@
                         <div class="div_link"><a href="recuperar_senha.php">Recuperar Acesso</a></div>
                     </form>
 
-                    <!-- Cadastro ---------------------------------------------------------------------------------------------------------------------->
+                    <!-- Cadastro --------------------------------------------------------------------------------------->
                     <?php
                         // Verifica se o formulário foi enviado
                         if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['CadUsuario'])) {
