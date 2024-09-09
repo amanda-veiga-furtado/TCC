@@ -1,5 +1,6 @@
 <?php
-include_once '../conexao.php';
+include_once '../../menu.php';
+include_once '../../conexao.php';
 
 echo "<div class='card'>";
     echo "<h3>Ingredientes Selecionados</h3><br>";
