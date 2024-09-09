@@ -1,6 +1,8 @@
 <?php
     include_once '../menu.php'; 
     include_once '../conexao.php'; 
+    include '../css/functions.php';
+
     session_start(); // Inicia a sessão
 ?>
 
@@ -78,7 +80,7 @@
                         <div class="div_link"><a href="recuperar_senha.php">Recuperar Acesso</a></div>
                     </form>
 
-                    <!-- Cadastro --------------------------------------------------------------------------------------->
+                    <!-- Cadastro ------------------------------------------------------------------------>
                     <?php
                         // Verifica se o formulário foi enviado
                         if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['CadUsuario'])) {

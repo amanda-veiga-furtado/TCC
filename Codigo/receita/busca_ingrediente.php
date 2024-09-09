@@ -1,7 +1,8 @@
 <?php
     ob_start(); // Inicia o buffer de saída
     session_start(); // Inicia a sessão
-    
+    include_once '../menu.php';
+
     include_once '../conexao.php';
 
     $pagina = isset($_GET['pagina']) ? $_GET['pagina'] : 1; // Verifica se o parâmetro 'pagina' está definido na URL, senão define como 1
@@ -199,13 +200,13 @@
 </head>
 <body>
 <div class="header">
-        <ul>
+        <!-- <ul>
             <li><a class="active" href="#">Home</a></li>
             <li><a href="http://localhost/TCC/tcc_receitas/receita/listagem_receita.php">Livro de Receitas</a></li>
             <li><a href="http://localhost/TCC/tcc_receitas/usuario/cadastrar.php">Cadastre-se</a></li>
             <li><a href="http://localhost/TCC/tcc_receitas/usuario/login.php">Logar</a></li>
             <li><a href="#">Mais ▼</a></li>
-          </ul>
+          </ul> -->
     </div>
     </div>
     <div class="container theme-showcase" role="main">

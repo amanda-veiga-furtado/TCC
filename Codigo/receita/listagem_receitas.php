@@ -15,7 +15,7 @@ include_once '../conexao.php';
     <link rel="stylesheet" href="../css/style.css">
 </head>
 <body>
-    <div class="conteiner1">
+    <div class="conteiner_page">
         <div class="form">
             <div class="form-toggle2">
                 <button>Receitas Compatíveis Com Sua Pesquisa</button>

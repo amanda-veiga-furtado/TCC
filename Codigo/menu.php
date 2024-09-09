@@ -16,7 +16,11 @@
             <!-- <li><a href='#' data-item='Contact'>Contact</a></li> -->
             <li><a href='../usuario/login.php' data-item='Login | Cadastro'>Login | Cadastro</a></li>
             <li><a href='../receita/cadastrar_receita.php' data-item='Compartilhar Receita'>Compartilhar Receita</a></li>
-            <li><a href='../receita/sugestao.php' data-item='Sugestão'>Sugestão</a></li>
+            <!-- <li><a href='../receita/sugestao.php' data-item='Sugestão'>Sugestão</a></li> -->
+            <!-- <li><a href='../usuario/dashboard.php' data-item='Meu Perfil'>Meu ♡ Perfil</a></li> -->
+            <li><a href='../usuario/dashboard.php' data-item='Meu Perfil'>Meu Perfil</a></li>
+
+
         </ul>
     </nav>
 </body>
