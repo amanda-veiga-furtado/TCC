@@ -1,9 +1,10 @@
 <?php
-    include_once '../menu.php'; 
+    session_start(); // Inicia a sessão
+
     include_once '../conexao.php'; 
     include '../css/functions.php';
+    include_once '../menu.php'; 
 
-    session_start(); // Inicia a sessão
 ?>
 
 <!DOCTYPE html>

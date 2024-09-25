@@ -1,9 +1,12 @@
 <?php
-    include_once '../menu.php'; 
+    session_start(); 
+    ob_start(); // Inicia o buffer de saída
+
+
     include_once '../conexao.php'; 
     include '../css/functions.php';
+    include_once '../menu.php'; 
 
-    session_start(); 
 
     if (!isset($_SESSION['id_usuario'])) {
         header("Location: login.php");

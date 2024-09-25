@@ -2,8 +2,10 @@
 session_start();
 ob_start();
 
-include_once '../menu.php';
 include_once '../conexao.php';
+include '../css/functions.php';
+include_once '../menu.php';
+
 ?>
 <!DOCTYPE html>
 <html lang="pt-br">
@@ -12,10 +14,10 @@ include_once '../conexao.php';
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="../css/style.css">
 </head>
 <body>
-    <div class="conteiner_page">
+    <div class="container_form2">
+    <div class="whitecard_form_type_2">
         <div class="form">
             <div class="form-toggle2">
                 <button>Receitas Compatíveis Com Sua Pesquisa</button>
@@ -60,6 +62,7 @@ include_once '../conexao.php';
                     }
 
                     echo "<a href='registro_receita.php?id_receita=$id_receita' class='botao'>Visualizar</a>";
+            
                     echo "<br><br><hr><br>";
                     echo "</div>";
                 }
@@ -102,6 +105,7 @@ include_once '../conexao.php';
             echo "<p style='color: #f00;'>Erro: {$e->getMessage()}</p>";
         }
         ?>
+    </div>
     </div>
 </body>
 </html>
