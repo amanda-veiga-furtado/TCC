@@ -1,6 +1,6 @@
 <?php
     // Função Mudar Imagem Aleatóriamente
-        $images = range(start: 1,end: 23); // Array com o nome das imagens
+        $images = range(start: 1,end: 31); // Array com o nome das imagens
         $randomImage = $images[array_rand($images)]; // Seleciona uma imagem aleatória    
 ?>
 <!DOCTYPE html>
@@ -8,8 +8,9 @@
     <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="https://kit.fontawesome.com/9572f9bae9.js" crossorigin="anonymous"></script>
     <style>
-        /*________________________________________________________________________________________________________________
+        /*_________________________________________________________________________________________________
 
             Paleta de Cores
                 Vermelho:   #fe797b (Primária),         #FC445D (Secundária);
@@ -19,7 +20,7 @@
                 Azul:       #36cedc (Primária),         #30B5C2 (Secundária);
                 Roxo:       #a587ca (Primária),         #8c6db6 (Secundária);
                 Cinza:      #f9f9f9 (Fundo Navbar),     #8f8f8f (Texto Navbar);
-        ________________________________________________________________________________________________________________*/
+        _________________________________________________________________________________________________*/
 
         * {
             padding: 0; /* Remove o padding padrão de todos os elementos */
@@ -27,7 +28,7 @@
             box-sizing: border-box; /* Inclui padding e border na largura e altura total dos elementos */
         }
 
-        /*menu.php______________________________________________________________________________________________________*/
+        /*menu.php_______________________________________________________________________________________*/
             nav {
                 display: flex; /* Usa flexbox para alinhar conteúdo verticalmente */
                 flex-direction: column; /* Coluna principal */
@@ -76,7 +77,8 @@
                 transform: scaleX(1); /* Expande o traço para a largura total do link */
                 transition: transform 0.3s ease, visibility 0s linear; /* Transição suave */
             }
-        /* Formulários_____________________________________________________________________________________________________*/
+
+        /* Formulários___________________________________________________________________________________*/
 
         .container_form {
             width: 100vw;
@@ -89,7 +91,7 @@
             background-position: center;
             background-attachment: fixed;
         }
-        .container_form2 {
+        .container_form_type_2 {
             width: 100%;
             /* height: 85.3vh; */
             display: flex;
@@ -100,7 +102,7 @@
             background-position: center;
             background-attachment: fixed;
         }
-            .whitecard_form {
+        .whitecard_form {
                 font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
                 position: relative;
                 background: white;
@@ -114,35 +116,35 @@
                 box-shadow: 25px 30px 55px #5557;
                 border-radius: 13px;
                 overflow: hidden;
+        }
+        .whitecard_form_type_2 {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            position: relative;
+            background: white;
+            padding: 30px;
+            border-radius: 12px;
+            width: 710px;
+            /* height: 410px; */
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            box-shadow: 25px 30px 55px #5557;
+            border-radius: 13px;
+            overflow: hidden;
+            margin-top: 8.45vh;
+            margin-bottom: 8.45vh;
             }
-            .whitecard_form_type_2 {
-                font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-                position: relative;
-                background: white;
-                padding: 30px;
-                border-radius: 12px;
-                width: 710px;
-                /* height: 410px; */
-                display: flex;
-                flex-direction: column;
-                align-items: center;
-                box-shadow: 25px 30px 55px #5557;
-                border-radius: 13px;
-                overflow: hidden;
-                margin-top: 8.45vh;
-                margin-bottom: 8.45vh;
-            }
-            .container_login {
-                position: relative;
-                width: 100%;
-            }
-            .form-toggle {
-                display: flex;
-                justify-content: space-between;
-                margin-bottom: 25px;
-                width: 100%;
-                position: relative;
-            }
+        .container_login {
+            position: relative;
+            width: 100%;
+        }
+        .form-toggle {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 25px;
+            width: 100%;
+            position: relative;
+        }
             .form-toggle2 {
                 display: flex;
                 justify-content: space-between;
@@ -337,7 +339,7 @@
             /*display: flex;*/
             justify-content: center; /* Centraliza horizontalmente */
             align-items: center; /* Centraliza verticalmente */
-            font-size: 35px;
+            font-size: 20px;
             margin: 4px 2px;
             cursor: pointer;
             height: 40px;
@@ -409,5 +411,19 @@
     </style>
     </head>
     <body>   
+        <script>
+            // login.php (css)
+                function showLogin() {
+                    document.getElementById('loginForm').style.display = 'block'; // Mostra o formulário de login -->
+                    document.getElementById('signupForm').style.display = 'none'; // Esconde o formulário de cadastro 
+                    document.getElementById('toggleLine').style.transform = 'translateX(0)'; // Move a linha indicadora para a posição do login
+                }
+
+                function showSignup() {
+                    document.getElementById('loginForm').style.display = 'none'; // Esconde o formulário de login -->
+                    document.getElementById('signupForm').style.display = 'block'; // Mostra o formulário de cadastro 
+                    document.getElementById('toggleLine').style.transform = 'translateX(100%)'; // Move a linha indicadora para a posição do cadastro
+                }
+        </script>
     </body>
 </html>

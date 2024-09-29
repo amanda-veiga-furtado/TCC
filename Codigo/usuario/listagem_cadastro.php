@@ -13,7 +13,7 @@ include '../css/functions.php';
     <link rel="stylesheet" href="style.css"> <!-- Adicione seu CSS -->
 </head>
 <body>
-    <div class="container_form2">  
+    <div class="container_form_type_2">  
         <div class="whitecard_form_type_2">      
             <div class="form">
                 <div class="form-toggle2">

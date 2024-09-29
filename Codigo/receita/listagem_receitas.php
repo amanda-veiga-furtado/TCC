@@ -16,7 +16,7 @@ include_once '../menu.php';
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 </head>
 <body>
-    <div class="container_form2">
+    <div class="container_form_type_2">
     <div class="whitecard_form_type_2">
         <div class="form">
             <div class="form-toggle2">

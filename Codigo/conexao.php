@@ -1,4 +1,6 @@
 <?php
+    include 'css/functions.php';
+
     $host = "localhost";
     $user = "root";
     $pass = "";

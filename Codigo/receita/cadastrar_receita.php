@@ -138,13 +138,13 @@ function insertIngredientes($dados, $id_receita, &$erro) {
     <script src="../css/myscripts.js"></script>
 </head>
 <body>
-    <div class="container_form2">
+    <div class="container_form_type_2">
         <div class="whitecard_form_type_2">
             <div class="form">
                 <div class="form-toggle2">
                     <button>Compartilhe Sua Receita</button>
                     <div class="toggle-line2"></div>
-                </div><br>
+                </div>
                 <?php
                 if (!empty($erro)) {
                     echo "<p style='color: red; margin-left: 10px;'>$erro</p>";
@@ -284,10 +284,16 @@ function insertIngredientes($dados, $id_receita, &$erro) {
                         </div>
 
                     <!-- Botões + e - -->
-                    <button type="button" id="add-ingrediente" class="button-redondo button-mais">+</button>
-                    <button type="button" id="remove-ingrediente" class="button-redondo button-menos">-</button>
+                    <!-- <button type="button" id="add-ingrediente" class="button-redondo button-mais"><i class="fa-solid fa-plus"></i></button> -->                    <!-- <i class="fa-solid fa-spoon"></i><i class="fa-solid fa-utensils"></i> -->
 
 
+                    <button type="button" id="add-ingrediente" class="button-redondo button-mais" title="Adicione 1 Ingrediente a Sua Receita"><i class="fa-solid fa-pencil"></i></button>
+
+                    <button type="button" id="remove-ingrediente" class="button-redondo button-menos" title="Remova 1 Ingrediente da Sua Receita"><i class="fa-solid fa-trash"></i></button>
+
+
+                    
+                    
                     <!-- Modo de Preparo -->
                     <?php $placeholder_text = file_get_contents('receita.txt'); ?>
                     <h2>Modo de Preparo</h2>
