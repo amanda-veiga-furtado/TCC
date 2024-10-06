@@ -1,46 +1,42 @@
 <?php
+session_start();
+ob_start();
 
-    session_start(); // Inicia a sessão
-    ob_start(); // Inicia o buffer de saída
+include_once '../conexao.php';
 
-    include_once '..\conexao.php';
+$id_receita = filter_input(INPUT_GET, 'id_receita', FILTER_VALIDATE_INT); // Obtém o ID da receita da URL
 
-    $id_receita = filter_input(INPUT_GET, "id_receita", FILTER_SANITIZE_NUMBER_INT); // Obtém o ID do receita da URL e filtra como um número inteiro
-    var_dump($id_receita);
+if (!$id_receita) { // Verifica se o ID da receita é válido
+    echo "ID de receita inválido!";
+    exit();
+}
 
-    if (empty($id_receita)) { // Verifica se o ID do receita está vazio
-        $_SESSION['msg'] = "<p style='color: #f00;'>Erro: Receita não encontrada!</p>";
-        header("Location: listagem_receita.php");
-        exit();
-    }
+try {
+    // Inicia uma transação
+    $conn->beginTransaction();
 
-    $query_receita = "SELECT id_receita FROM receita WHERE id_receita = $id_receita LIMIT 1";
-    $result_receita = $conn->prepare($query_receita);
-    $result_receita->execute();
+    // Exclui todos os ingredientes da receita
+    $query_delete_ingredients = "DELETE FROM lista_de_ingredientes WHERE fk_id_receita = :id_receita";
+    $statement_delete_ingredients = $conn->prepare($query_delete_ingredients);
+    $statement_delete_ingredients->bindParam(':id_receita', $id_receita);
+    $statement_delete_ingredients->execute();
 
-    if (($result_receita) AND ($result_receita->rowCount() != 0)) {
-        $query_del_receita = "DELETE FROM receita WHERE id_receita=$id_receita";
-        $apagar_receita = $conn->prepare($query_del_receita);
-        
-        if ($apagar_receita->execute()){
-            $_SESSION['msg'] = "<p style='color: #green;'>Receita apagado com sucesso!</p>";
-            header("Location: listagem_receita.php");
-         } else { 
-            $_SESSION['msg'] = "<p style='color: #f00;'>Erro: Receita não apagada com sucesso!</p>";
-            header("Location: listagem_receita.php");
-        }
-    } else {
-        $_SESSION['msg'] = "<p style='color: #f00;'>Erro: Receita não encontrada!</p>";
-         header("Location: listagem_receita.php");
-    }
+    // Exclui a receita
+    $query_delete_receita = "DELETE FROM receita WHERE id_receita = :id_receita";
+    $statement_delete_receita = $conn->prepare($query_delete_receita);
+    $statement_delete_receita->bindParam(':id_receita', $id_receita);
+    $statement_delete_receita->execute();
+
+    // Confirma a transação
+    $conn->commit();
+
+    // Redireciona para a listagem de receitas após a exclusão
+    header("Location: listagem_receitas.php");
+    exit();
+
+} catch (PDOException $err) {
+    // Se ocorrer um erro, desfaz a transação
+    $conn->rollBack();
+    echo "<p style='color: red;'>Erro ao excluir receita: " . $err->getMessage() . "</p>";
+}
 ?>
-
-<!DOCTYPE html>
-<html>
-    <head>
-        <meta charset="UTF-8"> 
-        <title>Deletar</title>
-    </head>
-    <body>
-    </body>
-</html> 

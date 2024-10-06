@@ -134,7 +134,7 @@
             margin-top: 8.45vh;
             margin-bottom: 8.45vh;
             }
-        .container_login {
+        .form_switch {
             position: relative;
             width: 100%;
         }
@@ -153,7 +153,8 @@
                 width: 100%;
                 position: relative;
             } 
-            .toggle-line {
+        /* Linha Colorida */
+            .toggle-line-small {
                 position: absolute;
                 bottom: -5px;
                 left: 0;
@@ -162,7 +163,7 @@
                 background: linear-gradient(90deg, #fe797b, #ffb750, #ffea56, #8fe968, #36cedc, #a587ca);
                 transition: transform 0.3s;
             }
-            .toggle-line2 {
+            .toggle-line-big {
                 position: absolute;
                 bottom: -5px;
                 left: 100%;
@@ -193,197 +194,46 @@
             .form-toggle2 button:focus {
                 color: #333;
             }
-            .form {
+            .div_form {
                 display: flex;
                 flex-direction: column;
                 align-items: center;
                 width: 100%;
                 font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
             }
-            .form h1 {
+        /* Texto_________________________________________________________________________________________*/
+            .div_form h1 {
                 color: #333;
                 font-size: 28px;
                 margin-top: 19px;
                 margin-bottom: 1px;
             } 
-            .form h2 {
+            .div_form h2 {
                 margin-bottom: 15px;
                 color: #333;
                 font-size: 24px;
                 margin-top: 15px;
             }
-            .form h3 {
+            .div_form h3 {
                 margin-bottom: 15px;
                 color: #333;
                 font-size: 20px;
             }
-            .form input,
-            input[type="text"] {
-                margin-bottom: 15px;
-                padding: 12px;
-                border: 1px solid #ccc;
-                border-radius: 8px;
-                font-size: 16px;
-                width: 100%;
-                box-sizing: border-box;
-            }
-            .form textarea,
-            input[type="textarea"] {
-                margin-bottom: 15px;
-                padding: 12px;
-                border: 1px solid #ccc;
-                border-radius: 8px;
-                font-size: 16px;
-                width: 100%;
-                height: 600px;
-                box-sizing: border-box;
-            }
-            .form input,
-            input[type="text"] {
-            margin-bottom: 15px;
-            padding: 12px;
-            border: 1px solid #ccc;
-            border-radius: 8px;
-            font-size: 16px;
-            width: 100%;
-            box-sizing: border-box;
-        }
-            .form textarea,
-            input[type="textarea"] {
-                margin-bottom: 15px;
-                padding: 12px;
-                border: 1px solid #ccc;
-                border-radius: 8px;
-                font-size: 16px;
-                width: 100%;
-                height: 600px;
-                box-sizing: border-box;
-            }
-
-            input[type="file"] {
-                margin-bottom: 15px;
-                border: 1px solid #ccc;
-                border-radius: 8px;
-                height: 46px; 
-                padding: 0; 
-                font-size: 16px;
-                box-sizing: border-box;
-                /* width: 49%; */
-            }
-            .form select,
-            input[type="select"] {
-                margin-bottom: 15px;
-                padding: 12px;
-                border: 1px solid #ccc;
-                border-radius: 8px;
-                font-size: 16px;
-                box-sizing: border-box;
-            }  
-
-            .form input:focus, .form select:focus, .form textarea:focus {
-                border-color: #36cedc;
-                outline: none;
-            }  
-
-            /* Botão do file input*/
-                input[type="file"]::file-selector-button {
-                background-color: #36cedc;
-                border: none;
-                border-radius: 8px;
+            p {
+                margin: 5px;
+                font-family: Arial;
+                font-size: 15pt;
+                font-weight: bold;
+                /* background-color: gray; */
                 color: white;
-                padding: 10px;
-                /* width: 30%; */
-                cursor: pointer;
-                height: 100%; /* Ensures the button fills the input height */
-                }
-                input[type="file"]::file-selector-button:hover {
-                    background-color: #30B5C2;
-                }
+            }
+            hr {
+                border: none; /* Remove a borda padrão */
+                height: 1px; /* Define a altura da linha */
+                /* background: linear-gradient(90deg, #fe797b, #ffb750, #ffea56, #8fe968, #36cedc, #a587ca); */
+                background-color: (54, 206, 220, 0.5);                      
+            }
 
-            /* Botões_______________________________________________________*/
-                .botao-enviar{
-                    padding: 12px;
-                    border: none;
-                    border-radius: 8px;
-                    background-color: #a587ca;
-                    color: white;
-                    font-size: 18px;
-                    cursor: pointer;
-                    transition: background-color 0.3s;
-                    width: 100%;   
-                }
-                .botao-2{
-                    padding: 12px;
-                    border: none;
-                    border-radius: 8px;
-                    background-color: #a587ca;
-                    color: white;
-                    font-size: 18px;
-                    cursor: pointer;
-                    transition: background-color 0.3s;
-                    /* width: 100%;    */
-                }
-                .botao-enviar:hover {
-                    background-color: #8c6db6;
-                }
-                
-                /* Botões + e - ____________________________________________*/
-
-                    .button-redondo {
-            border: none;
-            color: white;
-            padding: 0; /* Remova o padding para usar flexbox */
-            text-align: center;
-            text-decoration: none;
-            display: inline-block;
-            /*display: flex;*/
-            justify-content: center; /* Centraliza horizontalmente */
-            align-items: center; /* Centraliza verticalmente */
-            font-size: 20px;
-            margin: 4px 2px;
-            cursor: pointer;
-            height: 40px;
-            width: 40px;
-            border-radius: 50%;
-                    }
-                    .button-mais {
-                background-color: #8fe968;
-                    }
-                    .button-mais:hover {
-                background-color: #7BDB47;
-                    }
-                    .button-menos {
-                        background-color: #fe797b;
-                    }
-                    .button-menos:hover {
-                        background-color: #FC445D;
-                    }
-
-                    /* Outras Estilizações__________________________________________*/
-                        /*Link______________________________________________________*/
-
-                            .div_link{
-                                /* margin-top: 0.3cm; */
-                                text-align: center;
-                            }
-                            a {
-                                color: #8c6db6;
-                                text-decoration: none;
-                            }
-                            a.forgot {
-                                padding-bottom: 3px;
-                                border-bottom: 2px solid #a587ca;
-                            }
-
-                            /* Paginação________________________________________________*/
-                                .pagination{
-                                    /* justify-content: center; centraliza os itens horizontalmente */
-                                    /* align-items: center; centraliza os itens verticalmente */
-                                    text-align:center;
-                                    /* font-family: Hack, monospace; */
-                                    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-                                    font-size: 20px;
-                                }
 
                             /* Imagens__________________________________________________*/
                                 .lista-receita-imagem {
@@ -401,13 +251,216 @@
                                     height: 300px;
                                 }
 
-                                hr {
-                                    border: none; /* Remove a borda padrão */
-                                    height: 1px; /* Define a altura da linha */
-                                    /* background: linear-gradient(90deg, #fe797b, #ffb750, #ffea56, #8fe968, #36cedc, #a587ca); */
-                                    background-color: (54, 206, 220, 0.5);
-                                    
-                                }
+
+        /* Inputs________________________________________________________________________________________*/
+            .div_form input,
+            input[type="text"],
+            input[type="email"],
+            input[type="password"] {
+                margin-bottom: 15px;
+                padding: 12px;
+                border: 1px solid #ccc;
+                border-radius: 8px;
+                font-size: 16px;
+                width: 100%;
+                box-sizing: border-box;
+            }
+            .div_form textarea,
+            input[type="textarea"] {
+                margin-bottom: 15px;
+                padding: 12px;
+                border: 1px solid #ccc;
+                border-radius: 8px;
+                font-size: 16px;
+                width: 100%;
+                height: 600px;
+                box-sizing: border-box;
+            }
+            .div_form select,
+            input[type="select"] {
+                margin-bottom: 15px;
+                padding: 12px;
+                border: 1px solid #ccc;
+                border-radius: 8px;
+                font-size: 16px;
+                box-sizing: border-box;
+            }  
+            .div_form input:focus, .div_form select:focus, .div_form textarea:focus {
+                border-color: #36cedc;
+                outline: none;
+            }  
+            input[type="file"] {
+                margin-bottom: 15px;
+                border: 1px solid #ccc;
+                border-radius: 8px;
+                height: 46px; 
+                padding: 0; 
+                font-size: 16px;
+                box-sizing: border-box;
+                /* width: 49%; */
+            }
+                input[type="file"]::file-selector-button {
+                    background-color: #36cedc;
+                    border: none;
+                    border-radius: 8px;
+                    color: white;
+                    padding: 10px;
+                    /* width: 30%; */
+                    cursor: pointer;
+                    height: 100%; /* Ensures the button fills the input height */
+                }
+                input[type="file"]::file-selector-button:hover {
+                    background-color: #30B5C2;
+                }
+
+        /* Botões________________________________________________________________________________________*/
+            .button-container {
+                display: flex;
+                gap: 100px; /* Distância entre os botões */
+            }
+            .button-long{
+                padding: 12px;
+                border: none;
+                border-radius: 8px;
+                background-color: #a587ca;
+                color: white;
+                font-size: 18px;
+                cursor: pointer;
+                transition: background-color 0.3s;
+                width: 100%;
+                justify-content: center; /* centraliza os itens horizontalmente */
+                align-items: center; /* centraliza os itens verticalmente */
+                text-align: center;
+            }
+            .button-short{
+                padding: 12px;
+                border: none;
+                border-radius: 8px;
+                background-color: #a587ca;
+                color: white;
+                font-size: 18px;
+                cursor: pointer;
+                transition: background-color 0.3s;
+                /* width: 34%;     */
+                width: 100px;
+                justify-content: center; /* centraliza os itens horizontalmente */
+                align-items: center; /* centraliza os itens verticalmente */
+                text-align: center;
+            }
+                .button-long,.button-short:hover {
+                    background-color: #8c6db6;
+                }
+            .button-search{
+                padding: 12px;
+                border: none;
+                border-radius: 8px;
+                background-color: #36cedc;
+                color: white;
+                font-size: 18px;
+                cursor: pointer;
+                transition: background-color 0.3s;
+                width: 10%;    
+                height: 40px;
+                justify-content: center; /* centraliza os itens horizontalmente */
+                align-items: center; /* centraliza os itens verticalmente */
+                text-align: center;
+            }
+            .button-search:hover{
+                background-color: #30B5C2;
+
+            }
+     
+
+            
+            /* Botões + e - _____________________________________________________________________________*/
+
+                .button-round {
+                border: none;
+                color: white;
+                padding: 0; /* Remova o padding para usar flexbox */
+                text-align: center;
+                text-decoration: none;
+                display: inline-block;
+                /*display: flex;*/
+                justify-content: center; /* Centraliza horizontalmente */
+                align-items: center; /* Centraliza verticalmente */
+                font-size: 20px;
+                margin: 4px 2px;
+                cursor: pointer;
+                height: 40px;
+                width: 40px;
+                border-radius: 50%;
+                    }
+                    .button-plus {
+                        background-color: #8fe968;
+                    }
+                    .button-plus:hover {
+                        background-color: #7BDB47;
+                    }
+                    .button-minus {
+                        background-color: #fe797b;
+                    }
+                    .button-minus:hover {
+                        background-color: #FC445D;
+                    }
+        /* Link__________________________________________________________________________________________*/
+            .div_link{
+                /* margin-top: 0.3cm; */
+                text-align: center;
+            }
+            a {
+                color: #8c6db6;
+                text-decoration: none;
+            }
+            a.forgot {
+                padding-bottom: 3px;
+                border-bottom: 2px solid #a587ca;
+            }
+        /* Paginação_____________________________________________________________________________________*/
+            .div_pagination {
+                font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+                /* background-color: #f9f9f9; */
+                display: flex;
+                justify-content: center;
+                align-items: center;
+                height: 10vh;
+            }
+                .pagination {
+                        display: flex;
+                        justify-content: center;
+                        align-items: center;
+                        gap: 10px;
+                        padding: 10px;
+                }
+                    .pagination a {
+                        color: #fff;
+                        background-color: #a587ca;
+                        opacity: 0.7;
+                        border-radius: 25px;
+                        padding: 8px 16px;
+                        margin: 0 5px;
+                        text-decoration: none;
+                        font-size: 14px;
+                        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* Sombra leve para um toque delicado */
+                        transition: all 0.3s ease;
+                        width: 40px;
+
+                    }
+                    .pagination a:hover {
+                        background-color: #8c6db6; 
+                        transform: translateY(-2px); /* Efeito de leve elevação */
+                    }
+
+                    .pagination a.active {
+                        background-color: #36cedc; /* Azul Primário */
+                        color: #fff;
+                    }
+
+                    .pagination a:first-child,.pagination a:last-child {
+                        font-size: 16px;
+                        padding: 8px 12px;
+                        width: 90px;
+                    }
     </style>
     </head>
     <body>   

@@ -99,7 +99,7 @@
 <body>
     <div class="container_form">
         <div class="whitecard_form">
-            <div class="container_login">
+            <div class="form_switch">
                 <h1>Bem-vindo(a) <?php echo $nome_usuario; ?>!</h1><br>
                 <img src="<?php echo $imagem_usuario ? "../$imagem_usuario" : '../images/default_profile.png'; ?>" alt="Foto de perfil" style="width:150px;height:150px;"><br>
                 <?php
@@ -113,14 +113,14 @@
                     <!-- <br> -->
 
                     <!-- <input type="file" name="imagem_usuario"><br><br> -->
-                    <!-- <input type="submit" name="update_profile" value="Atualizar Perfil" class="botao-enviar"> -->
+                    <!-- <input type="submit" name="update_profile" value="Atualizar Perfil" class="button-long"> -->
                     
                 <!-- </form> -->
                 <form method="POST" enctype="multipart/form-data">
         <input type="text" name="nome_usuario" value="<?php echo $nome_usuario; ?>" required>
         <input type="file" name="imagem_usuario">
     <br>
-    <input type="submit" name="update_profile" value="Atualizar Perfil" class="botao-enviar">
+    <input type="submit" name="update_profile" value="Atualizar Perfil" class="button-long">
 </form>
 
 

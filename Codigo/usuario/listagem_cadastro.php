@@ -15,10 +15,10 @@ include '../css/functions.php';
 <body>
     <div class="container_form_type_2">  
         <div class="whitecard_form_type_2">      
-            <div class="form">
+            <div class="div_form">
                 <div class="form-toggle2">
                     <button>Lista de Cadastrados</button>
-                    <div class="toggle-line2"></div>
+                    <div class="toggle-line-big"></div>
                 </div>
                 <?php
                 // Paginação
@@ -39,7 +39,7 @@ include '../css/functions.php';
                         echo "<p>ID: $id_usuario</p>";
                         echo "<p>Nome de Usuário: $nome_usuario</p>";
                         echo "<p>Email: $email_usuario</p><br>";
-                        echo "<a href='registro_usuario.php?id_usuario=$id_usuario' class='botao-2'>Visualizar</a>";
+                        echo "<a href='registro_usuario.php?id_usuario=$id_usuario' class='button-short'>Visualizar</a>";
                         echo "<br><br><hr><br>"; // Linha divisória
                     }
 

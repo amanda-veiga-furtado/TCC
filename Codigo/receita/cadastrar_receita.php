@@ -1,131 +1,131 @@
 <?php
-session_start(); // Inicia a sessão para armazenar e gerenciar variáveis de sessão.
-ob_start(); // Inicia o buffer de saída para capturar e manipular a saída.
+    session_start(); // Inicia a sessão para armazenar e gerenciar variáveis de sessão.
+    ob_start(); // Inicia o buffer de saída para capturar e manipular a saída.
 
-include_once '../conexao.php';
-include '../css/functions.php';
-include_once '../menu.php';
+    include_once '../conexao.php';
+    include '../css/functions.php';
+    include_once '../menu.php';
 
-$erro = ""; // Inicializa a variável de erro como uma string vazia.
-$dados = []; // Inicializa o array de dados como um array vazio.
+    $erro = ""; // Inicializa a variável de erro como uma string vazia.
+    $dados = []; // Inicializa o array de dados como um array vazio.
 
-if ($_SERVER['REQUEST_METHOD'] === 'POST') { // Verifica se a requisição é do tipo POST
-    $dados = filter_input_array(INPUT_POST, FILTER_DEFAULT);// Filtra e sanitiza os dados recebidos do formulário.
+    if ($_SERVER['REQUEST_METHOD'] === 'POST') { // Verifica se a requisição é do tipo POST
+        $dados = filter_input_array(INPUT_POST, FILTER_DEFAULT);// Filtra e sanitiza os dados recebidos do formulário.
 
-    if (!empty($dados['CadReceita'])) { // Verifica se o botão de cadastro foi clicado
-        // Validação e preparação dos dados
-        list($numeroPorcao_receita, $tipoPorcao_receita, $tempoPreparoHora, $tempoPreparoMinuto, $erro) = validateAndPrepareData($dados);
+        if (!empty($dados['CadReceita'])) { // Verifica se o botão de cadastro foi clicado
+            // Validação e preparação dos dados
+            list($numeroPorcao_receita, $tipoPorcao_receita, $tempoPreparoHora, $tempoPreparoMinuto, $erro) = validateAndPrepareData($dados);
 
-        if (empty($erro)) { // Se não houver erros na validação
-            $caminho_imagem = handleImageUpload($erro); // Manipula o upload da imagem
+            if (empty($erro)) { // Se não houver erros na validação
+                $caminho_imagem = handleImageUpload($erro); // Manipula o upload da imagem
 
-            if (empty($erro)) { // Se não houver erros no upload da imagem
-                try {
-                    $id_receita = insertReceita($dados, $numeroPorcao_receita, $tipoPorcao_receita, $tempoPreparoHora, $tempoPreparoMinuto, $caminho_imagem);// Insere a receita no banco de dados
-                    
-                    if ($id_receita) { // Se a receita for inserida com sucesso.
-                        insertIngredientes($dados, $id_receita, $erro); // Insere os ingredientes associados à receita
-                    } else {
-                        $erro = "Erro ao cadastrar a receita. Por favor, tente novamente."; // Define mensagem de erro se falhar ao inserir a receita.
+                if (empty($erro)) { // Se não houver erros no upload da imagem
+                    try {
+                        $id_receita = insertReceita($dados, $numeroPorcao_receita, $tipoPorcao_receita, $tempoPreparoHora, $tempoPreparoMinuto, $caminho_imagem);// Insere a receita no banco de dados
+                        
+                        if ($id_receita) { // Se a receita for inserida com sucesso.
+                            insertIngredientes($dados, $id_receita, $erro); // Insere os ingredientes associados à receita
+                        } else {
+                            $erro = "Erro ao cadastrar a receita. Por favor, tente novamente."; // Define mensagem de erro se falhar ao inserir a receita.
+                        }
+
+                        if (empty($erro)) {// Se não houver erros
+                            echo "<p style='color: green; margin-left: 10px;'>Receita e ingredientes cadastrados com sucesso!</p>"; // Exibe mensagem de sucesso.
+                        }
+                    } catch (PDOException $err) { // Captura exceções de erro de PDO
+                        $erro = "Erro: " . $err->getMessage();// Define mensagem de erro com detalhes da exceção
                     }
-
-                    if (empty($erro)) {// Se não houver erros
-                        echo "<p style='color: green; margin-left: 10px;'>Receita e ingredientes cadastrados com sucesso!</p>"; // Exibe mensagem de sucesso.
-                    }
-                } catch (PDOException $err) { // Captura exceções de erro de PDO
-                    $erro = "Erro: " . $err->getMessage();// Define mensagem de erro com detalhes da exceção
                 }
             }
         }
     }
-}
-function validateAndPrepareData($dados) {
-    $erro = ""; // Inicializa a variável de erro como uma string vazia
-    
-    // Porção
-    $numeroPorcao_receita = $dados['numeroPorcao_receita'] ?? null; // Obtém o número de porções ou define como null
-    $tipoPorcao_receita = $dados['tipoPorcao_receita'] ?? null; // Obtém o tipo de porção ou define como null.
+    function validateAndPrepareData($dados) {
+        $erro = ""; // Inicializa a variável de erro como uma string vazia
+        
+        // Porção
+        $numeroPorcao_receita = $dados['numeroPorcao_receita'] ?? null; // Obtém o número de porções ou define como null
+        $tipoPorcao_receita = $dados['tipoPorcao_receita'] ?? null; // Obtém o tipo de porção ou define como null.
 
-    // Tempo de Preparo
-    $tempoPreparoHora = $dados['tempoPreparoHora_receita'] ?? 0; // Obtém o tempo de preparo em horas ou define como 0
-    $tempoPreparoMinuto = $dados['tempoPreparoMinuto_receita'] ?? 0;// Obtém o tempo de preparo em minutos ou define como 0
+        // Tempo de Preparo
+        $tempoPreparoHora = $dados['tempoPreparoHora_receita'] ?? 0; // Obtém o tempo de preparo em horas ou define como 0
+        $tempoPreparoMinuto = $dados['tempoPreparoMinuto_receita'] ?? 0;// Obtém o tempo de preparo em minutos ou define como 0
 
-    // Validação do tempo de preparo
-    if (($tempoPreparoHora == 0 && $tempoPreparoMinuto == 0) || ($tempoPreparoMinuto >= 60 && $tempoPreparoHora > 0)) {
-        $erro = "Formato de tempo inválido. Verifique os valores de horas e minutos."; // Define mensagem de erro se o tempo de preparo for inválido
-    }
-
-    return [$numeroPorcao_receita, $tipoPorcao_receita, $tempoPreparoHora, $tempoPreparoMinuto, $erro];// Retorna os dados validados e a mensagem de erro
-}
-function handleImageUpload(&$erro) {
-    $caminho_imagem = ''; // Inicializa a variável do caminho da imagem como uma string vazia
-    if (isset($_FILES['imagem_receita']) && $_FILES['imagem_receita']['error'] === UPLOAD_ERR_OK) { // Verifica se a imagem foi carregada com sucesso
-        $imagem_temp = $_FILES['imagem_receita']['tmp_name'];//Obtém o nome do arquivo temporário
-        $nome_imagem = basename($_FILES['imagem_receita']['name']);// Obtém o nome do arquivo de imagem
-        $mime_types = ['image/jpeg', 'image/png', 'image/gif']; // Define os tipos MIME permitidos.
-
-        if (in_array(mime_content_type($imagem_temp), $mime_types)) {// Verifica se o tipo MIME da imagem é permitido
-            $caminho_imagem = '../css/img/receita/' . $nome_imagem;// Define o caminho onde a imagem será salva
-            if (!move_uploaded_file($imagem_temp, $caminho_imagem)) { // Move o arquivo da imagem para o diretório especificado
-                $erro = "Erro ao mover o arquivo da imagem. Por favor, tente novamente."; // Define mensagem de erro se falhar ao mover o arquivo
-            }
-        } else {
-            $erro = "Formato de imagem inválido. Use JPEG, PNG ou GIF.";// Define mensagem de erro se o formato da imagem for inválido
+        // Validação do tempo de preparo
+        if (($tempoPreparoHora == 0 && $tempoPreparoMinuto == 0) || ($tempoPreparoMinuto >= 60 && $tempoPreparoHora > 0)) {
+            $erro = "Formato de tempo inválido. Verifique os valores de horas e minutos."; // Define mensagem de erro se o tempo de preparo for inválido
         }
+
+        return [$numeroPorcao_receita, $tipoPorcao_receita, $tempoPreparoHora, $tempoPreparoMinuto, $erro];// Retorna os dados validados e a mensagem de erro
     }
-    return $caminho_imagem;// Retorna o caminho da imagem
-}
-function insertReceita($dados, $numeroPorcao_receita, $tipoPorcao_receita, $tempoPreparoHora, $tempoPreparoMinuto, $caminho_imagem) {
-    global $conn; // Usa a variável global de conexão ao banco de dados
+    function handleImageUpload(&$erro) {
+        $caminho_imagem = ''; // Inicializa a variável do caminho da imagem como uma string vazia
+        if (isset($_FILES['imagem_receita']) && $_FILES['imagem_receita']['error'] === UPLOAD_ERR_OK) { // Verifica se a imagem foi carregada com sucesso
+            $imagem_temp = $_FILES['imagem_receita']['tmp_name'];//Obtém o nome do arquivo temporário
+            $nome_imagem = basename($_FILES['imagem_receita']['name']);// Obtém o nome do arquivo de imagem
+            $mime_types = ['image/jpeg', 'image/png', 'image/gif']; // Define os tipos MIME permitidos.
 
-    $categoria_receita = $dados['categoria_receita'] ?? null; // Captura o valor de categoria_receita
-
-    $query_receita = "INSERT INTO receita 
-        (nome_receita, numeroPorcao_receita, tipoPorcao_receita, tempoPreparoHora_receita, tempoPreparoMinuto_receita, modoPreparo_receita, imagem_receita, categoria_receita) 
-        VALUES (:nome_receita, :numeroPorcao_receita, :tipoPorcao_receita, :tempoPreparoHora_receita, :tempoPreparoMinuto_receita, :modoPreparo_receita, :imagem_receita, :categoria_receita)";
-
-    $cad_receita = $conn->prepare($query_receita); // Prepara a consulta SQL para inserir a receita
-    $cad_receita->bindParam(':nome_receita', $dados['nome_receita']); // Associa o parâmetro da consulta ao valor fornecido
-    $cad_receita->bindParam(':numeroPorcao_receita', $numeroPorcao_receita);
-    $cad_receita->bindParam(':tipoPorcao_receita', $tipoPorcao_receita);
-    $cad_receita->bindParam(':tempoPreparoHora_receita', $tempoPreparoHora);
-    $cad_receita->bindParam(':tempoPreparoMinuto_receita', $tempoPreparoMinuto);
-    $cad_receita->bindParam(':modoPreparo_receita', $dados['modoPreparo_receita']);
-    $cad_receita->bindParam(':imagem_receita', $caminho_imagem);
-    $cad_receita->bindParam(':categoria_receita', $categoria_receita); // Adiciona categoria_receita
-
-    $cad_receita->execute();// Executa a consulta para inserir a receita
-
-    return $conn->lastInsertId(); // Retorna o ID da última receita inserida
-}
-function insertIngredientes($dados, $id_receita, &$erro) {
-    global $conn;// Usa a variável global de conexão ao banco de dados
-
-    $nome_ingredientes = $dados['nome_ingrediente'] ?? []; // Obtém os nomes dos ingredientes ou define como array vazio
-    $quantidade_ingredientes = $dados['quantidadeIngrediente'] ?? []; // Obtém as quantidades dos ingredientes ou define como array vazio
-    $tipo_ingredientes = $dados['tipoIngrediente'] ?? []; // Obtém os tipos dos ingredientes ou define como array vazio
-
-    foreach ($nome_ingredientes as $index => $nome_ingrediente) { // Itera sobre os nomes dos ingredientes
-        if (!empty($nome_ingrediente)) { // Se o nome do ingrediente não estiver vazio
-            $qtdIngrediente_lista = $quantidade_ingredientes[$index];  // Obtém a quantidade do ingrediente
-            $tipoQtdIngrediente_lista = $tipo_ingredientes[$index];// Obtém o tipo da quantidade do ingrediente
-
-            $query_ingredientes = "
-                INSERT INTO lista_de_ingredientes (fk_id_receita, fk_id_ingrediente, qtdIngrediente_lista, tipoQtdIngrediente_lista) 
-                VALUES (:fk_id_receita, :fk_id_ingrediente, :qtdIngrediente_lista, :tipoQtdIngrediente_lista)";
-            $cad_ingredientes = $conn->prepare($query_ingredientes);// Prepara a consulta SQL para inserir os ingredientes
-
-            $cad_ingredientes->bindParam(':fk_id_receita', $id_receita);// Associa o parâmetro da consulta ao valor fornecido
-            $cad_ingredientes->bindParam(':fk_id_ingrediente', $nome_ingrediente);  // Assume que o nome do ingrediente é um ID
-            $cad_ingredientes->bindParam(':qtdIngrediente_lista', $qtdIngrediente_lista);
-            $cad_ingredientes->bindParam(':tipoQtdIngrediente_lista', $tipoQtdIngrediente_lista);
-
-            if (!$cad_ingredientes->execute()) {// Executa a consulta para inserir o ingrediente
-                $erro = "Erro ao cadastrar um ou mais ingredientes. Por favor, tente novamente.";// Define mensagem de erro se falhar ao inserir os ingredientes
+            if (in_array(mime_content_type($imagem_temp), $mime_types)) {// Verifica se o tipo MIME da imagem é permitido
+                $caminho_imagem = '../css/img/receita/' . $nome_imagem;// Define o caminho onde a imagem será salva
+                if (!move_uploaded_file($imagem_temp, $caminho_imagem)) { // Move o arquivo da imagem para o diretório especificado
+                    $erro = "Erro ao mover o arquivo da imagem. Por favor, tente novamente."; // Define mensagem de erro se falhar ao mover o arquivo
+                }
+            } else {
+                $erro = "Formato de imagem inválido. Use JPEG, PNG ou GIF.";// Define mensagem de erro se o formato da imagem for inválido
             }
         }
+        return $caminho_imagem;// Retorna o caminho da imagem
     }
-}
+    function insertReceita($dados, $numeroPorcao_receita, $tipoPorcao_receita, $tempoPreparoHora, $tempoPreparoMinuto, $caminho_imagem) {
+        global $conn; // Usa a variável global de conexão ao banco de dados
+
+        $categoria_receita = $dados['categoria_receita'] ?? null; // Captura o valor de categoria_receita
+
+        $query_receita = "INSERT INTO receita 
+            (nome_receita, numeroPorcao_receita, tipoPorcao_receita, tempoPreparoHora_receita, tempoPreparoMinuto_receita, modoPreparo_receita, imagem_receita, categoria_receita) 
+            VALUES (:nome_receita, :numeroPorcao_receita, :tipoPorcao_receita, :tempoPreparoHora_receita, :tempoPreparoMinuto_receita, :modoPreparo_receita, :imagem_receita, :categoria_receita)";
+
+        $cad_receita = $conn->prepare($query_receita); // Prepara a consulta SQL para inserir a receita
+        $cad_receita->bindParam(':nome_receita', $dados['nome_receita']); // Associa o parâmetro da consulta ao valor fornecido
+        $cad_receita->bindParam(':numeroPorcao_receita', $numeroPorcao_receita);
+        $cad_receita->bindParam(':tipoPorcao_receita', $tipoPorcao_receita);
+        $cad_receita->bindParam(':tempoPreparoHora_receita', $tempoPreparoHora);
+        $cad_receita->bindParam(':tempoPreparoMinuto_receita', $tempoPreparoMinuto);
+        $cad_receita->bindParam(':modoPreparo_receita', $dados['modoPreparo_receita']);
+        $cad_receita->bindParam(':imagem_receita', $caminho_imagem);
+        $cad_receita->bindParam(':categoria_receita', $categoria_receita); // Adiciona categoria_receita
+
+        $cad_receita->execute();// Executa a consulta para inserir a receita
+
+        return $conn->lastInsertId(); // Retorna o ID da última receita inserida
+    }
+    function insertIngredientes($dados, $id_receita, &$erro) {
+        global $conn;// Usa a variável global de conexão ao banco de dados
+
+        $nome_ingredientes = $dados['nome_ingrediente'] ?? []; // Obtém os nomes dos ingredientes ou define como array vazio
+        $quantidade_ingredientes = $dados['quantidadeIngrediente'] ?? []; // Obtém as quantidades dos ingredientes ou define como array vazio
+        $tipo_ingredientes = $dados['tipoIngrediente'] ?? []; // Obtém os tipos dos ingredientes ou define como array vazio
+
+        foreach ($nome_ingredientes as $index => $nome_ingrediente) { // Itera sobre os nomes dos ingredientes
+            if (!empty($nome_ingrediente)) { // Se o nome do ingrediente não estiver vazio
+                $qtdIngrediente_lista = $quantidade_ingredientes[$index];  // Obtém a quantidade do ingrediente
+                $tipoQtdIngrediente_lista = $tipo_ingredientes[$index];// Obtém o tipo da quantidade do ingrediente
+
+                $query_ingredientes = "
+                    INSERT INTO lista_de_ingredientes (fk_id_receita, fk_id_ingrediente, qtdIngrediente_lista, tipoQtdIngrediente_lista) 
+                    VALUES (:fk_id_receita, :fk_id_ingrediente, :qtdIngrediente_lista, :tipoQtdIngrediente_lista)";
+                $cad_ingredientes = $conn->prepare($query_ingredientes);// Prepara a consulta SQL para inserir os ingredientes
+
+                $cad_ingredientes->bindParam(':fk_id_receita', $id_receita);// Associa o parâmetro da consulta ao valor fornecido
+                $cad_ingredientes->bindParam(':fk_id_ingrediente', $nome_ingrediente);  // Assume que o nome do ingrediente é um ID
+                $cad_ingredientes->bindParam(':qtdIngrediente_lista', $qtdIngrediente_lista);
+                $cad_ingredientes->bindParam(':tipoQtdIngrediente_lista', $tipoQtdIngrediente_lista);
+
+                if (!$cad_ingredientes->execute()) {// Executa a consulta para inserir o ingrediente
+                    $erro = "Erro ao cadastrar um ou mais ingredientes. Por favor, tente novamente.";// Define mensagem de erro se falhar ao inserir os ingredientes
+                }
+            }
+        }
+    }
 ?>
 
 <!DOCTYPE html>
@@ -135,15 +135,14 @@ function insertIngredientes($dados, $id_receita, &$erro) {
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <script src="../css/myscripts.js"></script>
 </head>
 <body>
     <div class="container_form_type_2">
         <div class="whitecard_form_type_2">
-            <div class="form">
+            <div class="div_form">
                 <div class="form-toggle2">
                     <button>Compartilhe Sua Receita</button>
-                    <div class="toggle-line2"></div>
+                    <div class="toggle-line-big"></div>
                 </div>
                 <?php
                 if (!empty($erro)) {
@@ -156,7 +155,7 @@ function insertIngredientes($dados, $id_receita, &$erro) {
                     <input type="text" name="nome_receita" id="nome_receita" placeholder="Bolo de Cenoura com Cobertura de Chocolate Amargo" value="<?php echo isset($dados['nome_receita']) ? htmlspecialchars($dados['nome_receita'], ENT_QUOTES) : ''; ?>" style="width: 100%;"required><br>
 
                     <h2>Porção</h2>
-                    <input type="number" name="numeroPorcao_receita" id="numeroPorcao_receita" min="0" step="0.001" value="<?php echo isset($dados['numeroPorcao_receita']) ? htmlspecialchars($dados['numeroPorcao_receita'], ENT_QUOTES) : '1'; ?>" style="width: 15%;" required>
+                    <input type="number" name="numeroPorcao_receita" id="numeroPorcao_receita" min="0.001" step="0.001" value="<?php echo isset($dados['numeroPorcao_receita']) ? htmlspecialchars($dados['numeroPorcao_receita'], ENT_QUOTES) : '1'; ?>" style="width: 15%;" required>
 
                     <select name="tipoPorcao_receita" id="tipoPorcao_receita" style="width: 84%;" required>
                         <option value="">Selecione o tipo de porção</option>
@@ -284,12 +283,12 @@ function insertIngredientes($dados, $id_receita, &$erro) {
                         </div>
 
                     <!-- Botões + e - -->
-                    <!-- <button type="button" id="add-ingrediente" class="button-redondo button-mais"><i class="fa-solid fa-plus"></i></button> -->                    <!-- <i class="fa-solid fa-spoon"></i><i class="fa-solid fa-utensils"></i> -->
+                    <!-- <button type="button" id="add-ingrediente" class="button-round button-plus"><i class="fa-solid fa-plus"></i></button> -->                    <!-- <i class="fa-solid fa-spoon"></i><i class="fa-solid fa-utensils"></i> -->
 
 
-                    <button type="button" id="add-ingrediente" class="button-redondo button-mais" title="Adicione 1 Ingrediente a Sua Receita"><i class="fa-solid fa-pencil"></i></button>
+                    <button type="button" id="add-ingrediente" class="button-round button-plus" title="Adicione 1 Ingrediente a Sua Receita"><i class="fa-solid fa-pencil"></i></button>
 
-                    <button type="button" id="remove-ingrediente" class="button-redondo button-menos" title="Remova 1 Ingrediente da Sua Receita"><i class="fa-solid fa-trash"></i></button>
+                    <button type="button" id="remove-ingrediente" class="button-round button-minus" title="Remova 1 Ingrediente da Sua Receita"><i class="fa-solid fa-trash"></i></button>
 
 
                     
@@ -304,7 +303,7 @@ function insertIngredientes($dados, $id_receita, &$erro) {
 
                     <!-- Categoria -->
                     <h2>Categoria</h2>
-                    <select name="categoria_receita" id="categoria_receita" style="width: 100%;">
+                    <select name="categoria_receita" id="categoria_receita" style="width: 100%;" required>
                         <option value="">Selecione a categoria da receita</option>
                         <?php
                         $query = $conn->query("SELECT id_categoria_culinaria, nome_categoria_culinaria FROM categoria_culinaria ORDER BY nome_categoria_culinaria ASC");
@@ -316,7 +315,7 @@ function insertIngredientes($dados, $id_receita, &$erro) {
                         ?>
                     </select><br>
 
-                    <input type="submit" name="CadReceita" value="Cadastrar Receita" class="botao-enviar">
+                    <input type="submit" name="CadReceita" value="Cadastrar Receita" class="button-long">
                 </form>
             <!-- </div> -->
             <!-- </div> -->

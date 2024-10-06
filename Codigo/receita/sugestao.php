@@ -16,7 +16,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 </head>
 <body>
-    <div class="card">
+    <div class="div_form">
         <h1>SUGERIR</h1>
 
         <?php
@@ -36,12 +36,16 @@
         ?>
         <form name="send-sugerir" method="POST" action="">
             <input type="text" name="nome_sugestao" id="nome_sugestao" placeholder="Sugestão">
-            <select name="categoria_sugestao" id="categoria_sugestao">
+            <select name="categoria_sugestao" id="categoria_sugestao" style="width:100%;">
                 <option value="Ingrediente">Ingrediente</option>
                 <option value="Categoria de Ingrediente">Categoria de Ingrediente</option>
                 <option value="Categoria Culinaria">Categoria Culinaria</option>
             </select>
-            <input type="submit" value="Sugerir" name="SendSugerir" class="botao">
+
+
+
+            
+            <input type="submit" value="Sugerir" name="SendSugerir" class="button-long">
         </form>
     </div>
 </body>

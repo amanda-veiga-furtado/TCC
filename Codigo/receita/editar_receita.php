@@ -104,10 +104,10 @@
 <body>
     <div class="container_form_type_2">
         <div class="whitecard_form_type_2">
-            <div class="form">
+            <div class="div_form">
                 <div class="form-toggle2">
                     <button>Editar Sua Receita</button>
-                    <div class="toggle-line2"></div>
+                    <div class="toggle-line-big"></div>
                 </div>
                 <?php
                 if (!empty($erro)) {
@@ -203,8 +203,8 @@
                         }
                         ?>
                     </div>
-                    <button type="button" id="add-ingrediente" class="button-redondo button-mais">+</button>
-                    <button type="button" id="remove-ingrediente" class="button-redondo button-menos">-</button>
+                    <button type="button" id="add-ingrediente" class="button-round button-plus">+</button>
+                    <button type="button" id="remove-ingrediente" class="button-round button-minus">-</button>
 
                     <!-- Modo de Preparo -->
                     <?php $placeholder_text = file_get_contents('receita.txt'); ?>
@@ -224,7 +224,7 @@
                         ?>
                     </select>
 
-                    <input type="submit" name="EditReceita" value="Atualizar Receita" class="botao-enviar">
+                    <input type="submit" name="EditReceita" value="Atualizar Receita" class="button-long">
                 </form>
             </div>
         </div>

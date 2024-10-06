@@ -25,15 +25,14 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 </head>
 <body>
-<div class="container_form_type_2">
-        <div class="whitecard_form_type_2">
-            <!-- <div class="container_login"> -->
-<div class="form">        <br><br>
+<div class="container_form">
+    <div class="whitecard_form">
+<div class="div_form">        
         <div class="form-toggle2">
 
         <button>Visualizar Usuário</button>
 
-        <div class="toggle-line2"></div>
+        <div class="toggle-line-big"></div>
         </div><br>
         <?php
         $query_usuario = "SELECT id_usuario, nome_usuario, email_usuario FROM usuario WHERE id_usuario = :id_usuario LIMIT 1";
@@ -55,7 +54,7 @@
         ?>
     </div>
     </div>
-    </div>
+</div>
 </body>
 </html>
 

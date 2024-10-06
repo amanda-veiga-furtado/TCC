@@ -46,7 +46,7 @@
     <title>Pesquisar Receita por Ingrediente</title>
     <style>
         /* Ajustes nos botões */
-        .botao-enviar {
+        .button-long {
             padding: 12px;
             border: none;
             border-radius: 8px;
@@ -57,7 +57,7 @@
             transition: background-color 0.3s;
             /* width: 100%;    */
         }
-        .botao-enviar:hover {
+        .button-long:hover {
             background-color: #8c6db6;
         }
 
@@ -148,48 +148,50 @@
         }
 
 
+        .div_pagination {
+                font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+                /* background-color: #f9f9f9; */
+                display: flex;
+                justify-content: center;
+                align-items: center;
+                height: 10vh;
+            }
+                .pagination {
+                        display: flex;
+                        justify-content: center;
+                        align-items: center;
+                        gap: 10px;
+                        padding: 10px;
+                }
+                    .pagination a {
+                        color: #fff;
+                        background-color: #a587ca;
+                        opacity: 0.7;
+                        border-radius: 25px;
+                        padding: 8px 16px;
+                        margin: 0 5px;
+                        text-decoration: none;
+                        font-size: 14px;
+                        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* Sombra leve para um toque delicado */
+                        transition: all 0.3s ease;
+                        width: 40px;
 
+                    }
+                    .pagination a:hover {
+                        background-color: #8c6db6; 
+                        transform: translateY(-2px); /* Efeito de leve elevação */
+                    }
 
+                    .pagination a.active {
+                        background-color: #36cedc; /* Azul Primário */
+                        color: #fff;
+                    }
 
-
-        /* Estilo genérico para botões, se necessário */
-        /* button, .btn {
-            font-size: 16px;
-            padding: 10px 20px;
-            border-radius: 8px;
-            border: none;
-            cursor: pointer;
-        } */
-         /* Centralizar paginação */
-
-    .pagination {
-        display: flex;
-        justify-content: center;
-        list-style: none;
-        padding: 0;
-    }
-
-.pagination li {
-    display: inline-block;
-    margin: 0 2px;
-}
-
-/* Mudar a cor de azul para roxo */
-.pagination li a, .pagination li span {
-    color: #a587ca; /* Cor roxa */
-    background-color: white;
-    border: 1px solid #a587ca;
-    padding: 8px 12px;
-    text-decoration: none;
-    border-radius: 4px;
-    transition: background-color 0.3s, color 0.3s;
-}
-
-.pagination li a:hover, .pagination li.active span {
-    background-color: #8c6db6; /* Cor roxa mais escura no hover ou quando ativo */
-    color: white;
-    border-color: #8c6db6;
-}
+                    .pagination a:first-child,.pagination a:last-child {
+                        font-size: 16px;
+                        padding: 8px 12px;
+                        width: 90px;
+                    }
 /*menu.php______________________________________________________*/
 nav {
         display: flex; /* Usa flexbox para alinhar conteúdo verticalmente */
@@ -257,12 +259,12 @@ nav {
                 </div>
                 <div class="col-sm-6 col-md-6 align-right">
                     <form id="searchForm" class="form-inline form" method="GET" action="">
-                        <button id="cartButton" class="btn btn-primary botao-enviar" style="margin-right: 10px;">Carrinho</button>
+                        <button id="cartButton" class="btn btn-primary button-long" style="margin-right: 10px;">Carrinho</button>
                         <div class="form-group">
                             <label for="exampleInputName2" class="sr-only">Pesquisar</label>
                             <input type="text" name="pesquisar" class="form-control" id="exampleInputName2" placeholder="Pesquisar..." value="<?php echo htmlspecialchars($pesquisar); ?>">
                         </div>
-                        <button type="submit" class="btn btn-primary botao-enviar">Pesquisar</button>
+                        <button type="submit" class="btn btn-primary button-long">Pesquisar</button>
                     </form> 
                 </div>
             </div>
@@ -276,7 +278,7 @@ nav {
 
                         <div class="caption text-center">
                             <h3><?php echo htmlspecialchars($ingrediente['nome_ingrediente']); ?></h3>
-                            <p><button class="btn btn-primary add-to-cart botao-enviar" data-id="<?php echo htmlspecialchars($ingrediente['id_ingrediente']); ?>" data-name="<?php echo htmlspecialchars($ingrediente['nome_ingrediente']); ?>">Adicionar</button></p>
+                            <p><button class="btn btn-primary add-to-cart button-long" data-id="<?php echo htmlspecialchars($ingrediente['id_ingrediente']); ?>" data-name="<?php echo htmlspecialchars($ingrediente['nome_ingrediente']); ?>">Adicionar</button></p>
                         </div>
                     </div>
                 </div>
@@ -302,7 +304,7 @@ nav {
         </div>
         <ul id="cartItems" class="cart-items"></ul>
         <div>
-            <button id="pesquisarReceitaButton" class="btn btn-primary botao-enviar" target="_blank">Pesquisar Receita</button>
+            <button id="pesquisarReceitaButton" class="btn btn-primary button-long" target="_blank">Pesquisar Receita</button>
         </div>
     </div>
 
