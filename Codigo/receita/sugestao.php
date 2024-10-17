@@ -16,7 +16,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 </head>
 <body>
-    <div class="div_form">
+    <div class="container_form">
         <h1>SUGERIR</h1>
 
         <?php

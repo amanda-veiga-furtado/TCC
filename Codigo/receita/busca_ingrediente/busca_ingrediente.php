@@ -147,7 +147,6 @@
             justify-content: flex-end;
         }
 
-
         .div_pagination {
                 font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
                 /* background-color: #f9f9f9; */
@@ -274,7 +273,6 @@ nav {
                 <div class="col-sm-6 col-md-2">
                     <div class="thumbnail">
                         <img src="<?php echo htmlspecialchars($ingrediente['imagem_ingrediente']); ?>" alt="Ingrediente Image">
-
 
                         <div class="caption text-center">
                             <h3><?php echo htmlspecialchars($ingrediente['nome_ingrediente']); ?></h3>
@@ -416,3 +414,4 @@ nav {
     </script>
 </body>
 </html>
+

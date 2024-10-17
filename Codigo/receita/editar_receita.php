@@ -102,10 +102,10 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 </head>
 <body>
-    <div class="container_form_type_2">
-        <div class="whitecard_form_type_2">
-            <div class="div_form">
-                <div class="form-toggle2">
+    <div class="container_background_image_grow">
+        <div class="container_whitecard_grow">
+            <div class="container_form">
+                <div class="form-title-big">
                     <button>Editar Sua Receita</button>
                     <div class="toggle-line-big"></div>
                 </div>

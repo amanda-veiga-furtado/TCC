@@ -1,6 +1,7 @@
 <?php
     session_start();
     ob_start();
+
     include_once '../../conexao.php';
     include '../../css/functions.php';
     include_once '../../menu.php';

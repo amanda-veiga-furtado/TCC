@@ -137,10 +137,10 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 </head>
 <body>
-    <div class="container_form_type_2">
-        <div class="whitecard_form_type_2">
-            <div class="div_form">
-                <div class="form-toggle2">
+    <div class="container_background_image_grow">
+        <div class="container_whitecard_grow">
+            <div class="container_form">
+                <div class="form-title-big">
                     <button>Compartilhe Sua Receita</button>
                     <div class="toggle-line-big"></div>
                 </div>
@@ -203,17 +203,22 @@
                                     // usando o índice atual. Aqui você pode gerar campos de formulário ou processar dados.
                                 ?>
                                     <div class="ingrediente">
-                                        <select name="nome_ingrediente[]" class="select-field " style="width: 45%;" >
-                                            <option value="">Selecione um Ingrediente</option>
+                                        <!-- <select name="nome_ingrediente[]" class="select-field " style="width: 45%;" > -->
+                                        <select name="ingrediente" id="ingrediente" class="js-example-basic-single" style="" required>
+
+                                            
+                                            <!-- <option value="">Selecione um Ingrediente</option> -->
+                                            <option value="" disabled selected></option>
+
                                             <?php
-                                            $query = $conn->query("SELECT id_ingrediente, nome_ingrediente FROM ingrediente ORDER BY nome_ingrediente ASC");
-                                            $registros = $query->fetchAll(PDO::FETCH_ASSOC);
-                                            foreach ($registros as $option) {
-                                            $selected = ($option['id_ingrediente'] == $nome_ingrediente) ? 'selected' : '';
-                                            echo "<option value='{$option['id_ingrediente']}' {$selected}>{$option['nome_ingrediente']}</option>";
-                                        }
-                                            ?>
-                                        </select>
+                                    foreach ($nome_ingredientes as $nome_ingrediente): 
+                                ?>
+                            <option value="
+                                <?= $nome_ingrediente['id_ingrediente']; 
+                                ?>"><?= htmlspecialchars($nome_ingrediente['nome_ingrediente']); ?>
+                            </option>
+                            <?php endforeach; ?>
+                        </select>
 
                                     <!-- Quantidade Ingrediente -->
 
@@ -222,29 +227,6 @@
                                     <!-- Tipo da Quantidade -->
 
                                     <select class="select-field" name="tipoIngrediente[]" style="width: 38%;" >
-
-                                    <!-- <option value="2">pedaço(s)</option>
-                                    <option value="3">prato(s)</option>
-                                    <option value="4">fatia(s)</option>
-                                    <option value="6">quilo(s)</option>
-                                    <option value="7">gramas(s)</option>
-                                    <option value="8">unidade(s)</option>
-                                    <option value="9">copo(s)</option>
-                                    <option value="10">litro(s)</option>
-                                    <option value="11">militro(s)</option>
-                                    <option value="12">colher(es) de café</option>
-                                    <option value="13">colher(es) de chá</option>
-                                    <option value="14">colher(es) de sobremesa</option>
-                                    <option value="15">colher(es) de sopa</option>
-                                    <option value="16">copo(s) americano(s)</option>
-                                    <option value="17">copo(s) requeijão</option>
-                                    <option value="18">xícara(s) de chá</option>
-                                    <option value="19">punhado(s)</option>
-                                    <option value="20">pitada(s)</option>
-                                    <option value="21">a gosto
-                                    </option>
-                                    <option value="22">pacote(s)</option>
-                                    </select> -->
                                     </div>
                                 <?php
                             }
@@ -281,10 +263,6 @@
                         }
                         ?>
                         </div>
-
-                    <!-- Botões + e - -->
-                    <!-- <button type="button" id="add-ingrediente" class="button-round button-plus"><i class="fa-solid fa-plus"></i></button> -->                    <!-- <i class="fa-solid fa-spoon"></i><i class="fa-solid fa-utensils"></i> -->
-
 
                     <button type="button" id="add-ingrediente" class="button-round button-plus" title="Adicione 1 Ingrediente a Sua Receita"><i class="fa-solid fa-pencil"></i></button>
 
@@ -323,6 +301,13 @@
         </div>
 
     <script>
+
+$(document).ready(function() {
+                $('.js-example-basic-single').select2({
+                    placeholder: "Digite o Nome do Ingrediente e Selecione", // Placeholder para pesquisa
+                    allowClear: true
+                });
+            });
 document.addEventListener('DOMContentLoaded', function () {
     const maxIngredientes = 20;
     let ingredientesCount = document.querySelectorAll('.ingrediente').length;

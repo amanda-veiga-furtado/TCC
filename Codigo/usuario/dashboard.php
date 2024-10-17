@@ -97,8 +97,8 @@
     <script src="../css/myscripts.js"></script>
 </head>
 <body>
-    <div class="container_form">
-        <div class="whitecard_form">
+    <div class="container_background_type_1">
+        <div class="whitecard_form_type_1">
             <div class="form_switch">
                 <h1>Bem-vindo(a) <?php echo $nome_usuario; ?>!</h1><br>
                 <img src="<?php echo $imagem_usuario ? "../$imagem_usuario" : '../images/default_profile.png'; ?>" alt="Foto de perfil" style="width:150px;height:150px;"><br>
@@ -123,7 +123,7 @@
     <input type="submit" name="update_profile" value="Atualizar Perfil" class="button-long">
 </form>
 
-
+<a href="listagem_cadastros.php">listagem_cadastros</a>
             </div>
         </div>
     </div>
