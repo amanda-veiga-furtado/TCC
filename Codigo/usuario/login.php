@@ -18,7 +18,7 @@
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
     </head>
     <body>
-        <div class="container_background_type_1">
+        <div class="container_background_image_medium">
             <div class="whitecard_form_type_1">
                 <div class="container_form">
                     <div class="form_switch">

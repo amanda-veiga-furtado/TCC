@@ -10,7 +10,7 @@
         <ul class="menuItems">
 
             <li><a href='../usuario/listagem_cadastros.php' data-item='Usuários Cadastrados'>Usuários Cadastrados <i class="fa-solid fa-lock-open"></i></a></li>
-            <li><a href='../receita/listagem_receitas_admin.php' data-item='Receitas Cadastradas'>Usuários Cadastrados <i class="fa-solid fa-lock-open"></i></a></li>
+            <li><a href='../receita/listagem_receitas_admin.php' data-item='Receitas Cadastradas'>Receitas Cadastradas <i class="fa-solid fa-lock-open"></i></a></li>
 
             <!-- <li><a href='#' data-item='About'>About</a></li> -->
             <!-- <li><a href='#' data-item='Projects'>Projects</a></li> -->

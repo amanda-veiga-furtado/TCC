@@ -1,8 +1,3 @@
-<?php
-    // Função Mudar Imagem Aleatóriamente
-        $images = range(start: 1,end: 32); // Array com o nome das imagens
-        $randomImage = $images[array_rand($images)]; // Seleciona uma imagem aleatória    
-?>
 <!DOCTYPE html>
 <html lang="pt-br">
     <head>
@@ -21,6 +16,200 @@
             <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
 
         <style>
+        /*containers*/
+        <?php
+            // Função Mudar Imagem Aleatóriamente
+                $images = range(start: 1,end: 32); // Array com o nome das imagens
+                $randomImage = $images[array_rand($images)]; // Seleciona uma imagem aleatória    
+        ?>
+        .container_background_image_small {
+            width: 100vw;
+            height: 70.6vh; 
+            /* 85,3 */
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            background: url('../css/img/fundo/<?php echo $randomImage; ?>.jpg')no-repeat center center;
+            background-size: cover;
+            background-position: center;
+            background-attachment: fixed;
+        }
+        .container_background_image_medium {
+            width: 100vw;
+            height: 85.3vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            background: url('../css/img/fundo/<?php echo $randomImage; ?>.jpg')no-repeat center center;
+            background-size: cover;
+            background-position: center;
+            background-attachment: fixed;
+        }
+        .container_background_image_grow {
+            width: 100%;
+            /* height: 85.3vh; */
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            background: url('../css/img/fundo/<?php echo $randomImage; ?>.jpg')no-repeat center center;
+            background-size: cover;
+            background-position: center;
+            background-attachment: fixed;
+        }
+        .container_background_image_grow_2 {
+            width: 100%;
+            /* height: 85.3vh; */
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            background: url('../../css/img/fundo/<?php echo $randomImage; ?>.jpg')no-repeat center center;
+            background-size: cover;
+            background-position: center;
+            background-attachment: fixed;
+        }
+        .container_whitecard_small {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            position: relative;
+            background: white;
+            padding: 30px;
+            border-radius: 12px;
+            width: 710px;
+            height: 343px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            box-shadow: 25px 30px 55px #5557;
+            border-radius: 13px;
+            overflow: hidden;
+            margin-top: 8.45vh; 
+            margin-bottom: 8.45vh; /* Cartão Branco no meio da pagina */
+        }
+        .container_whitecard_grow {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            position: relative;
+            background: white;
+            padding: 30px;
+            border-radius: 12px;
+            width: 710px;
+            min-height: 410px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            box-shadow: 25px 30px 55px #5557;
+            border-radius: 13px;
+            overflow: hidden;
+            margin-top: 8.45vh;
+            margin-bottom: 8.45vh;
+        }
+        .container_form {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            width: 96%;
+            height: 93.5%;
+            /* background-color: #30B5C2; */
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            margin-top: 1.9vh; 
+            /* margin-bottom: 1vh; */
+        }
+        /* Titulo */
+        .form-title-big {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 25px;
+            margin-top: 25px;
+            width: 100%;
+            position: relative;
+        } 
+        .form-toggle button,
+        .form-title-big button {
+            background: none;
+            border: none;
+            /* font-size: 20px; */
+            font-size: 22px;
+            cursor: pointer;
+            padding: 10px 20px;
+            color: #888;
+            transition: color 0.3s;
+            flex-grow: 1;
+            text-align: center;
+        }
+        .form-title-big button {
+                font-size: 32px;
+        }
+        .form-toggle button:hover,
+        .form-title-big button:hover,
+        .form-toggle button:focus,
+        .form-title-big button:focus {
+            color: #333;
+        }
+        .toggle-line-big {
+            position: absolute;
+            bottom: -5px;
+            left: 100%;
+            width: 100%;
+            height: 3px;
+            background: linear-gradient(90deg, var(--vermelho-primario), var(--laranja-primario), var(--amarelo-primario), var(--verde-primario), var(--azul-primario), var(--roxo-primario)); /* Gradiente arco-íris */
+            transition: transform 0.3s;
+            transform: translateX(-100%); /* Centraliza horizontalmente */
+        }
+        .toggle-line-small {
+            position: absolute;
+            bottom: -5px;
+            left: 0;
+            width: 50%;
+            height: 3px;
+            background: linear-gradient(90deg, var(--vermelho-primario), var(--laranja-primario), var(--amarelo-primario), var(--verde-primario), var(--azul-primario), var(--roxo-primario)); /* Gradiente arco-íris */
+            transition: transform 0.3s;
+            }
+
+            /* Cards */
+            .projcard {
+                position: relative;
+                width: 90%;
+                height: 220px;
+                margin-bottom: 30px;
+                border-radius: 10px;
+                background-color: white;
+                border: 2px solid #ddd;
+                font-size: 18px;
+                overflow: hidden;
+                cursor: pointer;
+                box-shadow: 0 4px 21px -12px rgba(0, 0, 0, .66);
+                transition: box-shadow 0.2s ease, transform 0.2s ease;
+            }
+            .projcard-small {
+                position: relative;
+                width: 90%;
+                height: 160px;
+                margin-bottom: 30px;
+                border-radius: 10px;
+                background-color: white;
+                border: 2px solid #ddd;
+                font-size: 18px;
+                overflow: hidden;
+                cursor: pointer;
+                box-shadow: 0 4px 21px -12px rgba(0, 0, 0, .66);
+                transition: box-shadow 0.2s ease, transform 0.2s ease;
+                align-items: center;
+                align-content: center;
+                justify-content: center; /* centraliza os itens horizontalmente */
+
+                    }
+            .projcard:hover,
+            .projcard-small:hover{
+                box-shadow: 0 34px 32px -33px rgba(0, 0, 0, .18);
+                transform: translate(0px, -3px);
+            }
+
+
+
+
+
+
+
+
+
             * {
                 padding: 0; /* Remove o padding padrão de todos os elementos */
                 margin: 0; /* Remove a margem padrão de todos os elementos */
@@ -97,7 +286,7 @@
                 .container_form select {
                     margin-bottom: 17px;
                     padding: 12px; /* Espaçamento interno */
-                    border: 1px solid var(--cinza-secundario); 
+                    border: 1px solid rgba(143, 143, 143, 0.5);
                     border-radius: 8px;
                     font-size: 16px;
                     font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
@@ -111,7 +300,34 @@
                 .container_form textarea{
                     height: 460px;
                 }
-                input:focus, textarea:focus, select:focus {
+                input[type="file"] {
+                margin-bottom: 15px;
+                border: 1px solid rgba(143, 143, 143, 0.5);
+                border-radius: 8px;
+                height: 46px; 
+                padding: 0; 
+                font-size: 16px;
+                box-sizing: border-box;
+                width: 100%;
+                }
+                /* Botão do file input*/
+                input[type="file"]::file-selector-button {
+                    background-color: #36cedc;
+                    border: none;
+                    border-radius: 8px;
+                    color: white;
+                    padding: 10px;
+                    cursor: pointer;
+                    height: 100%; /* Ensures the button fills the input height */
+                }
+                input[type="file"]::file-selector-button:hover {
+                    background-color: #30B5C2;
+                }
+                input[type="text"]:focus,
+                .container_form input[type="email"]:focus, 
+                .container_form input[type="password"]:focus,
+                textarea:focus, select:focus,
+                input[type="file"]:focus {
                     border-color: var(--azul-primario);
                     outline: none;
                 }
@@ -128,7 +344,7 @@
                         display: flex;
                         align-items: center; /* Alinha verticalmente */
                         border-radius: 8px !important;
-                        border: 1px solid var(--cinza-secundario) !important;
+                        border: 1px solid rgba(143, 143, 143, 0.5)!important;
                         font-size: 16px;
                         font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
                         box-sizing: border-box;
@@ -145,13 +361,14 @@
                     .select2-container--default .select2-selection--single .select2-selection__rendered {
                         padding-left: 12px !important; /* Mesmo padding dos inputs */
                         line-height: 46px !important; /* Alinhamento vertical */
-                        color: var(--cinza-secundario) !important;
+                        color: rgba(143, 143, 143, 0.5) !important;
                     }
                     .select2-container--default .select2-selection--single .select2-selection__arrow {
                         height: 46px !important;
                         top: 50%;
                         transform: translateY(-50%);
-                        color: var(--cinza-secundario) !important;
+                        color: var(--cinza-secundario) ;
+                        border: 1px solid rgba(143, 143, 143, 0.5)!important;
                         border-radius: 8px;
                     }
                     /* Estilo da caixa de pesquisa dentro do dropdown do Select2 */
@@ -160,7 +377,7 @@
                         height: 40px;
                         padding: 12px;
                         border-radius: 8px !important; /* Corrigindo as bordas arredondadas */
-                        border: 1px solid var(--cinza-secundario); /* Borda igual ao resto */
+                        border: 1px solid rgba(143, 143, 143, 0.5);
                         font-size: 16px;
                         font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
                         background-color: white;
@@ -175,7 +392,8 @@
                     .select2-dropdown {
                         border-radius: 8px;
                         font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-                        color: var(--cinza-secundario) !important;
+                        color: rgba(143, 143, 143, 0.5) !important;
+
                     }
                     /* Estilo para a primeira opção selecionada */
                     .select2-results__option[aria-selected="true"],
@@ -185,7 +403,7 @@
                     }
                     .select2-results__option {
                         font-size: 16px;
-                        color: var(--cinza-secundario) !important;
+                        color: rgba(143, 143, 143, 0.5) !important;
                         padding: 8px; /* Adiciona um pouco de padding nas opções */
                     }
                     .select2-results__option:hover {
@@ -202,12 +420,12 @@
                         padding-left: 12px !important; /* Ajuste do padding para alinhar com outros inputs */
                         font-size: 16px;
                         height: 46px;
-                        color: var(--cinza-secundario) !important;
+                        color: rgba(143, 143, 143, 0.5) !important;
                     }
                     .js-example-basic-single {
                         margin-bottom: 17px;
                         padding: 12px !important;
-                        border: 1px solid var(--cinza-secundario);
+                        border: 1px solid rgba(143, 143, 143, 0.5);
                         border-radius: 8px;
                         font-size: 16px;
                         font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
@@ -225,65 +443,20 @@
                         padding: 12px;
                         width: 100%;
                         font-size: 16px;
-                        border: 1px solid var(--cinza-secundario) !important;
+                        border: 1px solid rgba(143, 143, 143, 0.5) !important;
                         border-radius: 15px !important;
                         background-color: white;
-                        color: var(--cinza-secundario) !important;
+                        color: rgba(143, 143, 143, 0.5) !important;
                         transition: border-color 0.3s;
                     }
                     /* Comportamento ao focar o campo customizado */
                     #search-input:focus, #ingredient-select:focus {
                         border-color: var(--azul-primario) !important;
-                    }
-            
+                    }      
             /* Div__________________________________________________________________*/
-                .container_background_image_small {
-                    width: 100vw;
-                    height: 70.6vh; 
-                    /* 85,3 */
-                    display: flex;
-                    justify-content: center;
-                    align-items: center;
-                    background: url('../css/img/fundo/<?php echo $randomImage; ?>.jpg')no-repeat center center;
-                    background-size: cover;
-                    background-position: center;
-                    background-attachment: fixed;
-                }
+
                 /*Cartão Branco__________________________________________________________________________*/
-                    .container_whitecard_small {
-                        font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-                        position: relative;
-                        background: white;
-                        padding: 30px;
-                        border-radius: 12px;
-                        width: 710px;
-                        height: 343px;
-                        display: flex;
-                        flex-direction: column;
-                        align-items: center;
-                        box-shadow: 25px 30px 55px #5557;
-                        border-radius: 13px;
-                        overflow: hidden;
-                        margin-top: 8.45vh; 
-                        margin-bottom: 8.45vh; /* Cartão Branco no meio da pagina */
-                    }
-                    .container_whitecard_grow {
-                    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-                    position: relative;
-                    background: white;
-                    padding: 30px;
-                    border-radius: 12px;
-                    width: 710px;
-                    min-height: 410px;
-                    display: flex;
-                    flex-direction: column;
-                    align-items: center;
-                    box-shadow: 25px 30px 55px #5557;
-                    border-radius: 13px;
-                    overflow: hidden;
-                    margin-top: 8.45vh;
-                    margin-bottom: 8.45vh;
-                }
+
             /* Botões__________________________________________________________________*/
 
             .button-yellow {
@@ -304,21 +477,15 @@
                 background-color: var(--amarelo-secundario);
             }
             .button-red {
-                background-color: var(--vermelho-primario);              
-                padding: 12px;
+                /* padding: 12px; */
                 border: none;
                 border-radius: 8px;
-                color: white;
-                font-size: 18px;
+               
                 cursor: pointer;
                 transition: background-color 0.3s;
-                width: 100%; 
-                justify-content: center; /* Centraliza horizontalmente */
-                align-items: center; /* Centraliza verticalmente */
-                text-align: center;
+
             }
             .button-red:hover {
-                background-color: var(--vermelho-secundario);
             }
 
             .button-orange {
@@ -382,6 +549,7 @@
 
 
 
+
             .whitecard_form_type_1 {
                 font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
                 position: relative;
@@ -416,8 +584,27 @@
 
 
 
+/* Carrinho */
+.cart-close {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    font-size: 24px;
+    color: var(--vermelho-primario); /* Cor inicial do ícone */
+    cursor: pointer;
+    z-index: 10;
+}
 
+.cart-close:hover,
+.cart-close:focus {
+    color: var(--vermelho-secundario); /* Vinho no hover e focus */
+}
 
+.cart-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+}
 
 
 
@@ -446,58 +633,18 @@
 
 
             
-                .container_background_image_grow {
-                    width: 100%;
-                    /* height: 85.3vh; */
-                    display: flex;
-                    justify-content: center;
-                    align-items: center;
-                    background: url('../css/img/fundo/<?php echo $randomImage; ?>.jpg')no-repeat center center;
-                    background-size: cover;
-                    background-position: center;
-                    background-attachment: fixed;
-                }
+
 
 
 
             /*  Container Formulario_____________________________________________________________________*/
 
-                .container_form {
-                    display: flex;
-                    flex-direction: column;
-                    align-items: center;
-                    width: 96%;
-                    height: 93.5%;
-                    /* background-color: #30B5C2; */
-                    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-                    margin-top: 1.9vh; 
-                    /* margin-bottom: 1vh; */
-                }
 
         /*Texto___________________________________________________________________________________________*/
             /*Titulo_____________________________________________________________________________________*/
 
-            .form-title-big {
-                    display: flex;
-                    justify-content: space-between;
-                    margin-bottom: 25px;
-                    margin-top: 25px;
-                    width: 100%;
-                    position: relative;
-            } 
-                .form-title-big button {
-                        font-size: 32px;
-                }
-                    .toggle-line-big {
-                        position: absolute;
-                        bottom: -5px;
-                        left: 100%;
-                        width: 100%;
-                        height: 3px;
-                        background: linear-gradient(90deg, var(--vermelho-primario), var(--laranja-primario), var(--amarelo-primario), var(--verde-primario), var(--azul-primario), var(--roxo-primario)); /* Gradiente arco-íris */
-                        transition: transform 0.3s;
-                        transform: translateX(-100%); /* Centraliza horizontalmente */
-                    }
+
+
             .projcard-bar {
                 left: -2px;
                 width: 100%;
@@ -553,17 +700,7 @@
 
 
 
-            .container_background_type_1 {
-                width: 100vw;
-                height: 85.3vh;
-                display: flex;
-                justify-content: center;
-                align-items: center;
-                background: url('../css/img/fundo/<?php echo $randomImage; ?>.jpg')no-repeat center center;
-                background-size: cover;
-                background-position: center;
-                background-attachment: fixed;
-            }
+
 
 
 
@@ -587,42 +724,12 @@
 
         /* Botão___________________________________________________________________________________*/
 
-            .form-toggle button,
-            .form-title-big button {
-                background: none;
-                border: none;
-                /* font-size: 20px; */
-                font-size: 22px;
-                cursor: pointer;
-                padding: 10px 20px;
-                color: #888;
-                transition: color 0.3s;
-                flex-grow: 1;
-                text-align: center;
-            }
 
-            .form-title-big button {
-                font-size: 32px;
 
-            }
-            .form-toggle button:hover,
-            .form-title-big button:hover,
-            .form-toggle button:focus,
-            .form-title-big button:focus {
-                color: #333;
-            }
         
         /* Outros________________________________________________________________________________________*/
             /* Linha Colorida____________________________________________________________________________*/
-                .toggle-line-small {
-                    position: absolute;
-                    bottom: -5px;
-                    left: 0;
-                    width: 50%;
-                    height: 3px;
-                    background: linear-gradient(90deg, var(--vermelho-primario), var(--laranja-primario), var(--amarelo-primario), var(--verde-primario), var(--azul-primario), var(--roxo-primario)); /* Gradiente arco-íris */
-                    transition: transform 0.3s;
-                }
+
 
 
 
@@ -785,42 +892,7 @@
                 margin-right: auto;
                 width: 90%;
             }
-            .projcard {
-                position: relative;
-                width: 90%;
-                height: 220px;
-                margin-bottom: 30px;
-                border-radius: 10px;
-                background-color: white;
-                border: 2px solid #ddd;
-                font-size: 18px;
-                overflow: hidden;
-                cursor: pointer;
-                box-shadow: 0 4px 21px -12px rgba(0, 0, 0, .66);
-                transition: box-shadow 0.2s ease, transform 0.2s ease;
-            }
-            .projcard-smal {
-                position: relative;
-                width: 90%;
-                height: 160px;
-                margin-bottom: 30px;
-                border-radius: 10px;
-                background-color: white;
-                border: 2px solid #ddd;
-                font-size: 18px;
-                overflow: hidden;
-                cursor: pointer;
-                box-shadow: 0 4px 21px -12px rgba(0, 0, 0, .66);
-                transition: box-shadow 0.2s ease, transform 0.2s ease;
-                align-items: center;
-                align-content: center;
-                justify-content: center; /* centraliza os itens horizontalmente */
 
-                    }
-            .projcard:hover {
-                box-shadow: 0 34px 32px -33px rgba(0, 0, 0, .18);
-                transform: translate(0px, -3px);
-            }
             .projcard::before {
                 content: "";
                 position: absolute;

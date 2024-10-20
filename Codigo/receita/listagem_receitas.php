@@ -96,7 +96,7 @@ include_once '../menu.php';
 
                             // Exibir as receitas e categorias encontradas
                             ?>
-                            <div class="projcard-smal">
+                            <div class="projcard-small">
                                 <a href="registro_receita.php?id_receita=<?php echo htmlspecialchars($id_receita); ?>" 
                                    style="text-decoration: none; display: block;">
                                     <div class="projcard-innerbox">

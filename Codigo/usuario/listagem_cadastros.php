@@ -95,7 +95,7 @@
                             // Display user card
                             ?>
 
-<div class="projcard-smal">
+<div class="projcard-small">
     <a href="registro_usuario.php?id_usuario=<?php echo htmlspecialchars($id_usuario); ?>" style="text-decoration: none; display: block;">
         <div class="projcard-innerbox">
             <img class="projcard-img" src="<?php echo htmlspecialchars($imagem_usuario); ?>" alt="Imagem do Usuário">

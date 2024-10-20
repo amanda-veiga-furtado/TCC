@@ -32,7 +32,7 @@
         <title>Seleção de Ingrediente</title>
     </head>
     <body>
-        <div class="container_background_type_1">
+        <div class="container_background_image_medium">
             <div class="whitecard_form_type_1">
                 <div class="container_form">
                     <form method="POST" action="">
