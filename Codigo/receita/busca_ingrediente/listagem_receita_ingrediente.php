@@ -1,132 +1,169 @@
-<?php
-session_start();
-ob_start();
+<?php        
+session_start(); // Inicia a sessão do usuário.
+ob_start(); // Inicia o buffer de saída.
 
-include_once '../../conexao.php';
-include '../../css/functions.php';
-include_once '../../menu.php';
+include_once '../../conexao.php'; // Inclui o arquivo de conexão ao banco de dados.
+include '../../css/functions.php'; // Inclui funções auxiliares de um arquivo CSS.
+include_once '../../menu.php'; // Inclui o menu de navegação.
+
+// Verifica se nenhum ingrediente foi passado na URL
+if (empty($_GET['ingredientes'])) {
+    $_SESSION['mensagem'] = "Nenhum ingrediente foi selecion.";  
+    header("Location: busca_ingrediente.php");
+    exit; 
+}
+
+// Função para exibir os ingredientes selecionados
+function exibirIngredientes($ingredientes) {
+    if (!empty($ingredientes)) {
+        echo '<div class="form-title-big" style="display: flex; flex-wrap: wrap; gap: 10px; margin-top:0;">';
+        global $conn; 
+        foreach ($ingredientes as $id) {
+            $stmt = $conn->prepare("SELECT nome_ingrediente FROM ingrediente WHERE id_ingrediente = :id");
+            $stmt->bindValue(':id', intval($id), PDO::PARAM_INT); 
+            $stmt->execute(); 
+            $ingrediente = $stmt->fetch(PDO::FETCH_ASSOC); 
+            if ($ingrediente) {
+                echo '<button style="font-size: 16px;">' . htmlspecialchars($ingrediente['nome_ingrediente']) . '</button>';
+            }
+        }
+        echo '</div>'; 
+    }
+}
+
+// Função para buscar os IDs dos ingredientes de uma receita específica
+function buscarIngredientesDaReceita($idReceita) {
+    global $conn; 
+    $stmt = $conn->prepare("SELECT li.fk_id_ingrediente FROM lista_de_ingredientes li WHERE li.fk_id_receita = :id_receita");
+    $stmt->bindValue(':id_receita', $idReceita, PDO::PARAM_INT); 
+    $stmt->execute(); 
+    $ingredientes = $stmt->fetchAll(PDO::FETCH_COLUMN);
+    return $ingredientes ? $ingredientes : [];
+}
 ?>
-
 <!DOCTYPE html>
 <html lang="pt-br">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Receitas Compatíveis Com Sua Pesquisa</title>
+    <title>Receitas Compatíveis Com Sua Pesquisa</title> 
+    <meta charset="UTF-8"> 
+    <meta http-equiv="X-UA-Compatible" content="IE=edge"> 
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"> 
 </head>
 <body>
-<div class="container_background_image_grow_2">
-    <div class="container_whitecard_grow">
-        <div class="container_form">
-            <div class="form-title-big">
-                <button>Receitas Compatíveis Com</button>
-                <div class="toggle-line-big"></div>
-            </div>
-            <?php
-            try {
-                // Inicializa o array de ingredientes selecionados
-                $selectedIngredients = isset($_GET['ingredientes']) ? explode(',', urldecode($_GET['ingredientes'])) : [];
+    <div class="container_background_image_grow_2">
+        <div class="container_whitecard_grow">
+            <div class="container_form">
+                <div class="form-title-big"> 
+                    <button style="font-size: 31px;">Receitas Compatíveis Com Sua Pesquisa</button> 
+                    <div class="toggle-line-big"></div>
+                </div>
 
-                // Exibir ingredientes selecionados
-                if (!empty($selectedIngredients)) {
-                    echo '<div class="form-title-big" style="display: flex; flex-wrap: wrap; gap: 10px; margin-top:0;">'; // Flexbox para exibir na mesma linha
+                <?php
+                $search = filter_input(INPUT_GET, "search", FILTER_SANITIZE_FULL_SPECIAL_CHARS) ?? ''; 
+                $pagina_atual = filter_input(INPUT_GET, "page", FILTER_SANITIZE_NUMBER_INT); 
+                $pagina = !empty($pagina_atual) ? $pagina_atual : 1; 
+                $limite_resultado = 5; 
+                $inicio = ($limite_resultado * $pagina) - $limite_resultado; 
 
-                    foreach ($selectedIngredients as $id) {
-                        $stmt = $conn->prepare("SELECT * FROM ingrediente WHERE id_ingrediente = :id");
-                        $stmt->bindValue(':id', intval($id), PDO::PARAM_INT);
-                        $stmt->execute();
-                        $ingrediente = $stmt->fetch(PDO::FETCH_ASSOC);
+                $selectedIngredients = isset($_GET['ingredientes']) ? explode(',', urldecode($_GET['ingredientes'])) : []; 
+                exibirIngredientes($selectedIngredients); 
 
-                        // Exibir o ingrediente
-                        if ($ingrediente) {
-                            echo '<button style="font-size: 16px;">' . htmlspecialchars($ingrediente['nome_ingrediente']) . '</button>';
+                $receitasComIngredientes = []; 
+                $matchingReceitas = []; 
+                
+                try {
+                    // Obter receitas que têm os ingredientes selecionados
+                    $query_matching_receitas = "
+                        SELECT li.fk_id_receita 
+                        FROM lista_de_ingredientes li 
+                        WHERE li.fk_id_ingrediente IN (" . implode(',', array_map('intval', $selectedIngredients)) . ")
+                        GROUP BY li.fk_id_receita";
+
+                    $stmt = $conn->prepare($query_matching_receitas); 
+                    $stmt->execute(); 
+                    $matchingReceitas = $stmt->fetchAll(PDO::FETCH_COLUMN); 
+
+                    foreach ($matchingReceitas as $idReceita) {
+                        $ingredientesDaReceita = buscarIngredientesDaReceita($idReceita); 
+                        if (empty(array_diff($ingredientesDaReceita, $selectedIngredients))) {
+                            $receitasComIngredientes[] = $idReceita; // Armazena apenas o ID da receita
                         }
                     }
-                    echo '</div>';
+                } catch (PDOException $e) {
+                    echo "Erro: " . $e->getMessage(); 
                 }
 
-                // Consulta para obter os ingredientes e receitas
-                $query_lista_ingrediente = "SELECT fk_id_receita, fk_id_ingrediente FROM lista_de_ingredientes";
-                $result_lista_ingrediente = $conn->prepare($query_lista_ingrediente);
-                $result_lista_ingrediente->execute();
+                // Imprime o array de receitas compatíveis
+                if (!empty($receitasComIngredientes)) {
+                    foreach ($receitasComIngredientes as $idReceita) {
+                        // Busca os detalhes da receita
+                        try {
+                            $query_receita_detalhes = "SELECT r.id_receita, r.nome_receita, r.numeroPorcao_receita, 
+                                p.nome_singular_porcao, p.nome_plural_porcao, 
+                                r.tempoPreparoHora_receita, r.tempoPreparoMinuto_receita, 
+                                r.modoPreparo_receita, r.imagem_receita, 
+                                c.nome_categoria_culinaria
+                                FROM receita r
+                                LEFT JOIN categoria_culinaria c ON r.categoria_receita = c.id_categoria_culinaria
+                                JOIN porcao_quantidade p ON r.tipoPorcao_receita = p.id_porcao
+                                WHERE r.id_receita = :id_receita";
 
-                $receitasIngredientes = [];
+                            $stmt_detalhes = $conn->prepare($query_receita_detalhes);
+                            $stmt_detalhes->bindValue(':id_receita', $idReceita, PDO::PARAM_INT);
+                            $stmt_detalhes->execute();
+                            $receita = $stmt_detalhes->fetch(PDO::FETCH_ASSOC);
 
-                // Processar os resultados
-                while ($row_lista_ingrediente = $result_lista_ingrediente->fetch(PDO::FETCH_ASSOC)) {
-                    $idReceita = $row_lista_ingrediente['fk_id_receita'];
-                    $idIngrediente = $row_lista_ingrediente['fk_id_ingrediente'];
-                    $receitasIngredientes[$idReceita][] = $idIngrediente;
-                }
-                $matchingReceitas = [];
-                foreach ($receitasIngredientes as $idReceita => $ingredientes) {
-                    if (empty(array_diff($ingredientes, $selectedIngredients))) {
-                        $matchingReceitas[] = $idReceita;
-                    }
-                }
+                            if ($receita) {
+                                $id_receita = $receita['id_receita'];
+                                $nome_receita = $receita['nome_receita'];
+                                $numeroPorcao = $receita['numeroPorcao_receita'];
+                                $porcao_nome = $receita['nome_singular_porcao']; // ou plural dependendo do contexto
+                                $tempoPreparoHora_receita = $receita['tempoPreparoHora_receita'];
+                                $tempoPreparoMinuto_receita = $receita['tempoPreparoMinuto_receita'];
+                                $categoria_receita = $receita['nome_categoria_culinaria'];
+                            ?>
+                                
+                              <div class="projcard-small">
+                                <a href="registro_receita.php?id_receita=<?php echo htmlspecialchars($id_receita); ?>" 
+                                   style="text-decoration: none; display: block;">
+                                    <div class="projcard-innerbox">
+                                    <img class="projcard-img" src="<?php echo htmlspecialchars('../' . $receita['imagem_receita']); ?>" alt="Imagem da receita">
 
-                if (!empty($matchingReceitas)) {
-                    $query_matching_receitas = "SELECT id_receita, nome_receita, imagem_receita FROM receita WHERE id_receita IN (" . implode(',', $matchingReceitas) . ")";
-                    $result_matching_receitas = $conn->prepare($query_matching_receitas);
-                    $result_matching_receitas->execute();
+                                    <div class="projcard-textbox">
+                                            <div class="projcard-title" style="color: var(--cinza-secundario); margin-bottom: 10px; margin-top: 10px" title="<?php echo htmlspecialchars($nome_receita); ?>">
+                                                <?php echo htmlspecialchars($nome_receita ?? ''); ?>
+                                            </div>
 
-                    // Exibir as receitas correspondentes
-                    while ($row_matching_receita = $result_matching_receitas->fetch(PDO::FETCH_ASSOC)) {
-                        $idReceita = $row_matching_receita['id_receita'];
-                        $nomeReceita = htmlspecialchars($row_matching_receita['nome_receita']);
-                        $imagemReceita = htmlspecialchars($row_matching_receita['imagem_receita']);
-                        $linkReceita = "registro_receita.php?id_receita=" . $idReceita;
+                                            <div class="projcard-subtitle">
+                                                <?php echo '<i class="fa-solid fa-utensils" style="color: #fe797b;"></i>&nbsp' 
+                                                . htmlspecialchars($numeroPorcao ?? '0') . " " 
+                                                . htmlspecialchars($porcao_nome ?? 'porções') . '<span style="margin-left: 10px;"></span><i class="fa-solid fa-clock" style="color: #ffb750;"></i>&nbsp' . htmlspecialchars($tempoPreparoHora_receita ?? '0') . "h e " . htmlspecialchars($tempoPreparoMinuto_receita ?? '0') . "min"; ?>
+                                            </div>
+                                            <div class="projcard-bar"></div>
+                                            <div class="projcard-description">
+                                                <?php 
+                                                echo '<div style="margin-bottom: 5px;">' . 
+                                                '<i class="fa-solid fa-bookmark" style="color: #a587ca;"></i>&nbsp' . htmlspecialchars($categoria_receita ?? 'Sem Categoria') . 
+                                                '</div>';
+                                                ?>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </a>
+                            </div>
 
-                        echo "<div class='projcard-smal'>";
-                        echo "<div class='projcard-innerbox'>"; // Agora tudo ficará dentro deste div
-
-                        echo "<a href='$linkReceita' style='text-decoration: none; display: block;'>";
-                        echo "<h3>$nomeReceita</h3>";
-                        echo "</a>";
-
-                        // Exibir os ingredientes da receita
-                        echo "<h4>Ingredientes:</h4>";
-                        $query_ingredientes_receita = "SELECT ingrediente.nome_ingrediente 
-                                                       FROM lista_de_ingredientes 
-                                                       JOIN ingrediente ON lista_de_ingredientes.fk_id_ingrediente = ingrediente.id_ingrediente 
-                                                       WHERE lista_de_ingredientes.fk_id_receita = :id_receita";
-                        $result_ingredientes_receita = $conn->prepare($query_ingredientes_receita);
-                        $result_ingredientes_receita->bindParam(':id_receita', $idReceita, PDO::PARAM_INT);
-                        $result_ingredientes_receita->execute();
-
-                        while ($row_ingrediente_receita = $result_ingredientes_receita->fetch(PDO::FETCH_ASSOC)) {
-                            echo "- " . htmlspecialchars($row_ingrediente_receita['nome_ingrediente']) . "<br>";
+                            <?php
+                            }
+                        } catch (PDOException $e) {
+                            echo "Erro ao buscar detalhes da receita: " . $e->getMessage(); 
                         }
-
-                        // Exibir a imagem da receita
-                        if (!empty($imagemReceita)) {
-                            echo "<br><img src='$imagemReceita' alt='Imagem da Receita' class='lista-receita-imagem'><br>";
-                        } else {
-                            echo "<p style='color: #f00;'>Nenhuma imagem disponível</p>";
-                        }
-
-                        // Link para a receita
-                        echo "<a href='$linkReceita' class='botao'>Ver Receita</a>";
-
-                        echo "</div>"; // Fechamento do 'projcard-innerbox'
-                        echo "</div>"; // Fechamento do 'projcard-smal'
                     }
                 } else {
-                    $_SESSION['mensagem'] = "Nenhuma receita corresponde aos ingredientes selecionados";
+                    echo "<p>Nenhuma receita encontrada com os ingredientes selecionados.</p>"; 
                 }
-            } catch (Exception $e) {
-                echo "<p style='color: #f00;'>Erro ao buscar receitas: " . $e->getMessage() . "</p>";
-            }
-            ?>
-
+                ?>
+            </div>
         </div>
     </div>
-</div>
-<?php
-if (isset($_SESSION['mensagem'])) {
-    echo "<script>window.onload = function() { alert('" . $_SESSION['mensagem'] . "'); }</script>";
-    unset($_SESSION['mensagem']);
-}
-?>
 </body>
 </html>

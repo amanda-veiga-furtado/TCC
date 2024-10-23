@@ -167,6 +167,8 @@ if ($pesquisar) {
 
 
         }
+
+
     </style>
 </head>
 <body>
@@ -222,7 +224,7 @@ if ($pesquisar) {
 ?>"> 
     <?php 
         $nome_ingrediente = htmlspecialchars($ingrediente['nome_ingrediente']); 
-        echo mb_strlen($nome_ingrediente) > 16 ? mb_substr($nome_ingrediente, 0, 16) . '...' : $nome_ingrediente;
+        echo mb_strlen($nome_ingrediente) > 15 ? mb_substr($nome_ingrediente, 0, 16) . '...' : $nome_ingrediente;
     ?>
 </h3>
 
@@ -304,36 +306,15 @@ if ($pesquisar) {
             var cartItemsArray = [];
 
             function saveCart() {
-                localStorage.setItem('cartItems', JSON.stringify(cartItemsArray));
+                sessionStorage.setItem('cartItems', JSON.stringify(cartItemsArray));
             }
 
-    //         function loadCart() {
-    //         var storedCartItems = localStorage.getItem('cartItems');
-    //         if (storedCartItems) {
-    //             cartItemsArray = JSON.parse(storedCartItems);
-    //             cartItemsArray.forEach(function(item) {
-    //             addCartItemToDOM(item.name, item.id);
-    //             // Desabilita o botão "Adicionar" para os itens que já estão no carrinho
-    //             disableAddButton(item.id);
 
-    //    });
-    // } 
-    // else {
-    //     // Consulta SQL para obter os ingredientes padrão
-    //     <?php
-    //     $ingredientesPadrao = [];
-    //     $stmt = $conn->query("SELECT id_ingrediente, nome_ingrediente FROM ingrediente WHERE id_ingrediente IN 
-    //     (94, 97, 98, 393, 394, 395, 189, 275, 276, 277, 215)");
-    //     //água 94, sal 97, açúcar 98, oleo de cozinha 393, vinagre 394, orégano 395, azeite 189, ketchup 275, mostarda 276, maionese 277, manteiga 215
-    //     while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
-    //         $ingredientesPadrao[] = $row;
-    //     }
-    //     ?>
 
 function loadCart() {
     // Limpa os itens existentes na lista do carrinho
     $('#cartItems').empty();
-    var storedCartItems = localStorage.getItem('cartItems');
+    var storedCartItems = sessionStorage.getItem('cartItems');
     if (storedCartItems) {
         cartItemsArray = JSON.parse(storedCartItems);
         cartItemsArray.forEach(function(item) {
@@ -356,7 +337,7 @@ function addDefaultIngredientsToCart() {
     // Mantém os ingredientes padrão como um array
     $ingredientesPadrao = [];
     $stmt = $conn->query("SELECT id_ingrediente, nome_ingrediente FROM ingrediente WHERE id_ingrediente IN 
-        (94, 97, 98, 393, 394, 395, 189, 275, 276, 277, 215)");
+        (94, 396, 97, 98, 393, 394, 395, 189, 275, 276, 277, 215)");
     while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
         $ingredientesPadrao[] = $row;
     }
@@ -489,9 +470,15 @@ $('.button-short').click(function() {
     });
     return selectedIngredients;
 }
-window.addEventListener('beforeunload', function() {
-    localStorage.removeItem('cartItems'); // Limpa o carrinho do localStorage
-});
+// window.addEventListener('beforeunload', function() {
+//     sessionStorage.removeItem('cartItems');
+// });
+window.addEventListener('unload', function() {
+       if (sessionStorage.getItem('cartClosed')) {
+           localStorage.removeItem('cartItems'); // Limpa o carrinho ao fechar a página
+           sessionStorage.removeItem('cartClosed'); // Limpa o flag de fechamento
+       }
+   });
 
     </script>
             <?php
