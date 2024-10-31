@@ -14,7 +14,11 @@
 
         if (!empty($dados['CadReceita'])) { // Verifica se o botão de cadastro foi clicado
             // Validação e preparação dos dados
-            list($numeroPorcao_receita, $tipoPorcao_receita, $tempoPreparoHora, $tempoPreparoMinuto, $erro) = validateAndPrepareData($dados);
+            list($numeroPorcao_receita, $tipoPorcao_receita, $tempoPreparoHora, $tempoPreparoMinuto) = validateAndPrepareData($dados);
+
+            if (!empty($_SESSION['mensagem'])) {
+                $erro = $_SESSION['mensagem']; // Se houver mensagem de erro, atribui a $erro
+            }
 
             if (empty($erro)) { // Se não houver erros na validação
                 $caminho_imagem = handleImageUpload($erro); // Manipula o upload da imagem
@@ -30,7 +34,7 @@
                         }
 
                         if (empty($erro)) {// Se não houver erros
-                            echo "<p style='color: green; margin-left: 10px;'>Receita e ingredientes cadastrados com sucesso!</p>"; // Exibe mensagem de sucesso.
+                        echo "<script>alert('Receita e ingredientes cadastrados com sucesso!');</script>";
                         }
                     } catch (PDOException $err) { // Captura exceções de erro de PDO
                         $erro = "Erro: " . $err->getMessage();// Define mensagem de erro com detalhes da exceção
@@ -47,22 +51,25 @@
         $tipoPorcao_receita = $dados['tipoPorcao_receita'] ?? null; // Obtém o tipo de porção ou define como null.
 
         // Tempo de Preparo
-        $tempoPreparoHora = $dados['tempoPreparoHora_receita'] ?? 0; // Obtém o tempo de preparo em horas ou define como 0
-        $tempoPreparoMinuto = $dados['tempoPreparoMinuto_receita'] ?? 0;// Obtém o tempo de preparo em minutos ou define como 0
+        $tempoPreparoHora = $dados['tempoPreparoHora_receita'] ?? 0;
+        $tempoPreparoMinuto = $dados['tempoPreparoMinuto_receita'] ?? 0;
 
         // Validação do tempo de preparo
         if (($tempoPreparoHora == 0 && $tempoPreparoMinuto == 0) || ($tempoPreparoMinuto >= 60 && $tempoPreparoHora > 0)) {
-            $erro = "Formato de tempo inválido. Verifique os valores de horas e minutos."; // Define mensagem de erro se o tempo de preparo for inválido
+            $_SESSION['mensagem'] = "Formato de tempo inválido. Verifique os valores de horas e minutos.";
+        } else {
+            $_SESSION['mensagem'] = ""; // Limpa a mensagem se a validação passar
         }
-
-        return [$numeroPorcao_receita, $tipoPorcao_receita, $tempoPreparoHora, $tempoPreparoMinuto, $erro];// Retorna os dados validados e a mensagem de erro
+        return [$numeroPorcao_receita, $tipoPorcao_receita, $tempoPreparoHora, $tempoPreparoMinuto];
     }
     function handleImageUpload(&$erro) {
         $caminho_imagem = ''; // Inicializa a variável do caminho da imagem como uma string vazia
         if (isset($_FILES['imagem_receita']) && $_FILES['imagem_receita']['error'] === UPLOAD_ERR_OK) { // Verifica se a imagem foi carregada com sucesso
             $imagem_temp = $_FILES['imagem_receita']['tmp_name'];//Obtém o nome do arquivo temporário
             $nome_imagem = basename($_FILES['imagem_receita']['name']);// Obtém o nome do arquivo de imagem
-            $mime_types = ['image/jpeg', 'image/png', 'image/gif']; // Define os tipos MIME permitidos.
+            // $mime_types = ['image/jpeg', 'image/png', 'image/gif']; // Define os tipos MIME permitidos.
+            $mime_types = ['image/png']; // Define os tipos MIME permitidos.
+
 
             if (in_array(mime_content_type($imagem_temp), $mime_types)) {// Verifica se o tipo MIME da imagem é permitido
                 $caminho_imagem = '../css/img/receita/' . $nome_imagem;// Define o caminho onde a imagem será salva
@@ -70,7 +77,9 @@
                     $erro = "Erro ao mover o arquivo da imagem. Por favor, tente novamente."; // Define mensagem de erro se falhar ao mover o arquivo
                 }
             } else {
-                $erro = "Formato de imagem inválido. Use JPEG, PNG ou GIF.";// Define mensagem de erro se o formato da imagem for inválido
+                //$erro = "Formato de imagem inválido. Use JPEG, PNG ou GIF.";// Define mensagem de erro se o formato da imagem for inválido
+                $erro = "Formato de imagem inválido. Use PNG.";// Define mensagem de erro se o formato da imagem for inválido
+
             }
         }
         return $caminho_imagem;// Retorna o caminho da imagem
@@ -146,7 +155,7 @@
                 </div>
                 <?php
                 if (!empty($erro)) {
-                    echo "<p style='color: red; margin-left: 10px;'>$erro</p>";
+                    echo "<script>alert('$erro');</script>";
                 }
                 ?>
                 <form name="cad-receita" id="cad-receita" method="POST" action="" enctype="multipart/form-data">
@@ -347,4 +356,11 @@ document.addEventListener('DOMContentLoaded', function () {
 });
 </script>
 </body>
+<?php
+    if (isset($_SESSION['mensagem'])) {
+        echo "<script>window.onload = function() { alert('" . $_SESSION['mensagem'] . "'); }</script>";
+        unset($_SESSION['mensagem']);
+    }
+?>
+
 </html>
