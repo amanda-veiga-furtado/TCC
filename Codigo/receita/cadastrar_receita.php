@@ -108,33 +108,44 @@
         return $conn->lastInsertId(); // Retorna o ID da última receita inserida
     }
     function insertIngredientes($dados, $id_receita, &$erro) {
-        global $conn;// Usa a variável global de conexão ao banco de dados
-
+        global $conn; // Usa a variável global de conexão ao banco de dados
+    
         $nome_ingredientes = $dados['nome_ingrediente'] ?? []; // Obtém os nomes dos ingredientes ou define como array vazio
         $quantidade_ingredientes = $dados['quantidadeIngrediente'] ?? []; // Obtém as quantidades dos ingredientes ou define como array vazio
         $tipo_ingredientes = $dados['tipoIngrediente'] ?? []; // Obtém os tipos dos ingredientes ou define como array vazio
-
+    
+        // Verifica se há ingredientes repetidos
+        $ingredientesUnicos = [];
+        foreach ($nome_ingredientes as $nome_ingrediente) {
+            if (in_array($nome_ingrediente, $ingredientesUnicos)) {
+                $erro = "Erro: Ingredientes não podem ser repetidos.";
+                return; // Sai da função se encontrar um ingrediente repetido
+            }
+            $ingredientesUnicos[] = $nome_ingrediente;
+        }
+    
         foreach ($nome_ingredientes as $index => $nome_ingrediente) { // Itera sobre os nomes dos ingredientes
             if (!empty($nome_ingrediente)) { // Se o nome do ingrediente não estiver vazio
                 $qtdIngrediente_lista = $quantidade_ingredientes[$index];  // Obtém a quantidade do ingrediente
                 $tipoQtdIngrediente_lista = $tipo_ingredientes[$index];// Obtém o tipo da quantidade do ingrediente
-
+    
                 $query_ingredientes = "
                     INSERT INTO lista_de_ingredientes (fk_id_receita, fk_id_ingrediente, qtdIngrediente_lista, tipoQtdIngrediente_lista) 
                     VALUES (:fk_id_receita, :fk_id_ingrediente, :qtdIngrediente_lista, :tipoQtdIngrediente_lista)";
                 $cad_ingredientes = $conn->prepare($query_ingredientes);// Prepara a consulta SQL para inserir os ingredientes
-
+    
                 $cad_ingredientes->bindParam(':fk_id_receita', $id_receita);// Associa o parâmetro da consulta ao valor fornecido
                 $cad_ingredientes->bindParam(':fk_id_ingrediente', $nome_ingrediente);  // Assume que o nome do ingrediente é um ID
                 $cad_ingredientes->bindParam(':qtdIngrediente_lista', $qtdIngrediente_lista);
                 $cad_ingredientes->bindParam(':tipoQtdIngrediente_lista', $tipoQtdIngrediente_lista);
-
+    
                 if (!$cad_ingredientes->execute()) {// Executa a consulta para inserir o ingrediente
                     $erro = "Erro ao cadastrar um ou mais ingredientes. Por favor, tente novamente.";// Define mensagem de erro se falhar ao inserir os ingredientes
                 }
             }
         }
     }
+    
 ?>
 
 <!DOCTYPE html>
