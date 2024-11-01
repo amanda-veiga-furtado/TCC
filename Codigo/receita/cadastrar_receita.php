@@ -10,39 +10,50 @@
     $dados = []; // Inicializa o array de dados como um array vazio.
 
     if ($_SERVER['REQUEST_METHOD'] === 'POST') { // Verifica se a requisição é do tipo POST
-        $dados = filter_input_array(INPUT_POST, FILTER_DEFAULT);// Filtra e sanitiza os dados recebidos do formulário.
-
+        $dados = filter_input_array(INPUT_POST, FILTER_DEFAULT); // Filtra e sanitiza os dados recebidos do formulário.
+    
         if (!empty($dados['CadReceita'])) { // Verifica se o botão de cadastro foi clicado
-            // Validação e preparação dos dados
-            list($numeroPorcao_receita, $tipoPorcao_receita, $tempoPreparoHora, $tempoPreparoMinuto) = validateAndPrepareData($dados);
-
-            if (!empty($_SESSION['mensagem'])) {
-                $erro = $_SESSION['mensagem']; // Se houver mensagem de erro, atribui a $erro
-            }
-
-            if (empty($erro)) { // Se não houver erros na validação
-                $caminho_imagem = handleImageUpload($erro); // Manipula o upload da imagem
-
-                if (empty($erro)) { // Se não houver erros no upload da imagem
-                    try {
-                        $id_receita = insertReceita($dados, $numeroPorcao_receita, $tipoPorcao_receita, $tempoPreparoHora, $tempoPreparoMinuto, $caminho_imagem);// Insere a receita no banco de dados
-                        
-                        if ($id_receita) { // Se a receita for inserida com sucesso.
-                            insertIngredientes($dados, $id_receita, $erro); // Insere os ingredientes associados à receita
-                        } else {
-                            $erro = "Erro ao cadastrar a receita. Por favor, tente novamente."; // Define mensagem de erro se falhar ao inserir a receita.
+            // Verifique se pelo menos um ingrediente foi informado
+            if (empty(array_filter($dados['nome_ingrediente'] ?? []))) {
+                $erro = "Pelo menos um ingrediente deve ser informado.";
+            } else {
+                // Validação e preparação dos dados
+                list($numeroPorcao_receita, $tipoPorcao_receita, $tempoPreparoHora, $tempoPreparoMinuto) = validateAndPrepareData($dados);
+    
+                if (!empty($_SESSION['mensagem'])) {
+                    $erro = $_SESSION['mensagem']; // Se houver mensagem de erro, atribui a $erro
+                }
+    
+                if (empty($erro)) { // Se não houver erros na validação
+                    $caminho_imagem = handleImageUpload($erro); // Manipula o upload da imagem
+                
+                    if (empty($erro)) { // Se não houver erros no upload da imagem
+                        try {
+                            $id_receita = insertReceita($dados, $numeroPorcao_receita, $tipoPorcao_receita, $tempoPreparoHora, $tempoPreparoMinuto, $caminho_imagem); // Insere a receita no banco de dados
+                            
+                            if ($id_receita && empty($erro)) { // Verifica se a receita foi inserida e se não há erro dos ingredientes.
+                                insertIngredientes($dados, $id_receita, $erro); // Insere os ingredientes associados à receita
+                                
+                                if (empty($erro)) { // Se não houver erros de ingredientes
+                                    echo "<script>alert('Receita e ingredientes cadastrados com sucesso!');</script>";
+                                } else {
+                                    // Remove a receita inserida devido a erro nos ingredientes
+                                    $conn->prepare("DELETE FROM receita WHERE id_receita = :id_receita")->execute([':id_receita' => $id_receita]);
+                                }
+                            } else {
+                                $erro = "Erro ao cadastrar a receita. Por favor, tente novamente."; // Define mensagem de erro se falhar ao inserir a receita.
+                            }
+                
+                        } catch (PDOException $err) { // Captura exceções de erro de PDO
+                            $erro = "Erro: " . $err->getMessage(); // Define mensagem de erro com detalhes da exceção
                         }
-
-                        if (empty($erro)) {// Se não houver erros
-                        echo "<script>alert('Receita e ingredientes cadastrados com sucesso!');</script>";
-                        }
-                    } catch (PDOException $err) { // Captura exceções de erro de PDO
-                        $erro = "Erro: " . $err->getMessage();// Define mensagem de erro com detalhes da exceção
                     }
                 }
+                
             }
         }
     }
+    
     function validateAndPrepareData($dados) {
         $erro = ""; // Inicializa a variável de erro como uma string vazia
         
@@ -107,44 +118,52 @@
 
         return $conn->lastInsertId(); // Retorna o ID da última receita inserida
     }
-    function insertIngredientes($dados, $id_receita, &$erro) {
-        global $conn; // Usa a variável global de conexão ao banco de dados
     
-        $nome_ingredientes = $dados['nome_ingrediente'] ?? []; // Obtém os nomes dos ingredientes ou define como array vazio
-        $quantidade_ingredientes = $dados['quantidadeIngrediente'] ?? []; // Obtém as quantidades dos ingredientes ou define como array vazio
-        $tipo_ingredientes = $dados['tipoIngrediente'] ?? []; // Obtém os tipos dos ingredientes ou define como array vazio
+    function insertIngredientes($dados, $id_receita, &$erro) {
+        global $conn;
+    
+        $nome_ingredientes = $dados['nome_ingrediente'] ?? [];
+        $quantidade_ingredientes = $dados['quantidadeIngrediente'] ?? [];
+        $tipo_ingredientes = $dados['tipoIngrediente'] ?? [];
+    
+        // Verifica se pelo menos um ingrediente foi informado
+        if (empty(array_filter($nome_ingredientes))) {
+            $erro = "Pelo menos um ingrediente deve ser informado.";
+            return; // Sai da função se nenhum ingrediente for informado
+        }
     
         // Verifica se há ingredientes repetidos
         $ingredientesUnicos = [];
         foreach ($nome_ingredientes as $nome_ingrediente) {
             if (in_array($nome_ingrediente, $ingredientesUnicos)) {
-                $erro = "Erro: Ingredientes não podem ser repetidos.";
+                $erro = "Ingredientes não podem ser repetidos.";
                 return; // Sai da função se encontrar um ingrediente repetido
             }
             $ingredientesUnicos[] = $nome_ingrediente;
         }
     
-        foreach ($nome_ingredientes as $index => $nome_ingrediente) { // Itera sobre os nomes dos ingredientes
-            if (!empty($nome_ingrediente)) { // Se o nome do ingrediente não estiver vazio
-                $qtdIngrediente_lista = $quantidade_ingredientes[$index];  // Obtém a quantidade do ingrediente
-                $tipoQtdIngrediente_lista = $tipo_ingredientes[$index];// Obtém o tipo da quantidade do ingrediente
+        foreach ($nome_ingredientes as $index => $nome_ingrediente) {
+            if (!empty($nome_ingrediente)) {
+                $qtdIngrediente_lista = $quantidade_ingredientes[$index];
+                $tipoQtdIngrediente_lista = $tipo_ingredientes[$index];
     
                 $query_ingredientes = "
                     INSERT INTO lista_de_ingredientes (fk_id_receita, fk_id_ingrediente, qtdIngrediente_lista, tipoQtdIngrediente_lista) 
                     VALUES (:fk_id_receita, :fk_id_ingrediente, :qtdIngrediente_lista, :tipoQtdIngrediente_lista)";
-                $cad_ingredientes = $conn->prepare($query_ingredientes);// Prepara a consulta SQL para inserir os ingredientes
+                $cad_ingredientes = $conn->prepare($query_ingredientes);
     
-                $cad_ingredientes->bindParam(':fk_id_receita', $id_receita);// Associa o parâmetro da consulta ao valor fornecido
-                $cad_ingredientes->bindParam(':fk_id_ingrediente', $nome_ingrediente);  // Assume que o nome do ingrediente é um ID
+                $cad_ingredientes->bindParam(':fk_id_receita', $id_receita);
+                $cad_ingredientes->bindParam(':fk_id_ingrediente', $nome_ingrediente);
                 $cad_ingredientes->bindParam(':qtdIngrediente_lista', $qtdIngrediente_lista);
                 $cad_ingredientes->bindParam(':tipoQtdIngrediente_lista', $tipoQtdIngrediente_lista);
     
-                if (!$cad_ingredientes->execute()) {// Executa a consulta para inserir o ingrediente
-                    $erro = "Erro ao cadastrar um ou mais ingredientes. Por favor, tente novamente.";// Define mensagem de erro se falhar ao inserir os ingredientes
+                if (!$cad_ingredientes->execute()) {
+                    $erro = "Erro ao cadastrar um ou mais ingredientes. Por favor, tente novamente.";
                 }
             }
         }
     }
+    
     
 ?>
 
