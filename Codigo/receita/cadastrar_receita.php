@@ -227,106 +227,87 @@
                         <h2>Ingrediente</h2>
 
                         <div id="ingredientes-container">
-                            <?php
-                                // Inicializa os arrays de ingredientes a partir dos dados recebidos. 
-                                // Se os dados não estiverem presentes, define um array vazio como padrão
-                                $nome_ingredientes = $dados['nome_ingrediente'] ?? [];
-                                $quantidade_ingredientes = $dados['quantidadeIngrediente'] ?? [];
-                                $tipo_ingredientes = $dados['tipoIngrediente'] ?? [];
-
-                                // Verifica se há algum ingrediente adicionado verificando a contagem dos nomes dos ingredientes.
-
-                                if (count($nome_ingredientes) > 0) { // Itera sobre os nomes dos ingredientes usando seus índices.
-                                    foreach ($nome_ingredientes as $index => $nome_ingrediente) {
-                                    // Dentro deste loop, você pode acessar o nome, a quantidade e o tipo de ingrediente 
-                                    // usando o índice atual. Aqui você pode gerar campos de formulário ou processar dados.
-                                ?>
-                                    <div class="ingrediente">
-                                        <!-- <select name="nome_ingrediente[]" class="select-field " style="width: 45%;" > -->
-                                        <select name="ingrediente" id="ingrediente" class="js-example-basic-single" style="" required>
-
-                                            
-                                            <!-- <option value="">Selecione um Ingrediente</option> -->
-                                            <option value="" disabled selected></option>
-
-                                            <?php
-                                    foreach ($nome_ingredientes as $nome_ingrediente): 
-                                ?>
-                            <option value="
-                                <?= $nome_ingrediente['id_ingrediente']; 
-                                ?>"><?= htmlspecialchars($nome_ingrediente['nome_ingrediente']); ?>
-                            </option>
-                            <?php endforeach; ?>
-                        </select>
-
-                                    <!-- Quantidade Ingrediente -->
-
-                                    <input class="input-field" type="number" name="quantidadeIngrediente[]" min="0.001" step="0.001" value="<?php echo htmlspecialchars($quantidade_ingredientes[$index], ENT_QUOTES); ?>" style="width: 15%;">
-                                    
-                                    <!-- Tipo da Quantidade -->
-
-                                    <select class="select-field" name="tipoIngrediente[]" style="width: 38%;" >
-                                    </div>
-                                <?php
-                            }
-                        } else {
-                            ?>
-                            <div class="ingrediente">
-                                <select name="nome_ingrediente[]" class="select-field" style="width: 45%;">
-                                    <option value="">Selecione um Ingrediente</option>
-                                    <?php
-                                    $query = $conn->query("SELECT id_ingrediente, nome_ingrediente FROM ingrediente ORDER BY nome_ingrediente ASC");
-                                    $registros = $query->fetchAll(PDO::FETCH_ASSOC);
-                                    foreach ($registros as $option) {
-                                        echo "<option value='{$option['id_ingrediente']}'>{$option['nome_ingrediente']}</option>";
-                                    }
-                                    ?>
-                                </select>
-                                <input class="input-field" type="number" name="quantidadeIngrediente[]" min="0.001" step="0.001" value="1" style="width: 15%;">
-                                <select class="select-field" name="tipoIngrediente[]" style="width: 38%;">
-
-                    
-                                    <!-- <option value="" style="width: 38%;">Selecione o tipo de medida</option> -->
     <?php
-                        // $query = $conn->query("SELECT id_ingrediente_quantidade, nome_plural_ingrediente_quantidade FROM ingrediente_quantidade ORDER BY nome_plural_ingrediente_quantidade ASC");
-                        // $porcao_opcoes = $query->fetchAll(PDO::FETCH_ASSOC);
-                        // foreach ($porcao_opcoes as $option) {
-                        //     $selected = (isset($dados['tipoPorcao_receita']) && $dados['tipoPorcao_receita'] == $option['id_ingrediente_quantidade']) ? 'selected' : '';
-                        //     echo "<option value='{$option['id_ingrediente_quantidade']}' {$selected}>{$option['nome_plural_ingrediente_quantidade']}</option>";
-                        // }
-                        $query = $conn->query("SELECT id_ingrediente_quantidade, nome_plural_ingrediente_quantidade FROM ingrediente_quantidade ORDER BY nome_plural_ingrediente_quantidade ASC");
-$porcao_opcoes = $query->fetchAll(PDO::FETCH_ASSOC);
-foreach ($porcao_opcoes as $option) {
-    // Define a opção como 'selected' se o id for 1 ou se estiver presente em $dados
-    $selected = (isset($dados['tipoPorcao_receita']) && $dados['tipoPorcao_receita'] == $option['id_ingrediente_quantidade']) || $option['id_ingrediente_quantidade'] == 1 ? 'selected' : '';
-    echo "<option value='{$option['id_ingrediente_quantidade']}' {$selected}>{$option['nome_plural_ingrediente_quantidade']}</option>";
-}
-
-                        ?>
-
-                                </select>
-                            </div>
-                            <?php
-                        }
-                        ?>
-                        </div>
+        $nome_ingredientes = $dados['nome_ingrediente'] ?? [];
+        $quantidade_ingredientes = $dados['quantidadeIngrediente'] ?? [];
+        $tipo_ingredientes = $dados['tipoIngrediente'] ?? [];
+    
+        // Exibe os ingredientes preenchidos, se houver
+        foreach ($nome_ingredientes as $index => $nome_ingrediente) {
+            $quantidade = $quantidade_ingredientes[$index] ?? '1';
+            $tipo = $tipo_ingredientes[$index] ?? '';
+            ?>
+            <div class="ingrediente">
+                <!-- Campo de seleção do nome do ingrediente -->
+                <select name="nome_ingrediente[]" class="select-field" style="width: 45%;" required>
+                    <option value="">Selecione um Ingrediente</option>
+                    <?php
+                    // Exibe todos os ingredientes disponíveis como opções
+                    $query = $conn->query("SELECT id_ingrediente, nome_ingrediente FROM ingrediente ORDER BY nome_ingrediente ASC");
+                    $ingredientes_opcoes = $query->fetchAll(PDO::FETCH_ASSOC);
+                    foreach ($ingredientes_opcoes as $option) {
+                        $selected = ($nome_ingrediente == $option['id_ingrediente']) ? 'selected' : '';
+                        echo "<option value='{$option['id_ingrediente']}' $selected>{$option['nome_ingrediente']}</option>";
+                    }
+                    ?>
+                </select>
+    
+                <!-- Campo de quantidade -->
+                <input class="input-field" type="number" name="quantidadeIngrediente[]" min="0.001" step="0.001" value="<?php echo htmlspecialchars($quantidade, ENT_QUOTES); ?>" style="width: 15%;" required>
+                
+                <!-- Campo de tipo de quantidade -->
+                <select class="select-field" name="tipoIngrediente[]" style="width: 38%;" required>
+                    <?php
+                    $query = $conn->query("SELECT id_ingrediente_quantidade, nome_plural_ingrediente_quantidade FROM ingrediente_quantidade ORDER BY nome_plural_ingrediente_quantidade ASC");
+                    $tipo_opcoes = $query->fetchAll(PDO::FETCH_ASSOC);
+                    foreach ($tipo_opcoes as $option) {
+                        $selected = ($tipo == $option['id_ingrediente_quantidade']) ? 'selected' : '';
+                        echo "<option value='{$option['id_ingrediente_quantidade']}' $selected>{$option['nome_plural_ingrediente_quantidade']}</option>";
+                    }
+                    ?>
+                </select>
+            </div>
+            <?php
+        }
+    
+        // Exibe um campo em branco para adicionar um novo ingrediente, se nenhum estiver preenchido
+        if (empty($nome_ingredientes)) {
+            ?>
+            <div class="ingrediente">
+                <select name="nome_ingrediente[]" class="select-field" style="width: 45%;" required>
+                    <option value="">Selecione um Ingrediente</option>
+                    <?php
+                    $query = $conn->query("SELECT id_ingrediente, nome_ingrediente FROM ingrediente ORDER BY nome_ingrediente ASC");
+                    $ingredientes_opcoes = $query->fetchAll(PDO::FETCH_ASSOC);
+                    foreach ($ingredientes_opcoes as $option) {
+                        echo "<option value='{$option['id_ingrediente']}'>{$option['nome_ingrediente']}</option>";
+                    }
+                    ?>
+                </select>
+                <input class="input-field" type="number" name="quantidadeIngrediente[]" min="0.001" step="0.001" value="1" style="width: 15%;" required>
+                <select class="select-field" name="tipoIngrediente[]" style="width: 38%;" required>
+                    <?php
+                    $query = $conn->query("SELECT id_ingrediente_quantidade, nome_plural_ingrediente_quantidade FROM ingrediente_quantidade ORDER BY nome_plural_ingrediente_quantidade ASC");
+                    $tipo_opcoes = $query->fetchAll(PDO::FETCH_ASSOC);
+                    foreach ($tipo_opcoes as $option) {
+                        echo "<option value='{$option['id_ingrediente_quantidade']}'>{$option['nome_plural_ingrediente_quantidade']}</option>";
+                    }
+                    ?>
+                </select>
+            </div>
+            <?php
+        }
+    ?>
+</div>
 
                     <button type="button" id="add-ingrediente" class="button-round button-plus" title="Adicione 1 Ingrediente a Sua Receita"><i class="fa-solid fa-pencil"></i></button>
 
                     <button type="button" id="remove-ingrediente" class="button-round button-minus" title="Remova 1 Ingrediente da Sua Receita"><i class="fa-solid fa-trash"></i></button>
 
-
-                    
-                    
-                    <!-- Modo de Preparo -->
                     <?php $placeholder_text = file_get_contents('receita.txt'); ?>
                     <h2>Modo de Preparo</h2>
                     <textarea name="modoPreparo_receita" id="modoPreparo_receita" placeholder="<?php echo htmlspecialchars($placeholder_text, ENT_QUOTES, 'UTF-8'); ?>" required><?php echo isset($dados['modoPreparo_receita']) ? htmlspecialchars($dados['modoPreparo_receita'], ENT_QUOTES) : ''; ?></textarea><br>
 
-
-
-
-                    <!-- Categoria -->
                     <h2>Categoria</h2>
                     <select name="categoria_receita" id="categoria_receita" style="width: 100%;" required>
                         <option value="">Selecione a categoria da receita</option>
@@ -342,8 +323,6 @@ foreach ($porcao_opcoes as $option) {
 
                     <input type="submit" name="CadReceita" value="Cadastrar Receita" class="button-long">
                 </form>
-            <!-- </div> -->
-            <!-- </div> -->
         </div>
         </div>
 
