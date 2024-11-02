@@ -286,14 +286,22 @@
                                 <select class="select-field" name="tipoIngrediente[]" style="width: 38%;">
 
                     
-                                    <option value="" style="width: 38%;"">Selecione o tipo de medida</option>
+                                    <!-- <option value="" style="width: 38%;">Selecione o tipo de medida</option> -->
     <?php
+                        // $query = $conn->query("SELECT id_ingrediente_quantidade, nome_plural_ingrediente_quantidade FROM ingrediente_quantidade ORDER BY nome_plural_ingrediente_quantidade ASC");
+                        // $porcao_opcoes = $query->fetchAll(PDO::FETCH_ASSOC);
+                        // foreach ($porcao_opcoes as $option) {
+                        //     $selected = (isset($dados['tipoPorcao_receita']) && $dados['tipoPorcao_receita'] == $option['id_ingrediente_quantidade']) ? 'selected' : '';
+                        //     echo "<option value='{$option['id_ingrediente_quantidade']}' {$selected}>{$option['nome_plural_ingrediente_quantidade']}</option>";
+                        // }
                         $query = $conn->query("SELECT id_ingrediente_quantidade, nome_plural_ingrediente_quantidade FROM ingrediente_quantidade ORDER BY nome_plural_ingrediente_quantidade ASC");
-                        $porcao_opcoes = $query->fetchAll(PDO::FETCH_ASSOC);
-                        foreach ($porcao_opcoes as $option) {
-                            $selected = (isset($dados['tipoPorcao_receita']) && $dados['tipoPorcao_receita'] == $option['id_ingrediente_quantidade']) ? 'selected' : '';
-                            echo "<option value='{$option['id_ingrediente_quantidade']}' {$selected}>{$option['nome_plural_ingrediente_quantidade']}</option>";
-                        }
+$porcao_opcoes = $query->fetchAll(PDO::FETCH_ASSOC);
+foreach ($porcao_opcoes as $option) {
+    // Define a opção como 'selected' se o id for 1 ou se estiver presente em $dados
+    $selected = (isset($dados['tipoPorcao_receita']) && $dados['tipoPorcao_receita'] == $option['id_ingrediente_quantidade']) || $option['id_ingrediente_quantidade'] == 1 ? 'selected' : '';
+    echo "<option value='{$option['id_ingrediente_quantidade']}' {$selected}>{$option['nome_plural_ingrediente_quantidade']}</option>";
+}
+
                         ?>
 
                                 </select>
@@ -339,14 +347,13 @@
         </div>
         </div>
 
-    <script>
-
+<script>
 $(document).ready(function() {
-                $('.js-example-basic-single').select2({
-                    placeholder: "Digite o Nome do Ingrediente e Selecione", // Placeholder para pesquisa
-                    allowClear: true
-                });
-            });
+    $('.js-example-basic-single').select2({
+    placeholder: "Digite o Nome do Ingrediente e Selecione", // Placeholder para pesquisa
+    allowClear: true
+    });
+});
 document.addEventListener('DOMContentLoaded', function () {
     const maxIngredientes = 20;
     let ingredientesCount = document.querySelectorAll('.ingrediente').length;
@@ -387,10 +394,9 @@ document.addEventListener('DOMContentLoaded', function () {
 </script>
 </body>
 <?php
-    if (isset($_SESSION['mensagem'])) {
-        echo "<script>window.onload = function() { alert('" . $_SESSION['mensagem'] . "'); }</script>";
-        unset($_SESSION['mensagem']);
-    }
+if (isset($_SESSION['mensagem'])) {
+    echo "<script>window.onload = function() { alert('" . $_SESSION['mensagem'] . "'); }</script>";
+    unset($_SESSION['mensagem']);
+}
 ?>
-
 </html>
