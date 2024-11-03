@@ -1,5 +1,6 @@
 <?php 
 session_start(); 
+ob_start();
 
 include_once '../conexao.php'; 
 include '../css/functions.php';
@@ -103,7 +104,17 @@ $imagem_usuario = $stmt->fetchColumn();
                 </div>
             </div>
         </div>
-            <input type="submit" name="update_profile" value="Atualizar Perfil" class="button-long" style="margin-top:25px;">
+            <!-- <input type="submit" name="update_profile" value="Atualizar Perfil" class="button-long" style="margin-top:25px;"> -->
+
+
+
+            <!-- <div class="container-button-long"> -->
+                <input type="submit" name="update_profile" value="Atualizar Perfil" class="button-long" style="margin-top:25px;">
+                <div class="div_link"><a href="sair.php">Deslogar</a></div>
+
+            <!-- </div> -->
+
+            
             </form>
         </div>
     </div>

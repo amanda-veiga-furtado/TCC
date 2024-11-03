@@ -1,7 +1,8 @@
 <?php
-    session_start();
-    ob_start();
-    unset($_SESSION['id_usuario'], $_SESSION['nome_usuario']);
-    $_SESSION['msg'] = "<p style='color: green'>Deslogado com sucesso!<br><br></p>";
+session_start();
+session_unset(); // Limpa todas as variáveis de sessão
+session_destroy(); // Destroi a sessão
 
-    header("Location: login.php");
+// Redireciona para a página de login com a mensagem como parâmetro de URL
+header("Location: login.php?mensagem=" . urlencode("Deslogado com sucesso!"));
+exit();

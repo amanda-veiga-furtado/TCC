@@ -1,12 +1,16 @@
 <?php
-    session_start();
-    ob_start();
+session_start();
+ob_start();
 
-    include_once '../conexao.php'; 
-    include '../css/functions.php';
-    include_once '../menu.php'; 
+// Verifica se existe uma mensagem no parâmetro da URL
+if (isset($_GET['mensagem'])) {
+    $mensagem = htmlspecialchars($_GET['mensagem']);
+    echo "<script>alert('$mensagem');</script>";
+}
 
-
+include_once '../conexao.php'; 
+include '../css/functions.php';
+include_once '../menu.php'; 
 ?>
 
 <!DOCTYPE html>
@@ -137,7 +141,7 @@
                         <div class="container-button-long">
 
                         <input type="submit" name="CadUsuario" value="Cadastrar" class="button-long">
-                        <div class="div_link"><a href="recuperar_senha/recuperar_senha.php" style="color: white;">Recuperar Acesso</a></div>
+                        <div class="div_link"><a href="recuperar_senha/recuperar_senha.php" style="color: white;">Recuperar Acesso</a></div></div>
                         
                     </form>
                 </div>
