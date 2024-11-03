@@ -6,104 +6,85 @@
     include '../css/functions.php';
     include_once '../menu.php';
 
+    if (isset($_SESSION['cadastro_realizado']) && $_SESSION['cadastro_realizado'] === true) {
+        header('Location: confirmacao.php'); // Redireciona para uma página de confirmação ou exibe uma mensagem
+        exit();
+    }
+
     $erro = ""; // Inicializa a variável de erro como uma string vazia.
     $dados = []; // Inicializa o array de dados como um array vazio.
 
-    if ($_SERVER['REQUEST_METHOD'] === 'POST') { // Verifica se a requisição é do tipo POST
-        $dados = filter_input_array(INPUT_POST, FILTER_DEFAULT); // Filtra e sanitiza os dados recebidos do formulário.
-    
-        if (!empty($dados['CadReceita'])) { // Verifica se o botão de cadastro foi clicado
-            // Verifique se pelo menos um ingrediente foi informado
+    if ($_SERVER['REQUEST_METHOD'] === 'POST') { 
+        $dados = filter_input_array(INPUT_POST, FILTER_DEFAULT);
+        
+        if (!empty($dados['CadReceita'])) { 
             if (empty(array_filter($dados['nome_ingrediente'] ?? []))) {
                 $erro = "Pelo menos um ingrediente deve ser informado.";
             } else {
-                // Validação e preparação dos dados
                 list($numeroPorcao_receita, $tipoPorcao_receita, $tempoPreparoHora, $tempoPreparoMinuto) = validateAndPrepareData($dados);
-    
-                if (!empty($_SESSION['mensagem'])) {
-                    $erro = $_SESSION['mensagem']; // Se houver mensagem de erro, atribui a $erro
-                }
-    
-                if (empty($erro)) { // Se não houver erros na validação
-                    $caminho_imagem = handleImageUpload($erro); // Manipula o upload da imagem
                 
-                    if (empty($erro)) { // Se não houver erros no upload da imagem
+                if (!empty($_SESSION['mensagem'])) {
+                    $erro = $_SESSION['mensagem'];
+                    unset($_SESSION['mensagem']); // 🔄 Limpa a sessão após exibir a mensagem
+                }
+                
+                if (empty($erro)) {
+                    $caminho_imagem = handleImageUpload($erro);
+                    
+                    if (empty($erro)) {
                         try {
-                            $id_receita = insertReceita($dados, $numeroPorcao_receita, $tipoPorcao_receita, $tempoPreparoHora, $tempoPreparoMinuto, $caminho_imagem); // Insere a receita no banco de dados
+                            $id_receita = insertReceita($dados, $numeroPorcao_receita, $tipoPorcao_receita, $tempoPreparoHora, $tempoPreparoMinuto, $caminho_imagem);
                             
-                            if ($id_receita && empty($erro)) { // Verifica se a receita foi inserida e se não há erro dos ingredientes.
-                                insertIngredientes($dados, $id_receita, $erro); // Insere os ingredientes associados à receita
+                            if ($id_receita && empty($erro)) {
+                                insertIngredientes($dados, $id_receita, $erro);
                                 
-                                if (empty($erro)) { // Se não houver erros de ingredientes
-                                    echo "<script>alert('Receita e ingredientes cadastrados com sucesso!');</script>";
+                                if (empty($erro)) {
+                                    $_SESSION['mensagem'] = "Receita e ingredientes cadastrados com sucesso!";
+                                    header('Location: ' . $_SERVER['PHP_SELF']);
+                                    exit();
                                 } else {
-                                    // Remove a receita inserida devido a erro nos ingredientes
                                     $conn->prepare("DELETE FROM receita WHERE id_receita = :id_receita")->execute([':id_receita' => $id_receita]);
                                 }
                             } else {
-                                $erro = "Erro ao cadastrar a receita. Por favor, tente novamente."; // Define mensagem de erro se falhar ao inserir a receita.
+                                $erro = "Erro ao cadastrar a receita. Por favor, tente novamente.";
                             }
-                
-                        } catch (PDOException $err) { // Captura exceções de erro de PDO
-                            $erro = "Erro: " . $err->getMessage(); // Define mensagem de erro com detalhes da exceção
+    
+                        } catch (PDOException $err) {
+                            $erro = "Erro: " . $err->getMessage();
                         }
                     }
                 }
-                
             }
         }
     }
     
     function validateAndPrepareData($dados) {
-        $erro = ""; // Inicializa a variável de erro como uma string vazia
+        $erro = "";
         
-        // Porção
-        $numeroPorcao_receita = $dados['numeroPorcao_receita'] ?? null; // Obtém o número de porções ou define como null
-        $tipoPorcao_receita = $dados['tipoPorcao_receita'] ?? null; // Obtém o tipo de porção ou define como null.
-
-        // Tempo de Preparo
+        $numeroPorcao_receita = $dados['numeroPorcao_receita'] ?? null;
+        $tipoPorcao_receita = $dados['tipoPorcao_receita'] ?? null;
+    
         $tempoPreparoHora = $dados['tempoPreparoHora_receita'] ?? 0;
         $tempoPreparoMinuto = $dados['tempoPreparoMinuto_receita'] ?? 0;
-
-        // Validação do tempo de preparo
+    
         if (($tempoPreparoHora == 0 && $tempoPreparoMinuto == 0) || ($tempoPreparoMinuto >= 60 && $tempoPreparoHora > 0)) {
             $_SESSION['mensagem'] = "Formato de tempo inválido. Verifique os valores de horas e minutos.";
         } else {
-            $_SESSION['mensagem'] = ""; // Limpa a mensagem se a validação passar
+            $_SESSION['mensagem'] = "";
         }
         return [$numeroPorcao_receita, $tipoPorcao_receita, $tempoPreparoHora, $tempoPreparoMinuto];
     }
-    function handleImageUpload(&$erro) {
-        $caminho_imagem = ''; // Inicializa a variável do caminho da imagem como uma string vazia
-        if (isset($_FILES['imagem_receita']) && $_FILES['imagem_receita']['error'] === UPLOAD_ERR_OK) { // Verifica se a imagem foi carregada com sucesso
-            $imagem_temp = $_FILES['imagem_receita']['tmp_name'];//Obtém o nome do arquivo temporário
-            $nome_imagem = basename($_FILES['imagem_receita']['name']);// Obtém o nome do arquivo de imagem
-            // $mime_types = ['image/jpeg', 'image/png', 'image/gif']; // Define os tipos MIME permitidos.
-            $mime_types = ['image/png']; // Define os tipos MIME permitidos.
+    
 
-
-            if (in_array(mime_content_type($imagem_temp), $mime_types)) {// Verifica se o tipo MIME da imagem é permitido
-                $caminho_imagem = '../css/img/receita/' . $nome_imagem;// Define o caminho onde a imagem será salva
-                if (!move_uploaded_file($imagem_temp, $caminho_imagem)) { // Move o arquivo da imagem para o diretório especificado
-                    $erro = "Erro ao mover o arquivo da imagem. Por favor, tente novamente."; // Define mensagem de erro se falhar ao mover o arquivo
-                }
-            } else {
-                //$erro = "Formato de imagem inválido. Use JPEG, PNG ou GIF.";// Define mensagem de erro se o formato da imagem for inválido
-                $erro = "Formato de imagem inválido. Use PNG.";// Define mensagem de erro se o formato da imagem for inválido
-
-            }
-        }
-        return $caminho_imagem;// Retorna o caminho da imagem
-    }
     function insertReceita($dados, $numeroPorcao_receita, $tipoPorcao_receita, $tempoPreparoHora, $tempoPreparoMinuto, $caminho_imagem) {
         global $conn; // Usa a variável global de conexão ao banco de dados
-
+    
         $categoria_receita = $dados['categoria_receita'] ?? null; // Captura o valor de categoria_receita
-
+    
         $query_receita = "INSERT INTO receita 
             (nome_receita, numeroPorcao_receita, tipoPorcao_receita, tempoPreparoHora_receita, tempoPreparoMinuto_receita, modoPreparo_receita, imagem_receita, categoria_receita) 
             VALUES (:nome_receita, :numeroPorcao_receita, :tipoPorcao_receita, :tempoPreparoHora_receita, :tempoPreparoMinuto_receita, :modoPreparo_receita, :imagem_receita, :categoria_receita)";
-
+    
         $cad_receita = $conn->prepare($query_receita); // Prepara a consulta SQL para inserir a receita
         $cad_receita->bindParam(':nome_receita', $dados['nome_receita']); // Associa o parâmetro da consulta ao valor fornecido
         $cad_receita->bindParam(':numeroPorcao_receita', $numeroPorcao_receita);
@@ -113,15 +94,14 @@
         $cad_receita->bindParam(':modoPreparo_receita', $dados['modoPreparo_receita']);
         $cad_receita->bindParam(':imagem_receita', $caminho_imagem);
         $cad_receita->bindParam(':categoria_receita', $categoria_receita); // Adiciona categoria_receita
-
-        $cad_receita->execute();// Executa a consulta para inserir a receita
-
+    
+        $cad_receita->execute(); // Executa a consulta para inserir a receita
+    
         return $conn->lastInsertId(); // Retorna o ID da última receita inserida
     }
-    
     function insertIngredientes($dados, $id_receita, &$erro) {
-        global $conn;
-    
+        global $conn; // Usa a variável global de conexão ao banco de dados
+        
         $nome_ingredientes = $dados['nome_ingrediente'] ?? [];
         $quantidade_ingredientes = $dados['quantidadeIngrediente'] ?? [];
         $tipo_ingredientes = $dados['tipoIngrediente'] ?? [];
@@ -142,6 +122,7 @@
             $ingredientesUnicos[] = $nome_ingrediente;
         }
     
+        // Insere cada ingrediente no banco de dados
         foreach ($nome_ingredientes as $index => $nome_ingrediente) {
             if (!empty($nome_ingrediente)) {
                 $qtdIngrediente_lista = $quantidade_ingredientes[$index];
@@ -159,13 +140,58 @@
     
                 if (!$cad_ingredientes->execute()) {
                     $erro = "Erro ao cadastrar um ou mais ingredientes. Por favor, tente novamente.";
+                    return;
                 }
+                
             }
         }
     }
+    function handleImageUpload(&$erro) {
+        $caminho_imagem = ''; // Inicializa o caminho da imagem como vazio
+    
+        // Verifica se um arquivo foi enviado e se não houve erros no upload
+        if (isset($_FILES['imagem_receita']) && $_FILES['imagem_receita']['error'] === UPLOAD_ERR_OK) {
+            $imagem_temp = $_FILES['imagem_receita']['tmp_name'];
+            $nome_imagem = basename($_FILES['imagem_receita']['name']);
+    
+            // Define os tipos MIME permitidos e tamanhos máximos
+            $mime_types = ['image/png'];
+            $tamanho_maximo = 2 * 1024 * 1024; // 2MB
+    
+            // Verifica o tamanho do arquivo
+            if ($_FILES['imagem_receita']['size'] > $tamanho_maximo) {
+                $erro = "O arquivo é muito grande. O tamanho máximo permitido é de 2MB.";
+                return '';
+            }
+    
+            // Verifica se o tipo MIME da imagem é permitido
+            if (in_array(mime_content_type($imagem_temp), $mime_types)) {
+                $extensao = pathinfo($nome_imagem, PATHINFO_EXTENSION);
+                $novo_nome_imagem = uniqid('receita_', true) . '.' . $extensao;
+                $caminho_imagem = '../css/img/receita/' . $novo_nome_imagem;
+    
+                if (!is_dir('../css/img/receita/')) {
+                    mkdir('../css/img/receita/', 0777, true);
+                }
+    
+                if (!move_uploaded_file($imagem_temp, $caminho_imagem)) {
+                    $erro = "Erro ao mover o arquivo da imagem. Verifique se é um PNG e não excede 2MB.";
+                    return '';
+                }
+            } else {
+                $erro = "Formato de imagem inválido. Use PNG.";
+                return '';
+            }
+        }
+    
+        return $caminho_imagem; // Retorna o caminho ou uma string vazia se nenhuma imagem foi enviada
+    }
     
     
-?>
+    
+    
+        
+    ?> 
 
 <!DOCTYPE html>
 <html lang="pt-br">
@@ -186,6 +212,9 @@
                 <?php
                 if (!empty($erro)) {
                     echo "<script>alert('$erro');</script>";
+                } elseif (isset($_SESSION['mensagem'])) {
+                    echo "<script>alert('{$_SESSION['mensagem']}');</script>";
+                    unset($_SESSION['mensagem']); // 🔄 Garante que o alerta não seja exibido novamente
                 }
                 ?>
                 <form name="cad-receita" id="cad-receita" method="POST" action="" enctype="multipart/form-data">
@@ -321,7 +350,7 @@
                         ?>
                     </select><br>
 
-                    <input type="submit" name="CadReceita" value="Cadastrar Receita" class="button-long">
+                    <input type="submit" name="CadReceita" value="Cadastrar Receita" class="button-long" style="margin-bottom: 11px;">
                 </form>
         </div>
         </div>
