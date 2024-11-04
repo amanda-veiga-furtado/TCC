@@ -1,10 +1,16 @@
 <?php
-    session_start(); // Inicia a sessão para armazenar e gerenciar variáveis de sessão.
-    ob_start(); // Inicia o buffer de saída para capturar e manipular a saída.
+session_start();
+ob_start();
 
-    include_once '../conexao.php';
-    include '../css/functions.php';
-    include_once '../menu.php';
+if (!isset($_SESSION['id_usuario'])) {
+    header('Location: ../usuario/login.php'); // Redireciona para a página de login
+    $_SESSION['mensagem'] = "Necessário logar";
+    exit();
+}
+
+include_once '../conexao.php';
+include '../css/functions.php';
+include_once '../menu.php';
 
     if (isset($_SESSION['cadastro_realizado']) && $_SESSION['cadastro_realizado'] === true) {
         header('Location: confirmacao.php'); // Redireciona para uma página de confirmação ou exibe uma mensagem
@@ -76,28 +82,30 @@
     }
     
 
-    function insertReceita($dados, $numeroPorcao_receita, $tipoPorcao_receita, $tempoPreparoHora, $tempoPreparoMinuto, $caminho_imagem) {
-        global $conn; // Usa a variável global de conexão ao banco de dados
+function insertReceita($dados, $numeroPorcao_receita, $tipoPorcao_receita, $tempoPreparoHora, $tempoPreparoMinuto, $caminho_imagem) {
+global $conn; // Usa a variável global de conexão ao banco de dados
     
-        $categoria_receita = $dados['categoria_receita'] ?? null; // Captura o valor de categoria_receita
+$categoria_receita = $dados['categoria_receita'] ?? null; // Captura o valor de categoria_receita
+$id_usuario = $_SESSION['id_usuario']; // Captura o ID do usuário logado
+
+$query_receita = "INSERT INTO receita 
+(nome_receita, numeroPorcao_receita, tipoPorcao_receita, tempoPreparoHora_receita, tempoPreparoMinuto_receita, modoPreparo_receita, imagem_receita, categoria_receita, fk_id_usuario) 
+VALUES (:nome_receita, :numeroPorcao_receita, :tipoPorcao_receita, :tempoPreparoHora_receita, :tempoPreparoMinuto_receita, :modoPreparo_receita, :imagem_receita, :categoria_receita, :fk_id_usuario)";
     
-        $query_receita = "INSERT INTO receita 
-            (nome_receita, numeroPorcao_receita, tipoPorcao_receita, tempoPreparoHora_receita, tempoPreparoMinuto_receita, modoPreparo_receita, imagem_receita, categoria_receita) 
-            VALUES (:nome_receita, :numeroPorcao_receita, :tipoPorcao_receita, :tempoPreparoHora_receita, :tempoPreparoMinuto_receita, :modoPreparo_receita, :imagem_receita, :categoria_receita)";
+$cad_receita = $conn->prepare($query_receita); // Prepara a consulta SQL para inserir a receita
+$cad_receita->bindParam(':nome_receita', $dados['nome_receita']); // Associa o parâmetro da consulta ao valor fornecido
+$cad_receita->bindParam(':numeroPorcao_receita', $numeroPorcao_receita);
+$cad_receita->bindParam(':tipoPorcao_receita', $tipoPorcao_receita);
+$cad_receita->bindParam(':tempoPreparoHora_receita', $tempoPreparoHora);
+$cad_receita->bindParam(':tempoPreparoMinuto_receita', $tempoPreparoMinuto);
+$cad_receita->bindParam(':modoPreparo_receita', $dados['modoPreparo_receita']);
+$cad_receita->bindParam(':imagem_receita', $caminho_imagem);
+$cad_receita->bindParam(':categoria_receita', $categoria_receita); // Adiciona categoria_receita
+$cad_receita->bindParam(':fk_id_usuario', $id_usuario);
+
+$cad_receita->execute(); // Executa a consulta para inserir a receita
     
-        $cad_receita = $conn->prepare($query_receita); // Prepara a consulta SQL para inserir a receita
-        $cad_receita->bindParam(':nome_receita', $dados['nome_receita']); // Associa o parâmetro da consulta ao valor fornecido
-        $cad_receita->bindParam(':numeroPorcao_receita', $numeroPorcao_receita);
-        $cad_receita->bindParam(':tipoPorcao_receita', $tipoPorcao_receita);
-        $cad_receita->bindParam(':tempoPreparoHora_receita', $tempoPreparoHora);
-        $cad_receita->bindParam(':tempoPreparoMinuto_receita', $tempoPreparoMinuto);
-        $cad_receita->bindParam(':modoPreparo_receita', $dados['modoPreparo_receita']);
-        $cad_receita->bindParam(':imagem_receita', $caminho_imagem);
-        $cad_receita->bindParam(':categoria_receita', $categoria_receita); // Adiciona categoria_receita
-    
-        $cad_receita->execute(); // Executa a consulta para inserir a receita
-    
-        return $conn->lastInsertId(); // Retorna o ID da última receita inserida
+return $conn->lastInsertId(); // Retorna o ID da última receita inserida
     }
     function insertIngredientes($dados, $id_receita, &$erro) {
         global $conn; // Usa a variável global de conexão ao banco de dados
