@@ -208,8 +208,9 @@
                         }
                         ?>
                     </div>
-                    <button type="button" id="add-ingrediente" class="button-round button-plus">+</button>
-                    <button type="button" id="remove-ingrediente" class="button-round button-minus">-</button>
+                    <button type="button" id="add-ingrediente" class="button-round button-plus" title="Adicione 1 Ingrediente a Sua Receita"><i class="fa-solid fa-pencil"></i></button>
+
+                    <button type="button" id="remove-ingrediente" class="button-round button-minus" title="Remova 1 Ingrediente da Sua Receita"><i class="fa-solid fa-trash"></i></button>
 
                     <!-- Modo de Preparo -->
                     <?php $placeholder_text = file_get_contents('receita.txt'); ?>
