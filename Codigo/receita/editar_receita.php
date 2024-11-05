@@ -7,6 +7,7 @@
     include_once '../menu.php'; 
 
     $erro = ""; // Inicializa uma variável para armazenar mensagens de erro
+    $sucesso = "";
     $dados = []; // Inicializa uma variável para armazenar mensagens de erro
 
     $id_receita = filter_input(INPUT_GET, 'id_receita', FILTER_VALIDATE_INT); // Obtém o ID da receita da URL e valida se é um inteiro
@@ -82,8 +83,10 @@
                         insertIngredientes($dados, $id_receita, $erro);
 
                         if (empty($erro)) {
-                            echo "<p style='color: green;'>Receita atualizada com sucesso!</p>";
-                        }
+                            $sucesso .= "Receita atualizada com sucesso!";
+                                echo "<script>alert('" . addslashes($sucesso) . "');</script>";
+                            }
+                        
                     } catch (PDOException $err) {
                         $erro = "Erro: " . $err->getMessage();
                     }
@@ -120,6 +123,8 @@
 
                     <h2>Porção</h2>
                     <input type="number" name="numeroPorcao_receita" id="numeroPorcao_receita" min="0.001" step="0.001" value="<?php echo htmlspecialchars($dados['numeroPorcao_receita'], ENT_QUOTES); ?>"  style="width: 15%;" required>
+
+
                     <select name="tipoPorcao_receita" style="width: 84%;" required>
                     <?php
                         $query = $conn->query("SELECT id_porcao, nome_plural_porcao FROM porcao_quantidade ORDER BY nome_plural_porcao ASC");
@@ -212,17 +217,17 @@
                     <textarea name="modoPreparo_receita" id="modoPreparo_receita" placeholder="<?php echo htmlspecialchars($placeholder_text, ENT_QUOTES, 'UTF-8'); ?>" required><?php echo htmlspecialchars($dados['modoPreparo_receita'], ENT_QUOTES); ?></textarea><br>
 
                     <h2>Categoria</h2>
-                    <select name="categoria_receita" id="categoria_receita" style="width: 100%;">
-                        <option value="NULL">Não Desejo Selecionar Nenhuma Categoria</option>
+                    <select name="categoria_receita" id="categoria_receita" style="width: 100%;" required>
+                        <option value="">Selecione a categoria da receita</option>
                         <?php
                         $query = $conn->query("SELECT id_categoria_culinaria, nome_categoria_culinaria FROM categoria_culinaria ORDER BY nome_categoria_culinaria ASC");
-                        $categoria_opcoes = $query->fetchAll(PDO::FETCH_ASSOC);
-                        foreach ($categoria_opcoes as $option) {
-                            $selected = ($option['id_categoria_culinaria'] == $dados['categoria_receita']) ? 'selected' : '';
+                        $categoria_culinaria_opcoes = $query->fetchAll(PDO::FETCH_ASSOC);
+                        foreach ($categoria_culinaria_opcoes as $option) {
+                            $selected = (isset($dados['categoria_receita']) && $dados['categoria_receita'] == $option['id_categoria_culinaria']) ? 'selected' : '';
                             echo "<option value='{$option['id_categoria_culinaria']}' {$selected}>{$option['nome_categoria_culinaria']}</option>";
                         }
                         ?>
-                    </select>
+                    </select><br>
 
                     <input type="submit" name="EditReceita" value="Atualizar Receita" class="button-long">
                 </form>
@@ -302,6 +307,10 @@ function validateAndPrepareData($dados) {
     }
     if (($tempoPreparoHora == 0 && $tempoPreparoMinuto == 0) || ($tempoPreparoMinuto >= 60 && $tempoPreparoHora > 0)) {
         $erro .= "Formato de tempo inválido. Verifique os valores de horas e minutos.";
+        if (!empty($erro)) {
+            echo "<script>alert('" . addslashes($erro) . "');</script>";
+        }
+
     }
 
     return [$numeroPorcao_receita, $tipoPorcao_receita, $tempoPreparoHora, $tempoPreparoMinuto, $erro];
