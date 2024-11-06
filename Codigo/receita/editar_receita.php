@@ -320,25 +320,54 @@ function validateAndPrepareData($dados) {
 
 
 function handleImageUpload(&$erro) {
-    $extensao = strtolower(pathinfo($_FILES['imagem_receita']['name'], PATHINFO_EXTENSION));
-    if (!in_array($extensao, ['jpg', 'jpeg', 'png', 'gif'])) {
-        $erro .= "Formato de imagem inválido. ";
-        return null;
-    }
+    $caminho_imagem = ''; // Inicializa o caminho da imagem como vazio
 
-    $novo_nome = uniqid() . '.' . $extensao;
-    $caminho = '../css/img/receita/' . $novo_nome;
+    // Verifica se um arquivo foi enviado e se não houve erros no upload
+    if (isset($_FILES['imagem_receita']) && $_FILES['imagem_receita']['error'] === UPLOAD_ERR_OK) {
+        $imagem_temp = $_FILES['imagem_receita']['tmp_name'];
+        $nome_imagem = basename($_FILES['imagem_receita']['name']);
 
-    if (!is_dir('../css/img/receita')) {
-        mkdir('../css/img/receita', 0777, true);
-    }
+        // Define os tipos MIME permitidos e tamanhos máximos
+        $mime_types = ['image/png'];
+        $tamanho_maximo = 2 * 1024 * 1024; // 2MB
 
-    if (!move_uploaded_file($_FILES['imagem_receita']['tmp_name'], $caminho)) {
-        $erro .= "Erro ao fazer upload da imagem. ";
-        return null;
-    }
+        // Verifica o tamanho do arquivo
+        if ($_FILES['imagem_receita']['size'] > $tamanho_maximo) {
+            $erro = "O arquivo é muito grande. O tamanho máximo permitido é de 2MB.";
+            if (!empty($erro)) {
+                echo "<script>alert('" . addslashes($erro) . "');</script>";
+            }
+        }
 
-    return $caminho;
+        // Verifica se o tipo MIME da imagem é permitido
+        if (in_array(mime_content_type($imagem_temp), $mime_types)) {
+            $extensao = pathinfo($nome_imagem, PATHINFO_EXTENSION);
+            $novo_nome_imagem = uniqid('receita_', true) . '.' . $extensao;
+            $caminho_imagem = '../css/img/receita/' . $novo_nome_imagem;
+
+            if (!is_dir('../css/img/receita/')) {
+                mkdir('../css/img/receita/', 0777, true);
+            }
+
+            if (!move_uploaded_file($imagem_temp, $caminho_imagem)) {
+                if (!empty($erro)) {
+                    echo "<script>alert('" . addslashes($erro) . "');</script>";
+                }
+            }
+
+        
+            
+        } else {
+            $erro .= "Formato de imagem inválido. Use PNG.";
+                if (!empty($erro)) {
+                    echo "<script>alert('" . addslashes($erro) . "');</script>";
+                }
+        
+            }
+        }
+    
+
+    return $caminho_imagem; // Retorna o caminho ou uma string vazia se nenhuma imagem foi enviada
 }
 
 function insertIngredientes($dados, $id_receita, &$erro) {
