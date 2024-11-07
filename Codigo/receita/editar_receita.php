@@ -5,9 +5,13 @@
     include_once '../conexao.php'; 
     include '../css/functions.php';
     include_once '../menu.php'; 
+    if (!isset($_SESSION['id_usuario'])) {
+        header('Location: ../usuario/login.php'); // Redireciona para a página de login
+        $_SESSION['mensagem'] = "Necessário logar";
+        exit();
+    }
 
     $erro = ""; // Inicializa uma variável para armazenar mensagens de erro
-    $sucesso = "";
     $dados = []; // Inicializa uma variável para armazenar mensagens de erro
 
     $id_receita = filter_input(INPUT_GET, 'id_receita', FILTER_VALIDATE_INT); // Obtém o ID da receita da URL e valida se é um inteiro
@@ -80,13 +84,11 @@
                         $statement_delete->execute();
 
                         // Insert updated ingredients
-                        insertIngredientes($dados, $id_receita, $erro);
+                        editIngredientes($dados, $id_receita, $erro);
 
                         if (empty($erro)) {
-                            $sucesso .= "Receita atualizada com sucesso!";
-                                echo "<script>alert('" . addslashes($sucesso) . "');</script>";
-                            }
-                        
+                            echo "<p style='color: green;'>Receita atualizada com sucesso!</p>";
+                        }
                     } catch (PDOException $err) {
                         $erro = "Erro: " . $err->getMessage();
                     }
@@ -123,8 +125,6 @@
 
                     <h2>Porção</h2>
                     <input type="number" name="numeroPorcao_receita" id="numeroPorcao_receita" min="0.001" step="0.001" value="<?php echo htmlspecialchars($dados['numeroPorcao_receita'], ENT_QUOTES); ?>"  style="width: 15%;" required>
-
-
                     <select name="tipoPorcao_receita" style="width: 84%;" required>
                     <?php
                         $query = $conn->query("SELECT id_porcao, nome_plural_porcao FROM porcao_quantidade ORDER BY nome_plural_porcao ASC");
@@ -208,9 +208,8 @@
                         }
                         ?>
                     </div>
-                    <button type="button" id="add-ingrediente" class="button-round button-plus" title="Adicione 1 Ingrediente a Sua Receita"><i class="fa-solid fa-pencil"></i></button>
-
-                    <button type="button" id="remove-ingrediente" class="button-round button-minus" title="Remova 1 Ingrediente da Sua Receita"><i class="fa-solid fa-trash"></i></button>
+                    <button type="button" id="add-ingrediente" class="button-round button-plus">+</button>
+                    <button type="button" id="remove-ingrediente" class="button-round button-minus">-</button>
 
                     <!-- Modo de Preparo -->
                     <?php $placeholder_text = file_get_contents('receita.txt'); ?>
@@ -218,19 +217,19 @@
                     <textarea name="modoPreparo_receita" id="modoPreparo_receita" placeholder="<?php echo htmlspecialchars($placeholder_text, ENT_QUOTES, 'UTF-8'); ?>" required><?php echo htmlspecialchars($dados['modoPreparo_receita'], ENT_QUOTES); ?></textarea><br>
 
                     <h2>Categoria</h2>
-                    <select name="categoria_receita" id="categoria_receita" style="width: 100%;" required>
-                        <option value="">Selecione a categoria da receita</option>
+                    <select name="categoria_receita" id="categoria_receita" style="width: 100%;">
+                        <!-- <option value="NULL">Não Desejo Selecionar Nenhuma Categoria</option> -->
                         <?php
                         $query = $conn->query("SELECT id_categoria_culinaria, nome_categoria_culinaria FROM categoria_culinaria ORDER BY nome_categoria_culinaria ASC");
-                        $categoria_culinaria_opcoes = $query->fetchAll(PDO::FETCH_ASSOC);
-                        foreach ($categoria_culinaria_opcoes as $option) {
-                            $selected = (isset($dados['categoria_receita']) && $dados['categoria_receita'] == $option['id_categoria_culinaria']) ? 'selected' : '';
+                        $categoria_opcoes = $query->fetchAll(PDO::FETCH_ASSOC);
+                        foreach ($categoria_opcoes as $option) {
+                            $selected = ($option['id_categoria_culinaria'] == $dados['categoria_receita']) ? 'selected' : '';
                             echo "<option value='{$option['id_categoria_culinaria']}' {$selected}>{$option['nome_categoria_culinaria']}</option>";
                         }
                         ?>
-                    </select><br>
+                    </select>
 
-                    <input type="submit" name="EditReceita" value="Atualizar Receita" class="button-long">
+                    <input type="submit" name="EditReceita" value="Atualizar Receita" class="button-long" style="margin-bottom: 11px;">
                 </form>
             </div>
         </div>
@@ -308,10 +307,6 @@ function validateAndPrepareData($dados) {
     }
     if (($tempoPreparoHora == 0 && $tempoPreparoMinuto == 0) || ($tempoPreparoMinuto >= 60 && $tempoPreparoHora > 0)) {
         $erro .= "Formato de tempo inválido. Verifique os valores de horas e minutos.";
-        if (!empty($erro)) {
-            echo "<script>alert('" . addslashes($erro) . "');</script>";
-        }
-
     }
 
     return [$numeroPorcao_receita, $tipoPorcao_receita, $tempoPreparoHora, $tempoPreparoMinuto, $erro];
@@ -320,57 +315,32 @@ function validateAndPrepareData($dados) {
 
 
 function handleImageUpload(&$erro) {
-    $caminho_imagem = ''; // Inicializa o caminho da imagem como vazio
+    $extensao = strtolower(pathinfo($_FILES['imagem_receita']['name'], PATHINFO_EXTENSION));
+    // if (!in_array($extensao, haystack: ['jpg', 'jpeg', 'png', 'gif'])) {
+    if (!in_array($extensao, haystack: ['png'])) {
 
-    // Verifica se um arquivo foi enviado e se não houve erros no upload
-    if (isset($_FILES['imagem_receita']) && $_FILES['imagem_receita']['error'] === UPLOAD_ERR_OK) {
-        $imagem_temp = $_FILES['imagem_receita']['tmp_name'];
-        $nome_imagem = basename($_FILES['imagem_receita']['name']);
+        // $erro .= "Formato de imagem inválido. ";
+        $erro .= "Formato de imagem inválido. Use PNG.";
 
-        // Define os tipos MIME permitidos e tamanhos máximos
-        $mime_types = ['image/png'];
-        $tamanho_maximo = 2 * 1024 * 1024; // 2MB
+        return null;
+    }
 
-        // Verifica o tamanho do arquivo
-        if ($_FILES['imagem_receita']['size'] > $tamanho_maximo) {
-            $erro = "O arquivo é muito grande. O tamanho máximo permitido é de 2MB.";
-            if (!empty($erro)) {
-                echo "<script>alert('" . addslashes($erro) . "');</script>";
-            }
-        }
+    $novo_nome = uniqid() . '.' . $extensao;
+    $caminho = '../css/img/receita/' . $novo_nome;
 
-        // Verifica se o tipo MIME da imagem é permitido
-        if (in_array(mime_content_type($imagem_temp), $mime_types)) {
-            $extensao = pathinfo($nome_imagem, PATHINFO_EXTENSION);
-            $novo_nome_imagem = uniqid('receita_', true) . '.' . $extensao;
-            $caminho_imagem = '../css/img/receita/' . $novo_nome_imagem;
+    if (!is_dir('../css/img/receita')) {
+        mkdir('../css/img/receita', 0777, true);
+    }
 
-            if (!is_dir('../css/img/receita/')) {
-                mkdir('../css/img/receita/', 0777, true);
-            }
+    if (!move_uploaded_file($_FILES['imagem_receita']['tmp_name'], $caminho)) {
+        $erro .= "Erro ao fazer upload da imagem. ";
+        return null;
+    }
 
-            if (!move_uploaded_file($imagem_temp, $caminho_imagem)) {
-                if (!empty($erro)) {
-                    echo "<script>alert('" . addslashes($erro) . "');</script>";
-                }
-            }
-
-        
-            
-        } else {
-            $erro .= "Formato de imagem inválido. Use PNG.";
-                if (!empty($erro)) {
-                    echo "<script>alert('" . addslashes($erro) . "');</script>";
-                }
-        
-            }
-        }
-    
-
-    return $caminho_imagem; // Retorna o caminho ou uma string vazia se nenhuma imagem foi enviada
+    return $caminho;
 }
 
-function insertIngredientes($dados, $id_receita, &$erro) {
+function editIngredientes($dados, $id_receita, &$erro) {
     global $conn;
 
     if (!empty($dados['nome_ingrediente'])) {
@@ -379,15 +349,15 @@ function insertIngredientes($dados, $id_receita, &$erro) {
             $tipo = $dados['tipoIngrediente'][$index] ?? null;
 
             if (!empty($ingrediente) && $quantidade > 0 && !empty($tipo)) {
-                $query_insert = "INSERT INTO lista_de_ingredientes (fk_id_receita, fk_id_ingrediente, qtdIngrediente_lista, tipoQtdIngrediente_lista) 
+                $query_edit = "INSERT INTO lista_de_ingredientes (fk_id_receita, fk_id_ingrediente, qtdIngrediente_lista, tipoQtdIngrediente_lista) 
                                  VALUES (:fk_id_receita, :fk_id_ingrediente, :qtdIngrediente_lista, :tipoQtdIngrediente_lista)";
-                $statement_insert = $conn->prepare($query_insert);
-                $statement_insert->bindParam(':fk_id_receita', $id_receita);
-                $statement_insert->bindParam(':fk_id_ingrediente', $ingrediente);
-                $statement_insert->bindParam(':qtdIngrediente_lista', $quantidade);
-                $statement_insert->bindParam(':tipoQtdIngrediente_lista', $tipo);
+                $statement_edit = $conn->prepare($query_edit);
+                $statement_edit->bindParam(':fk_id_receita', $id_receita);
+                $statement_edit->bindParam(':fk_id_ingrediente', $ingrediente);
+                $statement_edit->bindParam(':qtdIngrediente_lista', $quantidade);
+                $statement_edit->bindParam(':tipoQtdIngrediente_lista', $tipo);
 
-                $statement_insert->execute();
+                $statement_edit->execute();
             }
         }
     }
