@@ -1,18 +1,19 @@
 <?php
-    session_start(); // Inicia a sessão para gerenciar dados do usuário
-    ob_start(); // Ativa o buffer de saída para manipulação de conteúdo
+session_start(); 
+ob_start();
 
-    include_once '../conexao.php'; 
-    include '../css/functions.php';
-    include_once '../menu.php'; 
-    if (!isset($_SESSION['id_usuario'])) {
-        header('Location: ../usuario/login.php'); // Redireciona para a página de login
-        $_SESSION['mensagem'] = "Necessário logar";
-        exit();
-    }
+if (!isset($_SESSION['id_usuario'])) {
+    header('Location: ../usuario/login.php'); // Redireciona para a página de login
+    $_SESSION['mensagem'] = "Necessário logar";
+    exit();
+}
 
-    $erro = ""; // Inicializa uma variável para armazenar mensagens de erro
-    $dados = []; // Inicializa uma variável para armazenar mensagens de erro
+include_once '../conexao.php'; 
+include '../css/functions.php';
+include_once '../menu.php'; 
+
+$erro = ""; // Inicializa uma variável para armazenar mensagens de erro
+$dados = []; // Inicializa uma variável para armazenar mensagens de erro
 
     $id_receita = filter_input(INPUT_GET, 'id_receita', FILTER_VALIDATE_INT); // Obtém o ID da receita da URL e valida se é um inteiro
 
