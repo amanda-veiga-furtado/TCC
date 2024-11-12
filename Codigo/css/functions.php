@@ -227,6 +227,8 @@
                     --azul-primario:        #36cedc;        --azul-secundario:      #30B5C2;
                     --roxo-primario:        #a587ca;        --roxo-secundario:      #8c6db6;
                     --cinza-primario:       #f9f9f9;        --cinza-secundario:     #8f8f8f; 
+                    /* //#5E5E5E */
+                    /* #FE8FAA */
                 }
             /*menu.php______________________________________________________________*/
                 nav {

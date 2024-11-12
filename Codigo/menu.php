@@ -22,6 +22,9 @@
             <li><a href='../receita/listagem_receitas.php' data-item='Livro de Receitas'>Livro de Receitas</a></li>
 
             <li><a href='../receita/cadastrar_receita.php' data-item='Compartilhar Receita'>Compartilhar Receita</a></li>
+            <li><a href='../receita/sugestao.php' data-item='Sugestão'>Sugestão</a></li>
+
+
             <li><a href='../usuario/dashboard.php' data-item='Meu Perfil'><i class="fa-solid fa-circle-user fa-lg"></i></a></li>
         </ul>
     </nav>

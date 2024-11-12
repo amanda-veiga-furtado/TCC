@@ -141,7 +141,12 @@ include_once '../menu.php';
                         <div class="container-button-long">
 
                         <input type="submit" name="CadUsuario" value="Cadastrar" class="button-long">
-                        <div class="div_link"><a href="recuperar_senha/recuperar_senha.php" style="color: white;">Recuperar Acesso</a></div></div>
+                        <!-- <div class="div_link"><a href="recuperar_senha/recuperar_senha.php" style="color: white;">Recuperar Acesso</a></div></div> -->
+
+                        <div class="div_link">
+                            <a href="recuperar_senha/recuperar_senha.php" style="color: white; pointer-events: none;">Recuperar Acesso</a>
+                        </div>
+
                         
                     </form>
                 </div>
