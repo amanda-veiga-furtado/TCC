@@ -36,7 +36,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['update_profile'])) {
     $stmt->execute();
     
     if ($stmt->fetchColumn() > 0) {
-        $mensagem = "Erro: Nome de usuário já está em uso!";
+        $mensagem = "Desculpe, esse nome de usuário já está em uso. Tente um nome diferente";
     } else {
         if ($imagem_usuario) {
             $file_extension = strtolower(pathinfo($imagem_usuario, PATHINFO_EXTENSION));
@@ -64,6 +64,8 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['update_profile'])) {
         if ($stmt->execute()) {
             $mensagem = "Perfil atualizado com sucesso!";
             $_SESSION['nome_usuario'] = $novo_nome_usuario;
+            header("Location: " . $_SERVER['PHP_SELF']); // Redireciona para recarregar a página
+            exit();
         }
     }
 }
