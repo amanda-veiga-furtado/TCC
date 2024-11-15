@@ -112,7 +112,7 @@ include_once '../menu.php';
                                 $count = $stmt->fetchColumn();
 
                                 if ($count > 0) {
-                                    $_SESSION['mensagem'] = "Erro: Nome de usuário ou email já cadastrados!";
+                                    $_SESSION['mensagem'] = "Nome de usuário ou email já uso!";
                                 } else {
                                     $stmt = $conn->prepare("INSERT INTO usuario (nome_usuario, email_usuario, senha_usuario) VALUES (:nome_usuario, :email_usuario, :senha_usuario)");
 
