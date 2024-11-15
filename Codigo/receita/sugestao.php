@@ -8,7 +8,7 @@ include_once '../menu.php';
 
 if (!isset($_SESSION['id_usuario'])) {
     header('Location: ../usuario/login.php'); // Redireciona para a página de login
-    $_SESSION['mensagem'] = "Necessário logar";
+    $_SESSION['mensagem'] = "Para prosseguir, é necessário estar logado.";
     exit();
 }
 
@@ -44,7 +44,7 @@ if (!isset($_SESSION['id_usuario'])) {
             $send_sugerir->execute();
 
             // Mensagem de sucesso
-            $_SESSION['mensagem'] = "Sugestão enviada com sucesso!";
+            $_SESSION['mensagem'] = "Sugestão enviada com sucesso! Agradecemos pela sua contribuição.";
         }
     }
 ?>
