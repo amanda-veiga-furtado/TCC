@@ -12,7 +12,6 @@ include_once '../conexao.php';
 include '../css/frontend.php';
 include_once '../menu.php'; 
 ?>
-
 <!DOCTYPE html>
 <html lang="pt-br">
     <head>
@@ -31,18 +30,16 @@ include_once '../menu.php';
                             <button id="signupBtn" onclick="showSignup()">Cadastro</button> <!-- Exibir form de cadastro -->
 
                             <div id="toggleLine" class="toggle-line-small"></div> <!-- Linha colorida de seleção atual -->
-                    </div>
+                        </div>
                     
-                    <!-- Login --------------------------------------------------------------------------->
-                    <?php
+                        <!-- Login ----------------------------------------------------------------------->
+                        <?php
                         if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['SendLogin'])) {
                             $email_usuario = $_POST['email_usuario'];
                             $senha_usuario = $_POST['senha_usuario'];
 
                             try {
-
                                 $stmt = $conn->prepare("SELECT id_usuario, nome_usuario, senha_usuario, statusAdministrador_usuario FROM usuario WHERE email_usuario = :email_usuario");
-
 
                                 $stmt->bindParam(':email_usuario', $email_usuario);
                                 $stmt->execute();
@@ -53,50 +50,48 @@ include_once '../menu.php';
                                     if ($usuario['statusAdministrador_usuario'] == 'b') {
                                         $_SESSION['mensagem'] = "Você foi suspenso pelo Administrador!";
 
-                                    }elseif (password_verify($senha_usuario, $usuario['senha_usuario'])) {
+                                    } elseif (password_verify($senha_usuario, $usuario['senha_usuario'])) {
                                         $_SESSION['id_usuario'] = $usuario['id_usuario'];
                                         $_SESSION['nome_usuario'] = $usuario['nome_usuario'];
                                         $_SESSION['email_usuario'] = $email_usuario;
 
-
                                         $_SESSION['statusAdministrador_usuario'] = $usuario['statusAdministrador_usuario']; 
-                                        
+                                            
                                         header("Location: dashboard.php");
                                         exit();
                                     } else {
                                         // $_SESSION['mensagem'] = "Senha incorreta!";
                                         $_SESSION['mensagem'] = "Login Invalido!";
-
                                     }
                                 } else {
                                     // $_SESSION['mensagem'] = "Usuário não encontrado!";
                                     $_SESSION['mensagem'] = "Login Invalido!";
 
-                                }
+                                    }
                             } catch (PDOException $e) {
                                 $_SESSION['mensagem'] = "Erro ao verificar o usuário!";
                             }
                         }
-                    ?>
-                    <form id="loginForm" class="form" method="POST" action="" style="display: block;">
-                        <h2>Bem-Vindo(a) de Volta!</h2>
-                        <!-- <h2>Bem-Vindo(a) de Volta!</h2> -->
-                        <!-- <h2>Bem-Vindo(a)! Faça login ou cadastre-se para acessar sua conta</h2> -->
-                        <!-- <h2>Bem-Vindo(a)! Cadastre-se para criar sua conta ou faça login se já tiver uma</h2> -->
-                        <!-- <h2>Bem-Vindo(a)! Faça login ou crie uma conta!</h2> -->
+                        ?>
+                        <form id="loginForm" class="form" method="POST" action="" style="display: block;">
+                            <h2>Bem-Vindo(a) de Volta!</h2>
+                            <!-- <h2>Bem-Vindo(a) de Volta!</h2> -->
+                            <!-- <h2>Bem-Vindo(a)! Faça login ou cadastre-se para acessar sua conta</h2> -->
+                            <!-- <h2>Bem-Vindo(a)! Cadastre-se para criar sua conta ou faça login se já tiver uma</h2> -->
+                            <!-- <h2>Bem-Vindo(a)! Faça login ou crie uma conta!</h2> -->
 
 
-                        <input type="email" name="email_usuario"  placeholder="Email" required>
-                        <input type="password" name="senha_usuario" placeholder="Senha" required>
-                        <div class="container-button-long">
+                            <input type="email" name="email_usuario"  placeholder="Email" required>
+                            <input type="password" name="senha_usuario" placeholder="Senha" required>
+                            <div class="container-button-long">
 
-                        <input type="submit" name="SendLogin" value="Entrar" class="button-long">
-                        <div class="div_link"><a href="recuperar_senha/recuperar_senha.php">Recuperar Acesso</a></div>
-                        </div>
-                    </form>
+                            <input type="submit" name="SendLogin" value="Entrar" class="button-long">
+                            <div class="div_link"><a href="recuperar_senha/recuperar_senha.php">Recuperar Acesso</a></div>
+                            </div>
+                        </form>
 
-                    <!-- Cadastro ------------------------------------------------------------------------>
-                    <?php
+                        <!-- Cadastro ------------------------------------------------------------------------>
+                        <?php
                         if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['CadUsuario'])) {
                             $nome_usuario = $_POST['nome_usuario'];
                             $email_usuario = $_POST['email_usuario'];
@@ -122,34 +117,34 @@ include_once '../menu.php';
                                     $stmt->execute();
 
                                     $_SESSION['mensagem'] = "Usuário cadastrado com sucesso!";
+                                    }
+                                } catch (PDOException $e) {
+                                    $_SESSION['mensagem'] = "Erro: Usuário não cadastrado com sucesso!";
                                 }
-                            } catch (PDOException $e) {
-                                $_SESSION['mensagem'] = "Erro: Usuário não cadastrado com sucesso!";
-                            }
 
-                            header("Location: " . $_SERVER['PHP_SELF']);
-                            exit();
+                                header("Location: " . $_SERVER['PHP_SELF']);
+                                exit();
                         }
-                    ?>
+                        ?>
 
-                    <form name="signupForm" id="signupForm" method="POST" action="" class="form" style="display: none;">
-                        <!-- <h2>Cadastro</h2> -->
-                        <input type="text" name="nome_usuario" id="nome_usuario" placeholder="Nome de Usuario" required>
-                        <input type="email" name="email_usuario" id="email_usuario" placeholder="Email" required>
-                        <input type="password" name="senha_usuario" id="senha_usuario" placeholder="Senha" required>
+                        <form name="signupForm" id="signupForm" method="POST" action="" class="form" style="display: none;">
+                            <!-- <h2>Cadastro</h2> -->
+                            <input type="text" name="nome_usuario" id="nome_usuario" placeholder="Nome de Usuario" required>
+                            <input type="email" name="email_usuario" id="email_usuario" placeholder="Email" required>
+                            <input type="password" name="senha_usuario" id="senha_usuario" placeholder="Senha" required>
 
-                        <div class="container-button-long">
+                            <div class="container-button-long">
 
-                        <input type="submit" name="CadUsuario" value="Cadastrar" class="button-long">
-                        <!-- <div class="div_link"><a href="recuperar_senha/recuperar_senha.php" style="color: white;">Recuperar Acesso</a></div></div> -->
+                            <input type="submit" name="CadUsuario" value="Cadastrar" class="button-long">
+                            <!-- <div class="div_link"><a href="recuperar_senha/recuperar_senha.php" style="color: white;">Recuperar Acesso</a></div></div> -->
 
-                        <div class="div_link">
-                            <a href="recuperar_senha/recuperar_senha.php" style="color: white; pointer-events: none;">Recuperar Acesso</a>
-                        </div>
+                            <div class="div_link">
+                                <a href="recuperar_senha/recuperar_senha.php" style="color: white; pointer-events: none;">Recuperar Acesso</a>
+                            </div>
 
-                        
-                    </form>
-                </div>
+                            
+                        </form>
+                    </div>
                 </div>
             </div>
         </div>
