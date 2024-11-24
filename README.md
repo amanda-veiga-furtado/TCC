@@ -27,6 +27,7 @@
 - `/frontend`: Código referente ao front-end, incluindo HTML, CSS e JavaScript.  
 - `/backend`: Scripts PHP para lógica de negócios e conexão com o banco de dados.  
 - `/database`: Scripts SQL para configuração do banco de dados MySQL.   -->
+<!-- - `/Documentação`: Inclui diagramas, modelos e -->
 
 <!-- --- -->
 
@@ -67,7 +68,7 @@ Este projeto é licenciado sob a licença MIT. Consulte o arquivo [LICENSE](LICE
 --- -->
 
 ## 💡 Autora  
-Projeto desenvolvido por **Amanda Veiga Furtado** como Trabalho de Conclusão de Curso (TCC) para a Faculdade de Tecnologia do Ipiranga.  
+Projeto desenvolvido por **Amanda Veiga Furtado** como Trabalho de Conclusão de Curso (TCC) para o curso de Análise e Desenvolvimento de Sistemas da Faculdade de Tecnologia do Ipiranga.  
 
 --- 
 
