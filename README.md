@@ -8,9 +8,9 @@
 - **Cadastro e Login**: Usuários podem criar contas, gerenciar seus perfis e acessar funcionalidades personalizadas.  
 - **Busca por Ingredientes**: Encontre receitas com base nos ingredientes disponíveis em casa.  
 - **Publicação de Receitas**: Poste receitas com imagens, categorias e detalhes completos.  
+- **Administração**: Funções para gerenciar usuários e receitas, incluindo banimento de contas e exclusão de conteúdo.  
 <!-- - **Interação Social**: Comente, avalie, favorite e compartilhe receitas.   -->
 <!-- - **Cálculo de Porções**: Ajuste as porções e veja as quantidades recalculadas automaticamente.   -->
-- **Administração**: Funções para gerenciar usuários e receitas, incluindo banimento de contas e exclusão de conteúdo.  
 
 ---
 
@@ -40,7 +40,7 @@
 4. Garanta que o Apache e MySQL estejam ativados.  
 5. Acesse o projeto pelo navegador (ex.: `http://localhost/no-que-isso-vai-dar`).   -->
 
----
+<!-- --- -->
 
 <!-- ## 👥 Contribuindo  
 Contribuições são bem-vindas! Siga os passos abaixo:  
@@ -59,14 +59,14 @@ Contribuições são bem-vindas! Siga os passos abaixo:
    ```  
 5. Abra um Pull Request.   -->
 
----
+<!-- --- -->
 
 <!-- ## 📄 Licença  
 Este projeto é licenciado sob a licença MIT. Consulte o arquivo [LICENSE](LICENSE) para mais informações.
 
 --- -->
 
-## 💡 Autor  
+## 💡 Autora  
 Projeto desenvolvido por **Amanda Veiga Furtado** como Trabalho de Conclusão de Curso (TCC) para a Faculdade de Tecnologia do Ipiranga.  
 
 --- 
