@@ -8,8 +8,8 @@
 <body>
     <nav>
         <ul class="menuItems">
-            <li><a href='../usuario/listagem_cadastros.php' data-item='Usuários Cadastrados'>Usuários Cadastrados <i class="fa-solid fa-lock-open"></i></a></li>
-            <li><a href='../receita/listagem_receitas_admin.php' data-item='Receitas Cadastradas'>Receitas Cadastradas <i class="fa-solid fa-lock-open"></i></a></li>
+            <li><a href='http://localhost/TCC/Codigo/usuario/listagem_cadastros.php' data-item='Usuários Cadastrados'>Usuários Cadastrados <i class="fa-solid fa-lock-open"></i></a></li>
+            <li><a href='http://localhost/TCC/Codigo/receita/listagem_receitas_admin.php' data-item='Receitas Cadastradas'>Receitas Cadastradas <i class="fa-solid fa-lock-open"></i></a></li>
         </ul>
     </nav>
 </body>
