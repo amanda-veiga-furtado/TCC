@@ -3,7 +3,7 @@ session_start();
 ob_start();
 
 include_once '../conexao.php'; 
-include '../css/functions.php';
+include '../css/frontend.php';
 include_once '../menu.php'; 
 ?>
 <!DOCTYPE html>

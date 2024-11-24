@@ -3,7 +3,7 @@ session_start(); // Inicia a sessão do usuário.
 ob_start(); // Inicia o buffer de saída.
 
 include_once '../../conexao.php'; // Inclui o arquivo de conexão ao banco de dados.
-include '../../css/functions.php'; // Inclui funções auxiliares de um arquivo CSS.
+include '../../css/frontend.php'; // Inclui funções auxiliares de um arquivo CSS.
 include_once '../../menu.php'; // Inclui o menu de navegação.
 
 // Verifica se nenhum ingrediente foi passado na URL

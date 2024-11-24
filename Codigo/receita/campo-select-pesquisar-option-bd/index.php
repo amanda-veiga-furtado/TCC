@@ -3,7 +3,7 @@
     ob_start();
 
     include_once '../../conexao.php';
-    include_once '../../css/functions.php';
+    include_once '../../css/frontend.php';
 
     // Query para buscar os ingredientes
     $query = "SELECT id_ingrediente, nome_ingrediente FROM ingrediente";

@@ -1,350 +1,335 @@
 <!DOCTYPE html>
 <html lang="pt-br">
-    <head>
-        <meta charset="UTF-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-        <!-- Símbolos -->
-            <script src="https://kit.fontawesome.com/9572f9bae9.js" crossorigin="anonymous"></script>
-
-        <!-- Impedir Digitaçao de caracteres especiais -->
-            <script src="../css/script_defer.js" defer></script>
-        
-        <!-- Campo Select Pesquisar Digitando -->
-            <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
-            <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-            <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
-
-        <style>
-        /*containers*/
-        <?php
-            // Função Mudar Imagem Aleatóriamente
-                $images = range(start: 1,end: 32); // Array com o nome das imagens
-                $randomImage = $images[array_rand($images)]; // Seleciona uma imagem aleatória    
-        ?>
-        .container_background_image_small {
-            width: 100vw;
-            height: 70.6vh; 
-            /* 85,3 */
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            background: url('../css/img/fundo/<?php echo $randomImage; ?>.jpg')no-repeat center center;
-            background-size: cover;
-            background-position: center;
-            background-attachment: fixed;
-        }
-        .container_background_image_medium {
-            width: 100vw;
-            height: 85.3vh;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            background: url('../css/img/fundo/<?php echo $randomImage; ?>.jpg')no-repeat center center;
-            background-size: cover;
-            background-position: center;
-            background-attachment: fixed;
-        }
-        .container_background_image_grow {
-            width: 100%;
-            /* height: 85.3vh; */
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            background: url('../css/img/fundo/<?php echo $randomImage; ?>.jpg')no-repeat center center;
-            background-size: cover;
-            background-position: center;
-            background-attachment: fixed;
-        }
-        .container_background_image_grow_2 {
-            width: 100%;
-            /* height: 85.3vh; */
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            background: url('../../css/img/fundo/<?php echo $randomImage; ?>.jpg')no-repeat center center;
-            background-size: cover;
-            background-position: center;
-            background-attachment: fixed;
-        }
-        .container_whitecard_small {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            position: relative;
-            background: white;
-            padding: 30px;
-            border-radius: 12px;
-            width: 710px;
-            height: 343px;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            box-shadow: 25px 30px 55px #5557;
-            border-radius: 13px;
-            overflow: hidden;
-            margin-top: 8.45vh; 
-            margin-bottom: 8.45vh; /* Cartão Branco no meio da pagina */
-        }
-        .container_whitecard_grow {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            position: relative;
-            background: white;
-            padding: 30px;
-            border-radius: 12px;
-            width: 710px;
-            min-height: 410px;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            box-shadow: 25px 30px 55px #5557;
-            border-radius: 13px;
-            overflow: hidden;
-            margin-top: 8.45vh;
-            margin-bottom: 8.45vh;
-        }
-        .container_form {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            width: 96%;
-            height: 93.5%;
-            /* background-color: #30B5C2; */
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            margin-top: 1.9vh; 
-            /* margin-bottom: 1vh; */
-        }
-        /* Titulo */
-        .form-title-big {
-            display: flex;
-            justify-content: space-between;
-            margin-bottom: 25px;
-            margin-top: 25px;
-            width: 100%;
-            position: relative;
-        } 
-        .form-toggle button,
-        .form-title-big button {
-            background: none;
-            border: none;
-            /* font-size: 20px; */
-            font-size: 22px;
-            cursor: pointer;
-            padding: 10px 20px;
-            color: #888;
-            transition: color 0.3s;
-            flex-grow: 1;
-            text-align: center;
-        }
-        .form-title-big button {
-                font-size: 32px;
-        }
-        .form-toggle button:hover,
-        .form-title-big button:hover,
-        .form-toggle button:focus,
-        .form-title-big button:focus {
-            color: #333;
-        }
-        .toggle-line-big {
-            position: absolute;
-            bottom: -5px;
-            left: 100%;
-            width: 100%;
-            height: 3px;
-            background: linear-gradient(90deg, var(--vermelho-primario), var(--laranja-primario), var(--amarelo-primario), var(--verde-primario), var(--azul-primario), var(--roxo-primario)); /* Gradiente arco-íris */
-            transition: transform 0.3s;
-            transform: translateX(-100%); /* Centraliza horizontalmente */
-        }
-        .toggle-line-small {
-            position: absolute;
-            bottom: -5px;
-            left: 0;
-            width: 50%;
-            height: 3px;
-            background: linear-gradient(90deg, var(--vermelho-primario), var(--laranja-primario), var(--amarelo-primario), var(--verde-primario), var(--azul-primario), var(--roxo-primario)); /* Gradiente arco-íris */
-            transition: transform 0.3s;
-            }
-
-            /* Cards */
-            .projcard {
-                position: relative;
-                width: 90%;
-                height: 220px;
-                margin-bottom: 30px;
-                border-radius: 10px;
-                background-color: white;
-                border: 2px solid #ddd;
-                font-size: 18px;
-                overflow: hidden;
-                cursor: pointer;
-                box-shadow: 0 4px 21px -12px rgba(0, 0, 0, .66);
-                transition: box-shadow 0.2s ease, transform 0.2s ease;
-            }
-            .projcard-small {
-                position: relative;
-                width: 90%;
-                height: 160px;
-                margin-bottom: 30px;
-                border-radius: 10px;
-                background-color: white;
-                border: 2px solid #ddd;
-                font-size: 18px;
-                overflow: hidden;
-                cursor: pointer;
-                box-shadow: 0 4px 21px -12px rgba(0, 0, 0, .66);
-                transition: box-shadow 0.2s ease, transform 0.2s ease;
-                align-items: center;
-                align-content: center;
-                justify-content: center; /* centraliza os itens horizontalmente */
-
-                    }
-            .projcard:hover,
-            .projcard-small:hover{
-                box-shadow: 0 34px 32px -33px rgba(0, 0, 0, .18);
-                transform: translate(0px, -3px);
-            }
-
-
-
-
-
-
-
-
-
-            * {
-                padding: 0; /* Remove o padding padrão de todos os elementos */
-                margin: 0; /* Remove a margem padrão de todos os elementos */
-                box-sizing: border-box; /* Inclui padding e border na largura e altura total dos elementos */
-            }
-            body {
-                font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            }
-            /* Paleta de Cores______________________________________________________*/
-                :root {
-                    --vermelho-primario:    #fe797b;        --vermelho-secundario:  #FC445D;
-                    --laranja-primario:     #ffb750;        --laranja-secundario:   #f39c12;
-                    --amarelo-primario:     #ffea56;        --amarelo-secundario:   #f1c40f;
-                    --verde-primario:       #8fe968;        --verde-secundario:     #7BDB47;
-                    --azul-primario:        #36cedc;        --azul-secundario:      #30B5C2;
-                    --roxo-primario:        #a587ca;        --roxo-secundario:      #8c6db6;
-                    --cinza-primario:       #f9f9f9;        --cinza-secundario:     #8f8f8f; 
-                    /* //#5E5E5E */
-                    /* #FE8FAA */
-                }
-            /*menu.php______________________________________________________________*/
-                nav {
-                    display: flex; /* Usa flexbox para alinhar conteúdo verticalmente */
-                    flex-direction: column; /* Coluna principal */
-                    justify-content: center; /* Centraliza verticalmente */
-                    align-items: center; /* Centraliza horizontalmente */
-                    position: relative; /* Define a posição relativa para o body */
-                    font-family: Hack, monospace; /* Define a fonte para todo o documento */
-                    width: 100%; /* Faz a navbar preencher toda a largura da tela */
-                    margin: 0px; /* Margem zero para remover espaçamento padrão */
-                    background: var(--cinza-primario); /* Cor de fundo da barra de navegação */
-                    padding: 0px; /* Padding zero para remover espaçamento interno */
-                }
-                .menuItems {
-                    list-style: none; /* Remove marcadores de lista */
-                    display: flex; /* Usa flexbox para alinhar itens da lista */
-                    justify-content: center; /* Centraliza horizontalmente os itens da lista */
-                }
-                .menuItems li {
-                    display: flex; /* Adiciona flexbox ao li */
-                    align-items: center; /* Centraliza verticalmente os itens */
-                    margin: 30px; /* Margem entre os itens da lista */
-                    position: relative; /* Define a posição relativa para os itens da lista */
-                    text-align: center;
-                }
-                .menuItems a {
-                    text-decoration: none; /* Remove sublinhado dos links */
-                    color: var(--cinza-secundario); /* Cor do texto dos links */
-                    font-size: 24px; /* Tamanho da fonte dos links */
-                    font-weight: 400; /* Peso normal da fonte */
-                    text-transform: uppercase; /* Transforma o texto em maiúsculas */
-                    position: relative; /* Define a posição relativa para os links */
-                }
-                .menuItems a::before {
-                    content: ''; /* Conteúdo vazio para o pseudoelemento ::before */
-                    position: absolute; /* Posição absoluta para o pseudoelemento */
-                    width: 100%; /* Largura total */
-                    height: 3px; /* Altura do traço arco-íris */
-                    bottom: -6px; /* Posicionamento abaixo do texto */
-                    background: linear-gradient(90deg, var(--vermelho-primario), var(--laranja-primario), var(--amarelo-primario), var(--verde-primario), var(--azul-primario), var(--roxo-primario)); /* Gradiente arco-íris */
-                    visibility: hidden; /* Inicia invisível */
-                    transform: scaleX(0); /* Inicia sem largura (escala zero) */
-                    transition: transform 0.3s ease, visibility 0s linear 0.3s; /* Transição suave */
-                }
-                .menuItems a:hover::before {
-                    visibility: visible; /* Torna o traço visível ao passar o mouse */
-                    transform: scaleX(1); /* Expande o traço para a largura total do link */
-                    transition: transform 0.3s ease, visibility 0s linear; /* Transição suave */
-                }
-            /*Input_________________________________________________________________*/
-                .container_form input[type="text"], 
-                .container_form input[type="email"], 
-                .container_form input[type="password"],
-                .container_form input[type="number"],
-                .container_form textarea, 
-                .container_form select {
-                    margin-bottom: 17px;
-                    padding: 12px; /* Espaçamento interno */
-                    border: 1px solid rgba(143, 143, 143, 0.5);
-                    border-radius: 8px;
-                    font-size: 16px;
-                    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-                    width: 100%;
-                    box-sizing: border-box;
-                    height: 46px;
-                    background-color: white;
-                    color: var(--cinza-secundario); 
-                    transition: border-color 0.3s, box-shadow 0.3s; /* Transição suave */
-                }
-                .container_form textarea{
-                    height: 460px;
-                }
-                input[type="file"] {
-                margin-bottom: 15px;
-                border: 1px solid rgba(143, 143, 143, 0.5);
-                border-radius: 8px;
-                height: 46px; 
-                padding: 0; 
-                font-size: 16px;
-                box-sizing: border-box;
-                width: 100%;
-                }
-                /* Botão do file input*/
-                input[type="file"]::file-selector-button {
-                    background-color: #36cedc;
-                    border: none;
-                    border-radius: 8px;
-                    color: white;
-                    padding: 10px;
-                    cursor: pointer;
-                    height: 100%; /* Ensures the button fills the input height */
-                }
-                input[type="file"]::file-selector-button:hover {
-                    background-color: #30B5C2;
-                }
-                input[type="text"]:focus,
-                .container_form input[type="email"]:focus, 
-                .container_form input[type="password"]:focus,
-                textarea:focus, select:focus,
-                input[type="file"]:focus {
-                    border-color: var(--azul-primario);
-                    outline: none;
-                }
+    <!-- Símbolos --><script src="https://kit.fontawesome.com/9572f9bae9.js" crossorigin="anonymous"></script>
+    <!-- Impedir Digitaçao de caracteres especiais --><script src="../css/script_defer.js" defer></script>   
+    <!-- Campo Select Pesquisar Digitando -->
+    <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
+<style>
+    * {
+        padding: 0; /* Remove o padding padrão de todos os elementos */
+        margin: 0; /* Remove a margem padrão de todos os elementos */
+        box-sizing: border-box; /* Inclui padding e border na largura e altura total dos elementos */
+    }
+    body {
+        font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    }
+    /* Paleta de Cores______________________________________________________*/
+    :root {
+        --vermelho-primario:#fe797b;    --vermelho-secundario:#FC445D;
+        --laranja-primario: #ffb750;    --laranja-secundario: #f39c12;
+        --amarelo-primario: #ffea56;    --amarelo-secundario: #f1c40f;
+        --verde-primario:   #8fe968;    --verde-secundario:   #7BDB47;
+        --azul-primario:    #36cedc;    --azul-secundario:    #30B5C2;
+        --roxo-primario:    #a587ca;    --roxo-secundario:    #8c6db6;
+        --cinza-primario:   #f9f9f9;    --cinza-secundario:   #8f8f8f;    --cinza-terciario: #5E5E5E; 
+        --rosa-primario:    #FE8FAA;
+    }
+    /*menu.php______________________________________________________________*/
+    nav {
+        display: flex; /* Usa flexbox para alinhar conteúdo verticalmente */
+        flex-direction: column; /* Coluna principal */
+        justify-content: center; /* Centraliza verticalmente */
+        align-items: center; /* Centraliza horizontalmente */
+        position: relative; /* Define a posição relativa para o body */
+        font-family: Hack, monospace; /* Define a fonte para todo o documento */
+        width: 100%; /* Faz a navbar preencher toda a largura da tela */
+        margin: 0px; /* Margem zero para remover espaçamento padrão */
+        background: var(--cinza-primario); /* Cor de fundo da barra de navegação */
+        padding: 0px; /* Padding zero para remover espaçamento interno */
+    }
+    .menuItems {
+        list-style: none; /* Remove marcadores de lista */
+        display: flex; /* Usa flexbox para alinhar itens da lista */
+        justify-content: center; /* Centraliza horizontalmente os itens da lista */
+    }
+    .menuItems li {
+        display: flex; /* Adiciona flexbox ao li */
+        align-items: center; /* Centraliza verticalmente os itens */
+        margin: 30px; /* Margem entre os itens da lista */
+        position: relative; /* Define a posição relativa para os itens da lista */
+        text-align: center;
+    }
+    .menuItems a {
+        text-decoration: none; /* Remove sublinhado dos links */
+        color: var(--cinza-secundario); /* Cor do texto dos links */
+        font-size: 24px; /* Tamanho da fonte dos links */
+        font-weight: 400; /* Peso normal da fonte */
+        text-transform: uppercase; /* Transforma o texto em maiúsculas */
+        position: relative; /* Define a posição relativa para os links */
+    }
+    .menuItems a::before {
+        content: ''; /* Conteúdo vazio para o pseudoelemento ::before */
+        position: absolute; /* Posição absoluta para o pseudoelemento */
+        width: 100%; /* Largura total */
+        height: 3px; /* Altura do traço arco-íris */
+        bottom: -6px; /* Posicionamento abaixo do texto */
+        background: linear-gradient(90deg, var(--vermelho-primario), var(--laranja-primario), var(--amarelo-primario), var(--verde-primario), var(--azul-primario), var(--roxo-primario)); /* Gradiente arco-íris */
+        visibility: hidden; /* Inicia invisível */
+        transform: scaleX(0); /* Inicia sem largura (escala zero) */
+        transition: transform 0.3s ease, visibility 0s linear 0.3s; /* Transição suave */
+    }
+    .menuItems a:hover::before {
+        visibility: visible; /* Torna o traço visível ao passar o mouse */
+        transform: scaleX(1); /* Expande o traço para a largura total do link */
+        transition: transform 0.3s ease, visibility 0s linear; /* Transição suave */
+    }
+    /*Fundo*/
+    <?php
+    //Função Mudar Imagem Aleatóriamente
+        $images = range(start: 1,end: 32); // Array com o nome das imagens
+        $randomImage = $images[array_rand($images)]; // Seleciona uma imagem aleatória    
+    ?>
+    .container_background_image_small {
+        width: 100vw;
+        height: 70.6vh; /* 85,3 */
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        background: url('../css/img/fundo/<?php echo $randomImage; ?>.jpg')no-repeat center center;
+        background-size: cover;
+        background-position: center;
+        background-attachment: fixed;
+    }
+    .container_background_image_medium {
+        width: 100vw;
+        height: 85.3vh;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        background: url('../css/img/fundo/<?php echo $randomImage; ?>.jpg')no-repeat center center;
+        background-size: cover;
+        background-position: center;
+        background-attachment: fixed;
+    }
+    .container_background_image_grow {
+        width: 100%;
+        /* height: 85.3vh; */
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        background: url('../css/img/fundo/<?php echo $randomImage; ?>.jpg')no-repeat center center;
+        background-size: cover;
+        background-position: center;
+        background-attachment: fixed;
+    }
+    .container_background_image_grow_2 {
+        width: 100%;
+        /* height: 85.3vh; */
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        background: url('../../css/img/fundo/<?php echo $randomImage; ?>.jpg')no-repeat center center;
+        background-size: cover;
+        background-position: center;
+        background-attachment: fixed;
+    }
+    /*Container Branco*/
+    .container_whitecard_small {
+        font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        position: relative;
+        background: white;
+        padding: 30px;
+        border-radius: 12px;
+        width: 710px;
+        height: 343px;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        box-shadow: 25px 30px 55px #5557;
+        border-radius: 13px;
+        overflow: hidden;
+        margin-top: 8.45vh; 
+        margin-bottom: 8.45vh; /* Cartão Branco no meio da pagina */
+    }
+    .container_whitecard_grow {
+        font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        position: relative;
+        background: white;
+        padding: 30px;
+        border-radius: 12px;
+        width: 710px;
+        min-height: 410px;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        box-shadow: 25px 30px 55px #5557;
+        border-radius: 13px;
+        overflow: hidden;
+        margin-top: 8.45vh;
+        margin-bottom: 8.45vh;
+    }
+    /* Formulario */
+    .container_form {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        width: 96%;
+        height: 93.5%;
+        /* background-color: #30B5C2; */
+        font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        margin-top: 1.9vh; 
+        /* margin-bottom: 1vh; */
+    }
+    /* Titulo */
+    .form-title-big {
+        display: flex;
+        justify-content: space-between;
+        margin-bottom: 25px;
+        margin-top: 25px;
+        width: 100%;
+        position: relative;
+    } 
+    .form-toggle button,
+    .form-title-big button {
+        background: none;
+        border: none;
+        /* font-size: 20px; */
+        font-size: 22px;
+        cursor: pointer;
+        padding: 10px 20px;
+        color: #888;
+        transition: color 0.3s;
+        flex-grow: 1;
+        text-align: center;
+    }
+    .form-title-big button {
+        font-size: 32px;
+    }
+    .form-toggle button:hover,
+    .form-title-big button:hover,
+    .form-toggle button:focus,
+    .form-title-big button:focus {
+        color: #333;
+    }
+    /* Linha Colorida */
+    .toggle-line-big {
+        position: absolute;
+        bottom: -5px;
+        left: 100%;
+        width: 100%;
+        height: 3px;
+        background: linear-gradient(90deg, var(--vermelho-primario), var(--laranja-primario), var(--amarelo-primario), var(--verde-primario), var(--azul-primario), var(--roxo-primario)); /* Gradiente arco-íris */
+        transition: transform 0.3s;
+        transform: translateX(-100%); /* Centraliza horizontalmente */
+    }
+    .toggle-line-small {
+        position: absolute;
+        bottom: -5px;
+        left: 0;
+        width: 50%;
+        height: 3px;
+        background: linear-gradient(90deg, var(--vermelho-primario), var(--laranja-primario), var(--amarelo-primario), var(--verde-primario), var(--azul-primario), var(--roxo-primario)); /* Gradiente arco-íris */
+        transition: transform 0.3s;
+    }
+    /* Cards */
+    .projcard {
+        position: relative;
+        width: 90%;
+        height: 220px;
+        margin-bottom: 30px;
+        border-radius: 10px;
+        background-color: white;
+        border: 2px solid #ddd;
+        font-size: 18px;
+        overflow: hidden;
+        cursor: pointer;
+        box-shadow: 0 4px 21px -12px rgba(0, 0, 0, .66);
+        transition: box-shadow 0.2s ease, transform 0.2s ease;
+    }
+    .projcard-small {
+        position: relative;
+        width: 90%;
+        height: 160px;
+        margin-bottom: 30px;
+        border-radius: 10px;
+        background-color: white;
+        border: 2px solid #ddd;
+        font-size: 18px;
+        overflow: hidden;
+        cursor: pointer;
+        box-shadow: 0 4px 21px -12px rgba(0, 0, 0, .66);
+        transition: box-shadow 0.2s ease, transform 0.2s ease;
+        align-items: center;
+        align-content: center;
+        justify-content: center; /* centraliza os itens horizontalmente */
+    }
+    .projcard:hover,
+    .projcard-small:hover{
+        box-shadow: 0 34px 32px -33px rgba(0, 0, 0, .18);
+        transform: translate(0px, -3px);
+    }
+    /* Input */
+    .container_form input[type="text"], 
+    .container_form input[type="email"], 
+    .container_form input[type="password"],
+    .container_form input[type="number"],
+    .container_form textarea, 
+    .container_form select {
+        margin-bottom: 17px;
+        padding: 12px; /* Espaçamento interno */
+        border: 1px solid rgba(143, 143, 143, 0.5);
+        border-radius: 8px;
+        font-size: 16px;
+        font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        width: 100%;
+        box-sizing: border-box;
+        height: 46px;
+        background-color: white;
+        color: var(--cinza-secundario); 
+        transition: border-color 0.3s, box-shadow 0.3s; /* Transição suave */
+    }
+    .container_form textarea{
+        height: 460px;
+    }
+    input[type="file"] {
+        margin-bottom: 15px;
+        border: 1px solid rgba(143, 143, 143, 0.5);
+        border-radius: 8px;
+        height: 46px; 
+        padding: 0; 
+        font-size: 16px;
+        box-sizing: border-box;
+        width: 100%;
+    }
+    /* Botão do file input*/
+    input[type="file"]::file-selector-button {
+        background-color: #36cedc;
+        border: none;
+        border-radius: 8px;
+        color: white;
+        padding: 10px;
+        cursor: pointer;
+        height: 100%; /* Ensures the button fills the input height */
+    }
+    input[type="file"]::file-selector-button:hover {
+        background-color: #30B5C2;
+    }
+    input[type="text"]:focus,
+    .container_form input[type="email"]:focus, 
+    .container_form input[type="password"]:focus,
+    textarea:focus, select:focus,
+    input[type="file"]:focus {
+        border-color: var(--azul-primario);
+        outline: none;
+    }
             
                 /*Estilo do Select2_________________________________________________________________*/
                    /* Para garantir que a largura do Select2 seja sempre 100% */
                     .select2-container {
                         width: 100% !important; /* Força a largura total */
                     }
-                    .select2-selection--single {
-                        height: 46px !important; /* Altura consistente */
-                        width: 100% !important; /* Altura consistente */
-                        padding: 12 0px !important; /* Padding igual aos inputs */
+                    /* .select2-selection--single {
+                        height: 46px !important; 
+                        width: 100% !important; 
+                        padding: 12 0px !important; 
                         display: flex;
-                        align-items: center; /* Alinha verticalmente */
+                        align-items: center; 
                         border-radius: 8px !important;
                         border: 1px solid rgba(143, 143, 143, 0.5)!important;
                         font-size: 16px;
@@ -353,18 +338,41 @@
                         background-color: white;
                         color: var(--cinza-secundario) !important;
                         transition: border-color 0.3s, box-shadow 0.3s;
-                    }
+                    } */
+                    .select2-selection--single {
+                        height: 46px !important;
+    padding: 0 12px !important; /* Ajuste o padding horizontal */
+    display: flex;
+    align-items: center; /* Alinha verticalmente */
+    border-radius: 8px !important;
+    border: 1px solid rgba(143, 143, 143, 0.5)!important;
+    font-size: 16px;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    box-sizing: border-box;
+    background-color: white;
+    color: var(--cinza-secundario) !important;
+    transition: border-color 0.3s, box-shadow 0.3s;
+}
                     .select2-selection--single:focus,
                     .select2-container--default .select2-selection--single:focus {
                         border-color: var(--azul-primario);
                         outline: none;   
                     }
                     /* Ajuste do padding do conteúdo renderizado no Select2 */
-                    .select2-container--default .select2-selection--single .select2-selection__rendered {
-                        padding-left: 12px !important; /* Mesmo padding dos inputs */
-                        line-height: 46px !important; /* Alinhamento vertical */
+                    /* .select2-container--default .select2-selection--single .select2-selection__rendered {
+                        padding-left: 12px !important;
+                        line-height: 46px !important; 
                         color: rgba(143, 143, 143, 0.5) !important;
-                    }
+                    } */
+                    .select2-container--default .select2-selection--single .select2-selection__rendered {
+    padding-left: 12px !important;
+    line-height: 46px !important; /* Alinha verticalmente com a altura */
+    color: rgba(143, 143, 143, 0.5) !important;
+    /* transform: translateY(-4px)!important; Desloca o placeholder 2px para cima */
+    padding-top: 2px !important; /* Pequeno ajuste de padding-top */
+
+
+}
                     .select2-container--default .select2-selection--single .select2-selection__arrow {
                         height: 46px !important;
                         top: 50%;
@@ -403,9 +411,26 @@
                         background-color: var(--azul-primario) !important;
                         color: white !important;
                     }
+                    .select2-container .select2-selection--single {
+    padding-top: 5px; /* Ajuste o valor conforme necessário */
+    padding-bottom: 5px; /* Ajuste o valor conforme necessário */
+    line-height: normal; /* Garantir que a altura da linha seja adequada */
+    height: 36px; /* Ajuste a altura conforme necessário */
+
+}
+
+.select2-container .select2-selection__rendered {
+    padding-top: 0px; /* Ajuste a posição do placeholder */
+    padding-bottom: 0px; /* Ajuste a posição do placeholder */
+    line-height: 30px; /* Ajuste para centralizar o texto */}
+    .select2-container .select2-selection--single .select2-selection__placeholder {
+    position: relative;
+    top: 0;
+}
+
                     .select2-results__option {
                         font-size: 16px;
-                        color: rgba(143, 143, 143, 0.5) !important;
+                        color: rgba(143, 143, 143, 0.9) !important;
                         padding: 8px; /* Adiciona um pouco de padding nas opções */
                     }
                     .select2-results__option:hover {
@@ -455,9 +480,7 @@
                     #search-input:focus, #ingredient-select:focus {
                         border-color: var(--azul-primario) !important;
                     }      
-            /* Div__________________________________________________________________*/
 
-                /*Cartão Branco__________________________________________________________________________*/
 
             /* Botões__________________________________________________________________*/
 
@@ -1060,21 +1083,21 @@
                                     height: 300px;
                                 }
         </style>
-    </head>
-    <body>   
-        <script>
-            // login.php (css)
-                function showLogin() {
-                    document.getElementById('loginForm').style.display = 'block'; // Mostra o formulário de login -->
-                    document.getElementById('signupForm').style.display = 'none'; // Esconde o formulário de cadastro 
-                    document.getElementById('toggleLine').style.transform = 'translateX(0)'; // Move a linha indicadora para a posição do login
-                }
+</head>
+<body>   
+<script>
+    // login.php (css)
+    function showLogin() {
+        document.getElementById('loginForm').style.display = 'block'; // Mostra o formulário de login -->
+        document.getElementById('signupForm').style.display = 'none'; // Esconde o formulário de cadastro 
+        document.getElementById('toggleLine').style.transform = 'translateX(0)'; // Move a linha indicadora para a posição do login
+    }
 
-                function showSignup() {
-                    document.getElementById('loginForm').style.display = 'none'; // Esconde o formulário de login -->
-                    document.getElementById('signupForm').style.display = 'block'; // Mostra o formulário de cadastro 
-                    document.getElementById('toggleLine').style.transform = 'translateX(100%)'; // Move a linha indicadora para a posição do cadastro
-                }
-        </script>
-    </body>
+    function showSignup() {
+        document.getElementById('loginForm').style.display = 'none'; // Esconde o formulário de login -->
+        document.getElementById('signupForm').style.display = 'block'; // Mostra o formulário de cadastro 
+        document.getElementById('toggleLine').style.transform = 'translateX(100%)'; // Move a linha indicadora para a posição do cadastro
+    }
+</script>
+</body>
 </html>
