@@ -1,7 +1,7 @@
 #Config
-#Sun Sep 22 20:51:28 BRT 2024
+#Sun Nov 24 13:54:36 BRT 2024
 cfg.apagartextoaoeditar=false
-cfg.location.y=-8
-cfg.location.x=-8
+cfg.location.y=0
+cfg.location.x=55
 cfg.mostrarids=false
 cfg.recentes=C\:\\wamp64\\www\\TCC\\Documenta\u00E7\u00E3o\\Diagramas e Modelos de Banco de Dados\\L\u00F3gico.brM3;C\:\\wamp64\\www\\TCC\\Documenta\u00E7\u00E3o\\Diagramas e Modelos de Banco de Dados\\Conceitual.brM3;C\:\\Users\\Usuario\\Desktop\\L\u00F3gico_1.brM3;C\:\\Users\\Usuario\\Desktop\\L\u00F3gico.brM3;C\:\\wamp64\\www\\TCC\\Documenta\u00E7\u00E3o\\Modelos de Banco de Dados\\L\u00F3gico.brM3;C\:\\wamp64\\www\\TCC\\Documenta\u00E7\u00E3o\\Modelos de Banco de Dados\\Conceitual.brM3;C\:\\wamp64\\www\\TCC\\Documenta\u00E7\u00E3o\\documenta\u00E7\u00E3o2\\Modelos de Banco de Dados 2\\Diagrama Conceitual TCC Receitas.brM3;C\:\\wamp64\\www\\TCC\\Documenta\u00E7\u00E3o\\documenta\u00E7\u00E3o2\\Modelos de Banco de Dados 2\\L\u00F3gico_3.brM3;C\:\\wamp64\\www\\TCC\\Documenta\u00E7\u00E3o\\documenta\u00E7\u00E3o2\\Modelos de Banco de Dados 2\\L\u00F3gico_1AAAA.brM3;C\:\\wamp64\\www\\TCC\\Documenta\u00E7\u00E3o\\documenta\u00E7\u00E3o2\\Modelos de Banco de Dados 2\\L\u00F3gico_1.brM3;C\:\\wamp64\\www\\TCC\\Documenta\u00E7\u00E3o\\documenta\u00E7\u00E3o2\\Modelos de Banco de Dados 2\\Diagrama Logico TCC Receitas.brM3
