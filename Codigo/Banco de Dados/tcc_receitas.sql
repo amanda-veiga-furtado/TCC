@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1:3306
--- Tempo de geração: 24/11/2024 às 16:29
+-- Tempo de geração: 25/11/2024 às 16:37
 -- Versão do servidor: 8.2.0
 -- Versão do PHP: 8.2.13
 
@@ -168,7 +168,7 @@ CREATE TABLE IF NOT EXISTS `ingrediente` (
   PRIMARY KEY (`id_ingrediente`),
   UNIQUE KEY `nome_ingrediente` (`nome_ingrediente`,`nome_plural_ingrediente`),
   KEY `fk_categoria_ingrediente` (`fk_id_categoria_ingrediente`)
-) ENGINE=InnoDB AUTO_INCREMENT=426 DEFAULT CHARSET=utf8mb3 COLLATE=utf8mb3_unicode_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=428 DEFAULT CHARSET=utf8mb3 COLLATE=utf8mb3_unicode_ci;
 
 --
 -- Despejando dados para a tabela `ingrediente`
@@ -415,7 +415,7 @@ INSERT INTO `ingrediente` (`id_ingrediente`, `nome_ingrediente`, `nome_plural_in
 (334, 'Alface Manteiga', 'Alfaces Manteigas', '../../css/img/ingrediente/no_image.png', 2),
 (335, 'Alface-Romana', 'Alfaces-Romanas', '../../css/img/ingrediente/no_image.png', 2),
 (336, 'Alfafa', 'Alfafas', '../../css/img/ingrediente/no_image.png', 2),
-(337, 'Alho', 'Alhos', '../../css/img/ingrediente/no_image.png', 2),
+(337, 'Dente de Alho', 'Dentes de Alho', '../../css/img/ingrediente/no_image.png', 2),
 (338, 'Alho Negro', 'Alhos Negros', '../../css/img/ingrediente/no_image.png', 2),
 (339, 'Almeirão', 'Almeirões', '../../css/img/ingrediente/no_image.png', 2),
 (340, 'Ameixa Seca', 'Ameixas Secas', '../../css/img/ingrediente/13.png', 6),
@@ -503,7 +503,9 @@ INSERT INTO `ingrediente` (`id_ingrediente`, `nome_ingrediente`, `nome_plural_in
 (422, 'Pepino', 'Pepinos', '../../css/img/ingrediente/no_image.png', 2),
 (423, 'Vinagre de Arroz', 'Vinagre de Arroz', '../../css/img/ingrediente/no_image.png', NULL),
 (424, 'Farinha Panko', 'Farinha Panko', '../../css/img/ingrediente/no_image.png', NULL),
-(425, 'Folha de Nori', 'Folhas de Nori', '../../css/img/ingrediente/no_image.png', NULL);
+(425, 'Folha de Nori', 'Folhas de Nori', '../../css/img/ingrediente/no_image.png', NULL),
+(426, 'Chocolate ao Leite', 'Chocolate ao Leite', '../../css/img/ingrediente/no_image.png', NULL),
+(427, 'Dente de Cravo', 'Dentes de Cravo', '../../css/img/ingrediente/no_image.png', NULL);
 
 -- --------------------------------------------------------
 
@@ -518,7 +520,7 @@ CREATE TABLE IF NOT EXISTS `ingrediente_quantidade` (
   `nome_plural_ingrediente_quantidade` varchar(40) CHARACTER SET utf8mb3 COLLATE utf8mb3_unicode_ci NOT NULL,
   PRIMARY KEY (`id_ingrediente_quantidade`),
   UNIQUE KEY `nome_singular_ingrediente_quantidade` (`nome_singular_ingrediente_quantidade`,`nome_plural_ingrediente_quantidade`)
-) ENGINE=InnoDB AUTO_INCREMENT=42 DEFAULT CHARSET=utf8mb3 COLLATE=utf8mb3_unicode_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=49 DEFAULT CHARSET=utf8mb3 COLLATE=utf8mb3_unicode_ci;
 
 --
 -- Despejando dados para a tabela `ingrediente_quantidade`
@@ -536,6 +538,8 @@ INSERT INTO `ingrediente_quantidade` (`id_ingrediente_quantidade`, `nome_singula
 (25, '2/3 xícara de chá', '2/3 xícaras de chá'),
 (22, '3/4 xícara de chá', '3/4 xícaras de chá'),
 (1, 'a gosto', 'a gosto'),
+(45, 'bola', 'bolas'),
+(48, 'borrifada', 'borrifadas'),
 (37, 'caixa', 'caxais'),
 (12, 'colher de café', 'colheres de café'),
 (13, 'colher de chá', 'colheres de chá'),
@@ -544,18 +548,23 @@ INSERT INTO `ingrediente_quantidade` (`id_ingrediente_quantidade`, `nome_singula
 (9, 'copo', 'copos'),
 (16, 'copo americano', 'copos americanos'),
 (17, 'copo requeijão', 'copos de requeijão'),
+(46, 'cubo', 'cubos'),
+(47, 'embalagem', 'embalagens'),
 (4, 'fatia', 'fatias'),
 (26, 'garrafa', 'garrafas'),
 (7, 'grama', 'gramas'),
 (38, 'lata', 'latas'),
 (10, 'litro', 'litros'),
+(42, 'maço', 'maços'),
 (11, 'mililitro', 'mililitros'),
 (18, 'pacote', 'pacotes'),
 (2, 'pedaço', 'pedaços'),
 (5, 'pitada', 'pitadas'),
 (3, 'punhado', 'punhados'),
 (6, 'quilo', 'quilos'),
+(43, 'ramo', 'ramos'),
 (27, 'saco', 'sacos'),
+(44, 'talo', 'talos'),
 (8, 'unidade', 'unidades'),
 (19, 'xícara de chá', 'xícaras de chá');
 
@@ -628,7 +637,10 @@ INSERT INTO `lista_de_ingredientes` (`fk_id_receita`, `fk_id_ingrediente`, `qtdI
 (5, 252, 140.000, 7),
 (5, 424, 160.000, 7),
 (5, 425, 3.000, 8),
-(5, 421, 380.000, 7);
+(5, 421, 380.000, 7),
+(6, 19, 3.000, 8),
+(6, 426, 170.000, 7),
+(6, 89, 200.000, 7);
 
 -- --------------------------------------------------------
 
@@ -696,6 +708,7 @@ INSERT INTO `receita` (`id_receita`, `nome_receita`, `numeroPorcao_receita`, `ti
 (3, 'Brigadeiro Casadinho de Morango e Ninho', 12.000, 8, 1, 45, '1. Em uma panela, adicione o leite condensado, o leite em pó e a manteiga para fazer o brigadeiro de Ninho.\r\n\r\n2. Cozinhe em fogo baixo, mexendo sempre até que a mistura desgrude do fundo da panela (ponto de brigadeiro).\r\n\r\n3. Retire o brigadeiro de Ninho do fogo e deixe esfriar até estar em temperatura ambiente para modelar.\r\n\r\n4. Em outra panela, adicione o leite condensado, o chocolate branco, a manteiga e o pó para preparo de morango para fazer o brigadeiro de morango.\r\n\r\n5. Cozinhe em fogo baixo, mexendo até que a mistura desgrude do fundo da panela (mesmo ponto do brigadeiro de Ninho).\r\n\r\n6. Retire o brigadeiro de morango do fogo e deixe esfriar até atingir a temperatura ideal para modelar.\r\n\r\n7. Com a ajuda de uma balança, pese 4 gramas de brigadeiro de Ninho e faça uma bolinha.\r\n\r\n8. Pese 4 gramas de brigadeiro de morango e faça outra bolinha.\r\n\r\n9. Achate as bolinhas separadamente antes de enrolá-las para garantir uma divisão perfeita no meio do doce.\r\n\r\n10. Una as duas partes (Ninho e morango) e enrole para formar o casadinho.\r\n\r\n11. Passe os casadinhos imediatamente no açúcar refinado, enquanto ainda há gordura ativada para que o açúcar adira bem à superfície.\r\n\r\n12. Coloque os casadinhos em forminhas, cuidando para que a divisão entre os dois sabores (Ninho e morango) fique bem no meio do doce.\r\n\r\n13. Os casadinhos estão prontos para serem servidos!\r\n\r\nDica: O truque para uma divisão perfeita entre os dois sabores é achatar as bolinhas antes de enrolá-las. Isso garante que a separação fique visível e o resultado seja esteticamente bonito.', '../css/img/receita/casadinho-morango.png', 29, 1),
 (4, 'Brigadeiro Romeu e Julieta', 12.000, 1, 0, 90, '1. Em uma panela, misture o Leite Moça, o  Creme de Leite, o queijo ralado e o chocolate branco picado. Leve ao fogo médio, mexendo sempre, por cerca de 8-10 minutos até que o brigadeiro fique no ponto de enrolar.\r\n2. Transfira para um prato untado, cubra com plástico-filme e deixe esfriar por completo.\r\n3. Após, porcione quantidades do brigadeiro, faça bolinhas, abra-as na palma da mão e recheie-as com alguns pedaços da goiabada picada. Feche e boleie para obter um brigadeiro. Passe-os brigadeiros no açúcar cristal, coloque-os em forminhas próprias e sirva.', '../css/img/receita/brigadeiro-romeu-e-julieta.png', 29, 1),
 (5, 'Hot Roll California', 36.000, 8, 0, 90, '1. Reúna os ingredientes para fazer esse hot roll califórnia, uma variação deliciosa de sushi. Pegue também uma esteira de bambu e mantenha uma tigela com água para umedecer os dedos durante o processo;\n2. Cozinhe o arroz para sushi conforme as instruções do pacote. Após cozido, tempere com vinagre de arroz, açúcar e sal. Deixe esfriar;\n3. Descasque a manga e pique em fatias finas. Lave e pique o pepino em fatias finas. Pique também o kani em fatias finas. Tente deixar todos os ingredientes fatiados com a mesma espessura;\n4. Cubra a esteira para sushi com filme plástico e coloque em cima a folha de alga nori;\n5. Umedeça as mãos com água para evitar que o arroz grude e espalhe uma camada de arroz sobre a alga, deixando cerca de 1 cm de alga livre na borda superior;\n6. Coloque tiras de pepino, manga e kani sobre o arroz, posicione horizontalmente e um pouco abaixo do centro;\n7. Use a esteira de bambu para enrolar o sushi de forma firme, pressionando suavemente para compactar os ingredientes. Umedeça, levemente a borda da alga com um pouco de água para facilitar o fechamento;\n8. Em uma recipiente, misture a farinha e a água. Em outro recipiente, coloque a farinha panko;\n9. Mergulhe cada peça na massa até ficar completamente envolvida. Em seguida, passe cada peça na farinha panko;\n10. Numa panela média, coloque o óleo e leve ao fogo alto para aquecer. Quando o óleo estiver quente, abaixe o fogo;\n11. Adicione as peças no óleo e deixe que fritem até que estejam douradas e crocantes. Com uma escumadeira, retire cada peça e coloque em um prato forrado com papel-toalha para remover o excesso de óleo;\n12. Sirva o hot roll california quente, acompanhado de shoyu, wasabi ou molho tarê, se desejar. Bom apetite!', '../css/img/receita/hot-roll-california.png', 3, 1),
+(6, 'Mousse de Chocolate', 6.000, 1, 0, 30, '1. Reúna todos os ingredientes da mousse de chocolate;\n2. Em um recipiente, coloque o chocolate e derreta em banho-maria ou no micro-ondas (de 30 em 30 segundos);\n3. Assim que o chocolate estiver totalmente derretido, acrescente o creme de leite e misture até obter uma ganache de chocolate;\n4. Em uma batedeira ou à mão, bata as claras de ovo até obter as claras em neve;\n5. Depois, adicione as claras em neve ao recipiente com a ganache de chocolate. Misture delicadamente, fazendo movimento circulares, até obter um creme homogêneo;\n6. Transfira a mousse para um refratário, cubra com plástico filme ou tampa e leve à geladeira por cerca de 2 horas;\n7. Agora é só servir gelado. Bom apetite!\n', '../css/img/receita/mousse-de-chocolate.png', 29, 1),
 (46, 'teste', 1.000, 2, 1, 2, 'aaaaaaaaaaa', '../css/img/receita/receita_6727f426a8c062.13523945.png', 5, 0),
 (48, 'imagem', 1.000, 5, 0, 1, 'aaaaaaaaaaaaaaaaa', '../css/img/receita/receita_6727fa83b14704.79212071.png', 44, 0),
 (49, 'bbbbbbbbbbbb', 1.000, 2, 0, 1, 'aaa', '../css/img/receita/receita_6727fd8bd7fc99.66511598.png', 6, 0),
@@ -723,7 +736,7 @@ CREATE TABLE IF NOT EXISTS `sugestao` (
   `fk_id_usuario` int DEFAULT NULL,
   PRIMARY KEY (`id_sugestao`),
   KEY `fk_id_usuario` (`fk_id_usuario`)
-) ENGINE=InnoDB AUTO_INCREMENT=19 DEFAULT CHARSET=utf8mb3 COLLATE=utf8mb3_unicode_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=20 DEFAULT CHARSET=utf8mb3 COLLATE=utf8mb3_unicode_ci;
 
 --
 -- Despejando dados para a tabela `sugestao`
@@ -740,7 +753,8 @@ INSERT INTO `sugestao` (`id_sugestao`, `nome_sugestao`, `categoria_sugestao`, `f
 (15, 'hoo', 'Categoria Culinária', 166),
 (16, 'Teste sugestao final', 'Categoria de Ingrediente', 166),
 (17, 'Teste sugestao final', 'Categoria de Ingrediente', 166),
-(18, 'sss', 'Categoria de Ingrediente', 1);
+(18, 'sss', 'Categoria de Ingrediente', 1),
+(19, 'teste', 'Categoria de Ingrediente', 1);
 
 -- --------------------------------------------------------
 
@@ -760,20 +774,21 @@ CREATE TABLE IF NOT EXISTS `usuario` (
   PRIMARY KEY (`id_usuario`),
   UNIQUE KEY `unique_nome_usuario` (`nome_usuario`),
   UNIQUE KEY `unique_email_usuario` (`email_usuario`)
-) ENGINE=InnoDB AUTO_INCREMENT=170 DEFAULT CHARSET=utf8mb3 COLLATE=utf8mb3_unicode_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=171 DEFAULT CHARSET=utf8mb3 COLLATE=utf8mb3_unicode_ci;
 
 --
 -- Despejando dados para a tabela `usuario`
 --
 
 INSERT INTO `usuario` (`id_usuario`, `nome_usuario`, `email_usuario`, `senha_usuario`, `recuperar_senha`, `imagem_usuario`, `statusAdministrador_usuario`) VALUES
-(1, 'Admin', 'amandaveigafurtado@gmail.com', '$2y$10$QZEMW75b3179MRkwDPWsJ.FvMeSFvyB2b7KmbBir2y/G/PL9iWbEC', '$2y$10$dK3SGRRgT8jfSGLCjeM91Og0PQze0TMsOC1YIjTB9N69Vvy5Ftifu', '../css/img/usuario/6737695e27c5e_1.png', 'a'),
-(163, 'Usuario 1', 'a@gmail.com', '$2y$10$QZEMW75b3179MRkwDPWsJ.FvMeSFvyB2b7KmbBir2y/G/PL9iWbEC', NULL, '../css/img/ingrediente/no_image.png', 'c'),
+(1, 'Admin', 'amandaveigafurtado@gmail.com', '$2y$10$QZEMW75b3179MRkwDPWsJ.FvMeSFvyB2b7KmbBir2y/G/PL9iWbEC', '$2y$10$dK3SGRRgT8jfSGLCjeM91Og0PQze0TMsOC1YIjTB9N69Vvy5Ftifu', '../css/img/usuario/67439ac71da21_no_image.png', 'a'),
+(163, 'Usuario 1', 'a@gmail.com', '$2y$10$QZEMW75b3179MRkwDPWsJ.FvMeSFvyB2b7KmbBir2y/G/PL9iWbEC', NULL, '../css/img/ingrediente/no_image.png', 'b'),
 (165, 'Usuario 2', 'a21', 'aa2', NULL, '../css/img/ingrediente/no_image.png', 'b'),
 (166, 'Usuario 3', '07/10@gmail.com', '$2y$10$4Xe5NhKvxAY8L1gmHDV0IuLRwNQFaKpmVDWC9T0mE.5HbxHnS8foq', NULL, '../css/img/ingrediente/no_image.png', 'c'),
-(167, 'Usuario 4', '09/10@gmail.co', '$2y$10$lDDrwTno97ZXyrZ.9GtXm.gdcItsQhZ9.U7iMqJg/pXs5oL7Y8pc6', NULL, '../css/img/ingrediente/no_image.png', 'c'),
+(167, 'Usuario 4', '09/10@gmail.co', '$2y$10$lDDrwTno97ZXyrZ.9GtXm.gdcItsQhZ9.U7iMqJg/pXs5oL7Y8pc6', NULL, '../css/img/ingrediente/no_image.png', 'b'),
 (168, 'Usuario 5', '1234@gmail.com', '$2y$10$no8XZ8EeHc5.wMuzMhnlLuprUwjukGDe14tbX0a3EedyJH/DH4Nkq', NULL, '../css/img/ingrediente/no_image.png', 'c'),
-(169, 'qq', 'AAA@gmail.com', '$2y$10$Ku4EHHAWYc21zZNbH.EHXujyV5AmXz07hn6QX3NUI88ce4lU8m.VO', NULL, '../css/img/usuario/no_image.png', 'c');
+(169, 'qq', 'AAA@gmail.com', '$2y$10$Ku4EHHAWYc21zZNbH.EHXujyV5AmXz07hn6QX3NUI88ce4lU8m.VO', NULL, '../css/img/usuario/no_image.png', 'c'),
+(170, '1234@gmail.com', '12345@gmail.com', '$2y$10$G3jTih/uLBY73kcFz3aODu7NTtQOJz31Kf6LLo0qgK64hWIu5q4sG', NULL, '../css/img/usuario/no_image.png', 'c');
 
 -- --------------------------------------------------------
 

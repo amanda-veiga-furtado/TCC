@@ -1,13 +1,13 @@
 <?php
-    session_start(); // Iniciar a sessão
+session_start(); // Iniciar a sessão
 
-    include_once '..\conexao.php';
+include_once '..\conexao.php';
 
 // Definir fuso horário de São Paulo
 date_default_timezone_set('America/Sao_Paulo');
 
 // Acessar o IF quando é selecionado ao menos uma estrela
-    if (!empty($_POST['estrela'])) {
+if (!empty($_POST['estrela'])) {
 
     // Receber os dados do formulário
     $estrela = filter_input(INPUT_POST, 'estrela', FILTER_DEFAULT);
@@ -24,7 +24,7 @@ date_default_timezone_set('America/Sao_Paulo');
     $cad_avaliacao->bindParam(':texto_comentario', $texto_comentario, PDO::PARAM_STR);
     $data_comentario = date("Y-m-d H:i:s");
     $cad_avaliacao->bindParam(':data_comentario', $data_comentario);
-    
+
     // Acessa o IF quando cadastrar corretamente
     if ($cad_avaliacao->execute()) {
 

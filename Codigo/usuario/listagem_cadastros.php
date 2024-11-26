@@ -10,18 +10,20 @@ include_once '../menu_admin.php';
 // Verificar se o usuário está logado e se é administrador
 if (!isset($_SESSION['id_usuario']) || $_SESSION['statusAdministrador_usuario'] !== 'a') {
     $_SESSION['mensagem'] = "Acesso negado! Somente administradores podem acessar esta página.";
-    header("Location: login.php");
+    header("Location: http://localhost/TCC/Codigo/usuario/login.php");
     exit();
 }
 ?>
 <!DOCTYPE html>
 <html lang="pt-br">
+
 <head>
     <title>Usuários Cadastrados</title>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 </head>
+
 <body>
     <div class="container_background_image_grow">
         <div class="container_whitecard_grow">
@@ -72,16 +74,16 @@ if (!isset($_SESSION['id_usuario']) || $_SESSION['statusAdministrador_usuario'] 
                             $email_usuario = htmlspecialchars($usuario['email_usuario']);
                             $imagem_usuario = htmlspecialchars($usuario['imagem_usuario']) ?? 'caminho/default_image.jpg';
                             $statusAdministrador_usuario = htmlspecialchars($usuario['statusAdministrador_usuario']);
-                            ?>
+                ?>
 
                             <div class="projcard-small">
                                 <a href="registro_usuario.php?id_usuario=<?php echo $id_usuario; ?>" style="text-decoration: none; display: block;">
                                     <div class="projcard-innerbox">
-                                        <img class="projcard-img" src="<?php echo $imagem_usuario; ?>" alt="Imagem do Usuário">
+                                        <img class="projcard-img" src="<?php echo $imagem_usuario; ?>" alt="Imagem do Usuário" style="object-fit: cover; ">
                                         <div class="projcard-textbox">
                                             <div class="projcard-subtitle">
-                                                <?php echo '<br><i class="fa-regular fa-address-card" style="color: #fe797b;"></i> ' . $nome_usuario . '<span style="margin-left: 10px;"></span><i class="fa-solid fa-fingerprint" style="color: #ffb750;"></i> ' . $id_usuario; ?>                
-                                                <div class="projcard-bar"></div>          
+                                                <?php echo '<br><i class="fa-regular fa-address-card" style="color: #fe797b;"></i> ' . $nome_usuario . '<span style="margin-left: 10px;"></span><i class="fa-solid fa-fingerprint" style="color: #ffb750;"></i> ' . $id_usuario; ?>
+                                                <div class="projcard-bar"></div>
                                             </div>
                                             <div class="projcard-description">
                                                 <?php
@@ -102,7 +104,7 @@ if (!isset($_SESSION['id_usuario']) || $_SESSION['statusAdministrador_usuario'] 
                                 </a>
                             </div>
 
-                            <?php
+                <?php
                         }
 
                         $query_total = "SELECT COUNT(*) as total FROM usuario WHERE nome_usuario LIKE :search OR email_usuario LIKE :search";
@@ -111,24 +113,24 @@ if (!isset($_SESSION['id_usuario']) || $_SESSION['statusAdministrador_usuario'] 
                         $result_total->execute();
                         $total_registros = $result_total->fetch(PDO::FETCH_ASSOC)['total'];
                         $total_paginas = ceil($total_registros / $limite_resultado);
-                        
+
                         echo '<div class="pagination">';
-                        
+
                         if ($pagina > 1) {
                             echo '<a href="?page=' . ($pagina - 1) . '&search=' . urlencode($search ?? '') . '">Anterior</a>';
                         }
-                        
+
                         // Determina o intervalo de páginas a ser exibido
                         $inicio = max(1, $pagina - 2);
                         $fim = min($total_paginas, $pagina + 2);
-                        
+
                         if ($inicio > 1) {
                             echo '<a href="?page=1&search=' . urlencode($search ?? '') . '">1</a>';
                             if ($inicio > 2) {
                                 echo '<span>...</span>'; // Indicador de páginas ocultas
                             }
                         }
-                        
+
                         for ($i = $inicio; $i <= $fim; $i++) {
                             if ($i == $pagina) {
                                 echo '<a href="#" class="active">' . $i . '</a>'; // Aplica a classe 'active' para o número atual
@@ -136,20 +138,19 @@ if (!isset($_SESSION['id_usuario']) || $_SESSION['statusAdministrador_usuario'] 
                                 echo '<a href="?page=' . $i . '&search=' . urlencode($search ?? '') . '">' . $i . '</a>';
                             }
                         }
-                        
+
                         if ($fim < $total_paginas) {
                             if ($fim < $total_paginas - 1) {
                                 echo '<span>...</span>'; // Indicador de páginas ocultas
                             }
                             echo '<a href="?page=' . $total_paginas . '&search=' . urlencode($search ?? '') . '">' . $total_paginas . '</a>';
                         }
-                        
+
                         if ($pagina < $total_paginas) {
                             echo '<a href="?page=' . ($pagina + 1) . '&search=' . urlencode($search ?? '') . '">Próximo</a>';
                         }
-                        
+
                         echo '</div>';
-                        
                     } else {
                         echo '<p>Nenhum usuário encontrado.</p>';
                     }
@@ -169,4 +170,5 @@ if (!isset($_SESSION['id_usuario']) || $_SESSION['statusAdministrador_usuario'] 
     }
     ?>
 </body>
+
 </html>

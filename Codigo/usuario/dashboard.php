@@ -1,20 +1,21 @@
-<?php 
-session_start(); 
+<?php
+session_start();
 ob_start();
 
-include_once '../conexao.php'; 
+include_once '../conexao.php';
 include '../css/frontend.php';
-include_once '../menu.php'; 
+include_once '../menu.php';
 
 if (!isset($_SESSION['id_usuario'])) {
-    header("Location: login.php");
+    // header("Location: login.php");
+    header("Location: http://localhost/TCC/Codigo/usuario/login.php?mensagem=" . urlencode("Para prosseguir, é necessário estar logado."));
     exit();
 }
 
 $id_usuario = $_SESSION['id_usuario'];
 
 if (isset($_SESSION['statusAdministrador_usuario']) && $_SESSION['statusAdministrador_usuario'] === 'a') {
-    include_once '../menu_admin.php'; 
+    include_once '../menu_admin.php';
 }
 
 $nome_usuario = $_SESSION['nome_usuario'];
@@ -25,7 +26,7 @@ $mensagem = '';
 if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['update_profile'])) {
     $novo_nome_usuario = trim($_POST['nome_usuario']);
     $imagem_usuario = $_FILES['imagem_usuario']['name'];
-    $imagem_tamanho = $_FILES['imagem_usuario']['size']; 
+    $imagem_tamanho = $_FILES['imagem_usuario']['size'];
 
     $limite_tamanho = 2 * 1024 * 1024; // 2MB
     $extensoes_permitidas = ['jpg', 'jpeg', 'png', 'gif'];
@@ -34,7 +35,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['update_profile'])) {
     $stmt->bindParam(':nome_usuario', $novo_nome_usuario);
     $stmt->bindParam(':id_usuario', $id_usuario);
     $stmt->execute();
-    
+
     if ($stmt->fetchColumn() > 0) {
         $mensagem = "Desculpe, esse nome de usuário já está em uso. Tente um nome diferente";
     } else {
@@ -78,65 +79,68 @@ $imagem_usuario = $stmt->fetchColumn();
 ?>
 <!DOCTYPE html>
 <html lang="pt-br">
+
 <head>
     <title>Dashboard</title>
     <meta charset="UTF-8">
 </head>
+
 <body>
-<div class="container_background_image_grow">
-    <div class="container_whitecard_grow">
-        <div class="container_form">
-            <div class="form_switch">
-                <h1>Bem-vindo(a) <?php echo htmlspecialchars($nome_usuario); ?>!</h1><br> 
-            </div>
-            <div style="display: flex; align-items: center;">
-                <div style="margin-right: 10px;">
-                    <img src="<?php echo !empty($imagem_usuario) ? htmlspecialchars($imagem_usuario) : '../css/img/usuario/no_image.png'; ?>" alt="Foto de perfil" style="width:150px;height:150px;border-radius: 50%">
+    <div class="container_background_image_grow">
+        <div class="container_whitecard_grow">
+            <div class="container_form">
+                <div class="form_switch">
+                    <h1>Bem-vindo(a) <?php echo htmlspecialchars($nome_usuario); ?>!</h1><br>
                 </div>
-                
-                <div style="margin-top:5px;">
-                    <?php if (!empty($mensagem)): ?>
-                        <p class="error-message"><?php echo htmlspecialchars($mensagem); ?></p>
-                    <?php endif; ?>
-                    
-                    <!-- Form for profile update -->
-                    <form method="POST" enctype="multipart/form-data">
-                        <input type="text" name="nome_usuario" value="<?php echo htmlspecialchars($nome_usuario); ?>" required>
-                        <input type="file" name="imagem_usuario">
+                <div style="display: flex; align-items: center;">
+                    <div style="margin-right: 10px;">
+                        <img src="<?php echo !empty($imagem_usuario) ? htmlspecialchars($imagem_usuario) : '../css/img/usuario/no_image.png'; ?>" alt="Foto de perfil" style="width:150px;height:150px;border-radius: 50%;">
+                    </div>
+
+                    <div style="margin-top:5px;">
+                        <?php if (!empty($mensagem)): ?>
+                            <p class="error-message"><?php echo htmlspecialchars($mensagem); ?></p>
+                        <?php endif; ?>
+
+                        <!-- Form for profile update -->
+                        <form method="POST" enctype="multipart/form-data">
+                            <input type="text" name="nome_usuario" value="<?php echo htmlspecialchars($nome_usuario); ?>" required>
+                            <input type="file" name="imagem_usuario">
+                    </div>
                 </div>
             </div>
-        </div>
             <!-- <input type="submit" name="update_profile" value="Atualizar Perfil" class="button-long" style="margin-top:25px;"> -->
 
 
 
             <!-- <div class="container-button-long"> -->
-                <input type="submit" name="update_profile" value="Atualizar Perfil" class="button-long" style="margin-top:25px;">
-                <div class="div_link"><a href="sair.php">Deslogar</a></div>
+            <input type="submit" name="update_profile" value="Atualizar Perfil" class="button-long" style="margin-top:25px;">
+            <div class="div_link"><a href="sair.php">Deslogar</a></div>
 
             <!-- </div> -->
 
-            
+
             </form>
         </div>
     </div>
-</div>
+    </div>
 
-<script>
-    <?php if (!empty($mensagem)): ?>
-        alert('<?php echo addslashes($mensagem); ?>');
-    <?php endif; ?>
+    <script>
+        <?php if (!empty($mensagem)): ?>
+            alert('<?php echo addslashes($mensagem); ?>');
+        <?php endif; ?>
 
-    // Recarrega a imagem do perfil automaticamente sem recarregar a página inteira
-    document.addEventListener("DOMContentLoaded", function() {
-        const imgElement = document.querySelector("img[alt='Foto de perfil']");
-        if (imgElement) {
-            const src = imgElement.src;
-            imgElement.src = src + "?t=" + new Date().getTime(); // Cache busting
-        }
-    });
-</script>
+        // Recarrega a imagem do perfil automaticamente sem recarregar a página inteira
+        document.addEventListener("DOMContentLoaded", function() {
+            const imgElement = document.querySelector("img[alt='Foto de perfil']");
+            if (imgElement) {
+                const src = imgElement.src;
+                imgElement.src = src + "?t=" + new Date().getTime(); // Cache busting
+            }
+        });
+    </script>
 
 
 </body>
+
 </html>

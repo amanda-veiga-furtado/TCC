@@ -3,7 +3,7 @@ session_start(); // Inicia a sessão
 ob_start();
 
 include_once '../conexao.php'; 
-include '../css/functions.php';
+include '../css/frontend.php';
 include_once '../menu.php';
 
 $id_receita = filter_input(INPUT_GET, "id_receita", FILTER_SANITIZE_NUMBER_INT); // Obtém o ID da receita da URL
@@ -326,31 +326,35 @@ li {
         <ul style="list-style-type: none;">
         <?php
 // Loop para exibir os ingredientes
-// Exibe os ingredientes com quantidade e nome correto
 if ($result_ingredientes->rowCount() > 0) {
     while ($row_ingrediente = $result_ingredientes->fetch(PDO::FETCH_ASSOC)) {
         // Formata a quantidade para exibir sem casas decimais desnecessárias
         $quantidade = $row_ingrediente['qtdIngrediente_lista'];
         $quantidade_formatada = ($quantidade == floor($quantidade)) ? (int)$quantidade : $quantidade;
 
-        // Verifica se a quantidade é maior ou igual a 2 para exibir o nome plural
-        $nomeIngrediente = $row_ingrediente['nome_ingrediente']; // Defina corretamente o nome do ingrediente
-        if ($quantidade_formatada >= 2) {
-            $tipoQuantidade = htmlspecialchars($row_ingrediente['nome_plural_ingrediente_quantidade']);
+        // Define o nome do ingrediente e o tipo de quantidade (singular ou plural)
+        if ($quantidade_formatada == 1) {
+            $nomeIngrediente = $row_ingrediente['nome_ingrediente']; // Nome do ingrediente
+            $tipoQuantidade = htmlspecialchars($row_ingrediente['nome_plural_ingrediente_quantidade']); // Plural para quantidade igual a 1
         } else {
-            $tipoQuantidade = htmlspecialchars($row_ingrediente['nome_singular_ingrediente_quantidade']);
+            $nomeIngrediente = $row_ingrediente['nome_ingrediente'];
+            $tipoQuantidade = htmlspecialchars($row_ingrediente['nome_singular_ingrediente_quantidade']); // Singular normalmente
         }
 
-        // Formata a quantidade para substituição do ponto por vírgula
+        // Formata a quantidade para substituir o ponto por vírgula
         $quantidade_formatada = str_replace('.', ',', $quantidade_formatada);
         if (strpos($quantidade_formatada, ',') !== false) {
             $quantidade_formatada = rtrim($quantidade_formatada, '0');
             $quantidade_formatada = rtrim($quantidade_formatada, ','); // Remove a vírgula se restar apenas zero
         }
 
-        // Exibe o ingrediente com a quantidade e o nome adequado
-        echo "<li><input type='checkbox' class='checkbox-custom' id='ingrediente_$nomeIngrediente'>
-              <label for='ingrediente_$nomeIngrediente'>" . $quantidade_formatada . " " . $tipoQuantidade . " de " . strtolower(str_replace(' | ', '/', $nomeIngrediente)) . "</label></li>";
+        if ($tipoQuantidade != 1) {
+            echo "<li><input type='checkbox' class='checkbox-custom' id='ingrediente_$nomeIngrediente'>
+                  <label for='ingrediente_$nomeIngrediente'>" . $quantidade_formatada . " " . $tipoQuantidade . " de " . strtolower(str_replace(' | ', '/', $nomeIngrediente)) . "</label></li>";
+        } else {
+            echo "<li><input type='checkbox' class='checkbox-custom' id='ingrediente_$nomeIngrediente'>
+                  <label for='ingrediente_$nomeIngrediente'>" . $tipoQuantidade . " " . strtolower(str_replace(' | ', '/', $nomeIngrediente)) . "</label></li>";
+        }
     }
 } else {
     echo '<p>Ingredientes não disponíveis.</p>';
@@ -383,16 +387,16 @@ if ($result_ingredientes->rowCount() > 0) {
                     
   // Botão "Deletar"
   // echo '<button class="button-orange" style="width: 9.3vw; margin-bottom: 10px; margin-top: 10px;">Deletar</button>';
-  echo '<a href="deletar_receita.php?id_receita=' . htmlspecialchars($id_receita) . '" class="button-orange" style="width: 9.3vw; margin-bottom: 10px; margin-top: 10px; text-align: center;" title="Deletar Receita Permanentemente">';
+  echo '<a href="deletar_receita.php?id_receita=' . htmlspecialchars($id_receita) . '" class="button-red" style="width: 9.3vw; margin-bottom: 10px; margin-top: 10px; text-align: center;" title="Deletar Receita Permanentemente">';
   echo '<i class="fa-solid fa-trash"></i>';
   echo '</a>';
   
   // Botão com link para o usuário
-  echo '<a href="../usuario/registro_usuario.php?id_usuario=' . htmlspecialchars($fk_id_usuario) . '" class="button-yellow" style="width: 9.3vw; margin-bottom: 10px; margin-top: 10px; text-align: center;" title="Ver criador da receita">';
-  echo '<i class="fa-solid fa-user"></i>';
+  echo '<a href="../usuario/registro_usuario.php?id_usuario=' . htmlspecialchars($fk_id_usuario) . '" class="button-purple" style="width: 9.3vw; margin-bottom: 10px; margin-top: 10px; text-align: center;" title="Ver criador da receita">';
+  echo '<i class="fa-solid fa-pencil"></i>';
   echo '</a>';
   
-  echo '<a href="registro_receita.php?id_receita=' . htmlspecialchars($id_receita) . '" class="button-yellow" style="width: 9.3vw; margin-bottom: 10px; margin-top: 10px; text-align: center;"title="Ver Receita">';
+  echo '<a href="registro_receita.php?id_receita=' . htmlspecialchars($id_receita) . '" class="button-purple" style="width: 9.3vw; margin-bottom: 10px; margin-top: 10px; text-align: center;"title="Ver Receita">';
   echo '<i class="fa-solid fa-arrow-right fa-xl"></i>';
   echo '</a>';
 

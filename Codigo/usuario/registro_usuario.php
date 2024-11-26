@@ -1,10 +1,10 @@
 <?php
 session_start();
-ob_start(); 
+ob_start();
 
 include_once '../conexao.php';
 include '../css/frontend.php';
-include_once '../menu.php'; 
+include_once '../menu.php';
 include_once '../menu_admin.php';
 
 // Debug para verificar o conteúdo da sessão
@@ -14,10 +14,10 @@ include_once '../menu_admin.php';
 if (!isset($_SESSION['id_usuario']) || $_SESSION['statusAdministrador_usuario'] !== 'a') {
     // Redireciona para uma página de login
     $_SESSION['mensagem'] = "Acesso negado! Somente administradores podem acessar esta página.";
-    header("Location: login.php"); 
+    header("Location: http://localhost/TCC/Codigo/usuario/login.php");
     exit(); // Para garantir que o restante da página não será carregado
 }
-    
+
 $id_usuario = filter_input(INPUT_GET, "id_usuario", FILTER_SANITIZE_NUMBER_INT);
 
 if (empty($id_usuario)) {
@@ -31,7 +31,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $query_update = "";
     if ($_POST['status'] === 'c') {
         $query_update = "UPDATE usuario SET statusAdministrador_usuario = 'b' WHERE id_usuario = :id_usuario";
-            $_SESSION['msg'] = "<p style='color: #0f0;'>Usuário banido!</p>";
+        $_SESSION['msg'] = "<p style='color: #0f0;'>Usuário banido!</p>";
     } elseif ($_POST['status'] === 'b') {
         $query_update = "UPDATE usuario SET statusAdministrador_usuario = 'c' WHERE id_usuario = :id_usuario";
         $_SESSION['msg'] = "<p style='color: #0f0;'>Banimento desfeito!</p>";
@@ -48,41 +48,43 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 ?>
 <!DOCTYPE html>
 <html>
-    <head>
-        <title>Visualizar Usuário</title>
-        <meta charset="UTF-8">
-        <meta http-equiv="X-UA-Compatible" content="IE=edge">
-        <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-    </head>
-    <body>
-        <div class="container_background_image_small">
-            <div class="container_whitecard_small">
-                <div class="form-title-big">
-                    <button>Visualizar Usuário</button>
-                    <div class="toggle-line-big"></div>
-                </div>
-                <?php
-                $query_usuario = "SELECT id_usuario, nome_usuario, email_usuario, imagem_usuario, statusAdministrador_usuario
+<head>
+    <title>Visualizar Usuário</title>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+</head>
+
+<body>
+    <div class="container_background_image_small">
+        <div class="container_whitecard_small">
+            <div class="form-title-big">
+                <button>Visualizar Usuário</button>
+                <div class="toggle-line-big"></div>
+            </div>
+            <?php
+            $query_usuario = "SELECT id_usuario, nome_usuario, email_usuario, imagem_usuario, statusAdministrador_usuario
                 FROM usuario
                 WHERE id_usuario = :id_usuario
                 LIMIT 1";
-                $result_usuario = $conn->prepare($query_usuario);
-                $result_usuario->bindParam(':id_usuario', $id_usuario, PDO::PARAM_INT);
-                $result_usuario->execute();
+            $result_usuario = $conn->prepare($query_usuario);
+            $result_usuario->bindParam(':id_usuario', $id_usuario, PDO::PARAM_INT);
+            $result_usuario->execute();
 
-                if (($result_usuario) && ($result_usuario->rowCount() != 0)) {
-                    $row_usuario = $result_usuario->fetch(PDO::FETCH_ASSOC);
-                    extract($row_usuario);
-                ?>
+            if (($result_usuario) && ($result_usuario->rowCount() != 0)) {
+                $row_usuario = $result_usuario->fetch(PDO::FETCH_ASSOC);
+                extract($row_usuario);
+            ?>
                 <div class="projcard-subtitle-2">
-                    <?php 
-                    echo '<i class="fa-regular fa-address-card" style="color: #fe797b;"></i> ' . htmlspecialchars($nome_usuario) .  
-                    '<br><i class="fa-solid fa-envelope" style="color: #36cedc;"></i> ' . htmlspecialchars($email_usuario) . 
-                    '<br>';
+                    <?php
+                    echo '<i class="fa-regular fa-address-card" style="color: #fe797b;"></i> ' . htmlspecialchars($nome_usuario) .
+                        '<br><i class="fa-solid fa-envelope" style="color: #36cedc;"></i> ' . htmlspecialchars($email_usuario) .
+                        '<br>';
 
                     echo '<i class="fa-solid fa-fingerprint" style="color: #ffb750;"></i> ' . htmlspecialchars($id_usuario) . '<span style="margin-right: 10px;"></span>';
-                     
+
                     // Verifica o status atual e exibe
                     if ($statusAdministrador_usuario == 'a') {
                         echo '<i class="fa-solid fa-lock-open" style="color: #a587ca;"></i> Admin';
@@ -100,9 +102,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 <form method="POST" action="">
                     <input type="hidden" name="status" value="<?php echo htmlspecialchars($statusAdministrador_usuario); ?>">
                     <br><br>
-                    <button class="button-yellow"  style="width: 46vw;"
+                    <button class="button-yellow" style="width: 46vw;"
                         <?php echo ($statusAdministrador_usuario == 'a') ? 'disabled' : ''; ?>>
-                        <?php 
+                        <?php
                         if ($statusAdministrador_usuario == 'b') {
                             echo "Desbanir Usuário";
                         } elseif ($statusAdministrador_usuario == 'a') {
@@ -114,15 +116,15 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                     </button>
                 </form>
 
-                <?php
-                } else {
-                    $_SESSION['msg'] = "<p style='color: #f00;'>Erro: Usuário não encontrado!</p>";
-                    header("Location: listagem_cadastros.php");
-                    exit();
-                }
-                ?>
-            </div>
+            <?php
+            } else {
+                $_SESSION['msg'] = "<p style='color: #f00;'>Erro: Usuário não encontrado!</p>";
+                header("Location: listagem_cadastros.php");
+                exit();
+            }
+            ?>
         </div>
-    </body>
-</html>
+    </div>
+</body>
 
+</html>
