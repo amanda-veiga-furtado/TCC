@@ -336,22 +336,19 @@ $ingredientes = $stmt->fetchAll(PDO::FETCH_ASSOC); // Obtém todos os registros 
     </div>
 
     <script id="cartItemTemplate" type="text/x-custom-template">
-        <li>
-            <span class="item-name"></span>
-            <!-- <span class="item-id" style="margin-left: 10px;"></span> -->
-            <button class="button remove-from-cart" style=" padding: 6px;  border: none; border-radius: 8px; margin-left: auto; margin-bottom:10px; color: white;                 font-size: 16px;justify-content: center;                align-items: center; 
-            text-align: center; 
-            
-             background-color: var(--laranja-primario);              
-                
-               
-                
-                cursor: pointer;
-                transition: background-color 0.3s;
-                margin-left: auto; margin-right: 0;
-                 ">Remover</button>
-        </li>
-    </script>
+        <li 
+            style="display: flex; align-items: center; justify-content: space-between; padding: 10px; border-bottom: 1px solid #ccc;">
+        <span class="item-name" style="flex: 1; text-align: left; font-size: 16px;"></span>
+        <!-- <span class="item-id" style="margin-left: 10px;"></span> -->
+
+
+        <button class="button remove-from-cart" style="padding: 6px; border: none; border-radius: 8px; color: white; font-size: 16px; 
+            background-color: var(--vermelho-primario); cursor: pointer; transition: background-color 0.3s;">
+            Remover
+        </button>
+    </li>
+</script>
+
 
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script>
@@ -403,7 +400,7 @@ $ingredientes = $stmt->fetchAll(PDO::FETCH_ASSOC); // Obtém todos os registros 
                     // Adiciona os ingredientes padrão somente se ainda não estiverem no carrinho
                     if (!cartItemsArray.some(item => item.id == <?php echo htmlspecialchars($ingrediente['id_ingrediente']); ?>)) {
                         addToCart('<?php echo htmlspecialchars($ingrediente['nome_ingrediente']); ?>', <?php echo htmlspecialchars($ingrediente['id_ingrediente']); ?>);
-                        
+
                     }
                 <?php } ?>
             }
