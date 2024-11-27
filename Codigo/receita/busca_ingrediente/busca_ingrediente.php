@@ -245,7 +245,7 @@ $ingredientes = $stmt->fetchAll(PDO::FETCH_ASSOC); // Obtém todos os registros 
                                         ?>">
                                 <?php
                                 $nome_ingrediente = htmlspecialchars($ingrediente['nome_ingrediente']);
-                                echo mb_strlen($nome_ingrediente) > 15 ? mb_substr($nome_ingrediente, 0, 16) . '...' : $nome_ingrediente;
+                                echo mb_strlen($nome_ingrediente) > 14 ? mb_substr($nome_ingrediente, 0, 15) . '...' : $nome_ingrediente;
                                 ?>
                             </h3>
 
