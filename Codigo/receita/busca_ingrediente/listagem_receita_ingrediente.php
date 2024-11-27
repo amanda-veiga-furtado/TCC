@@ -120,7 +120,7 @@ function buscarIngredientesDaReceita($idReceita)
                             if ($receita) {
                 ?>
                              <div class="projcard-small">
-                                <a href="registro_receita.php?id_receita=<?php echo htmlspecialchars($idReceita); ?>"
+                                <a href="../registro_receita.php?id_receita=<?php echo htmlspecialchars($idReceita); ?>"
                                     style="text-decoration: none; display: block;">
                                     <div class="projcard-innerbox">
                                     <img class="projcard-img" src="<?php echo htmlspecialchars('../' . $receita['imagem_receita']); ?>" alt="Imagem da receita">                                            alt="Imagem da receita">
