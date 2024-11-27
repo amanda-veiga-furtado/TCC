@@ -330,8 +330,8 @@ $ingredientes = $stmt->fetchAll(PDO::FETCH_ASSOC); // Obtém todos os registros 
 
 
         <ul id="cartItems" class="cart-items"></ul>
-        <div>
-            <button id="pesquisarReceitaButton" class="btn btn-primary button-long" target="_blank">Pesquisar Receita</button>
+        <div style="width: 100%;">
+            <br><button id="pesquisarReceitaButton" class="btn btn-primary button-long" target="_blank">Pesquisar Receita</button>
         </div>
     </div>
 
