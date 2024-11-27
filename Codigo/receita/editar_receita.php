@@ -188,7 +188,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') { // Verifica se o formulário foi en
                             ?>
                             <div class="ingrediente">
                                 <select name="nome_ingrediente[]" class="select-field" style="width: 45%;">
-                                    <option value="">Selecione um Ingrediente</option>
+                                    <!-- <option value="">Selecione um Ingrediente</option> -->
                                     <?php
                                     $query = $conn->query("SELECT id_ingrediente, nome_ingrediente FROM ingrediente ORDER BY nome_ingrediente ASC");
                                     $registros = $query->fetchAll(PDO::FETCH_ASSOC);
@@ -199,7 +199,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') { // Verifica se o formulário foi en
                                 </select>
                                 <input class="input-field" type="number" name="quantidadeIngrediente[]" min="0.001" step="0.001" value="1" style="width: 15%;">
                                 <select class="select-field" name="tipoIngrediente[]" style="width: 38%;">
-                                    <option value="">Selecione o tipo de medida</option>
+                                    <!-- <option value="">Selecione o tipo de medida</option> -->
                                     <?php
                                     $query = $conn->query("SELECT id_ingrediente_quantidade, nome_plural_ingrediente_quantidade FROM ingrediente_quantidade ORDER BY nome_plural_ingrediente_quantidade ASC");
                                     $porcao_opcoes = $query->fetchAll(PDO::FETCH_ASSOC);

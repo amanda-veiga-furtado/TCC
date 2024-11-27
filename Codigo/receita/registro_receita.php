@@ -423,7 +423,7 @@ if (isset($_SESSION['id_usuario']) && $_SESSION['id_usuario'] == $fk_id_usuario)
                     echo '<i class="fa-solid fa-trash"></i>';
                     echo '</a>';
 
-                    echo '<a href="editar_receita.php?id_receita=' . htmlspecialchars($fk_id_usuario) . '" class="button-purple" style="width: 9.3vw; margin-bottom: 10px; margin-top: 10px; text-align: center;" title="Editar">';
+                    echo '<a href="editar_receita.php?id_receita=' . htmlspecialchars($id_receita) . '" class="button-purple" style="width: 9.3vw; margin-bottom: 10px; margin-top: 10px; text-align: center;" title="Editar">';
                     echo '<i class="fa-solid fa-pencil"></i>';
                     echo '</a>';
 }

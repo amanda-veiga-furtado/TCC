@@ -163,10 +163,10 @@ function addIngredientes($dados, $id_receita, &$erro)
                 ?>
                 <form name="" id="" method="POST" action="" enctype="multipart/form-data">
                     <h2>Nome da Receita</h2>
-                    <input type="text" name="nome_receita" style="width: 100%;" required>
+                    <input type="text" name="nome_receita" style="width: 100%;" placeholder="Bolo de Cenoura com Cobertura de Chocolate Amargo" required>
 
                     <h2>Porção</h2>
-                    <input type="number" name="numeroPorcao_receita" min="0.001" step="0.001" style="width: 15%;" required>
+                    <input type="number" name="numeroPorcao_receita" min="0.001" step="0.001" style="width: 15%;" value="0" required>
                     <select name="tipoPorcao_receita" style="width: 84%;" required>
                         <!-- Preencha as opções a partir do banco -->
                         <?php
@@ -179,8 +179,8 @@ function addIngredientes($dados, $id_receita, &$erro)
                     </select>
 
                     <h2>Tempo de Preparo</h2>
-                    <input type="number" name="tempoPreparoHora_receita" min="0" style="width: 15%;" required> Hora(s) :
-                    <input type="number" name="tempoPreparoMinuto_receita" min="0" style="width: 15%;" required> Minuto(s)
+                    <input type="number" name="tempoPreparoHora_receita" min="0" style="width: 15%;" value="0" required> Hora(s) :
+                    <input type="number" name="tempoPreparoMinuto_receita" min="0" style="width: 15%;" value="0" required> Minuto(s)
 
                     <h2>Imagem</h2>
                     <input type="file" name="imagem_receita">
