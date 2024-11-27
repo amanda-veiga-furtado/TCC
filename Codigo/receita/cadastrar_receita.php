@@ -210,11 +210,13 @@ function addIngredientes($dados, $id_receita, &$erro)
                             </select>
                         </div>
                     </div>
-                    <button type="button" id="add-ingrediente">Adicionar Ingrediente</button>
-                    <button type="button" id="remove-ingrediente">Remover Ingrediente</button>
+                    <button type="button" id="add-ingrediente" class="button-round button-plus" title="Adicione 1 Ingrediente a Sua Receita"><i class="fa-solid fa-pencil"></i></button>                    <button type="button" id="remove-ingrediente" class="button-round button-minus" title="Remova 1 Ingrediente da Sua Receita"><i class="fa-solid fa-trash"></i></button>
 
+
+                    <?php $placeholder_text = file_get_contents('receita.txt'); ?>
                     <h2>Modo de Preparo</h2>
-                    <textarea name="modoPreparo_receita" required></textarea>
+                    <textarea name="modoPreparo_receita" id="modoPreparo_receita" placeholder="<?php echo htmlspecialchars($placeholder_text, ENT_QUOTES, 'UTF-8'); ?>" required><?php echo isset($dados['modoPreparo_receita']) ? htmlspecialchars($dados['modoPreparo_receita'], ENT_QUOTES) : ''; ?></textarea><br>
+
 
                     <h2>Categoria</h2>
                     <select name="categoria_receita">
@@ -227,7 +229,8 @@ function addIngredientes($dados, $id_receita, &$erro)
                         ?>
                     </select>
 
-                    <input type="submit" name="CadastrarReceita" value="Cadastrar Receita">
+                    <input type="submit" name="CadastrarReceita" value="Cadastrar Receitaa" class="button-long" style="margin-bottom: 11px;">
+
                 </form>
             </div>
             <?php

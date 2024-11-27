@@ -74,6 +74,7 @@ $ingredientes = $stmt->fetchAll(PDO::FETCH_ASSOC); // Obtém todos os registros 
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Pesquisar Receita por Ingrediente</title>
+
     <style>
         .card {
             flex: 0 1 calc(33.33% - 20px);
@@ -271,7 +272,7 @@ $ingredientes = $stmt->fetchAll(PDO::FETCH_ASSOC); // Obtém todos os registros 
             if ($pagina > 1) { ?>
                 <li>
                     <a href="?pagina=<?php echo $pagina - 1; ?>&pesquisar=<?php echo htmlspecialchars($pesquisar); ?>" aria-label="Previous">
-                        <span aria-hidden="true">&laquo;</span>
+                        <span aria-hidden="true">Anterior</span>
                     </a>
                 </li>
             <?php }
@@ -282,7 +283,8 @@ $ingredientes = $stmt->fetchAll(PDO::FETCH_ASSOC); // Obtém todos os registros 
             <?php }
 
             // Exibir o link para a página atual
-            echo '<li class="active"><a href="#">' . $pagina . '</a></li>';
+            echo '<a href="#" class="active" style="width: 85px;">' . $i . '</a>'; // Página ativa
+
 
             // Exibir links para as páginas seguintes
             for ($i = $pagina + 1; $i <= $fim_pagina; $i++) { ?>
@@ -293,7 +295,7 @@ $ingredientes = $stmt->fetchAll(PDO::FETCH_ASSOC); // Obtém todos os registros 
             if ($pagina < $num_pagina) { ?>
                 <li>
                     <a href="?pagina=<?php echo $pagina + 1; ?>&pesquisar=<?php echo htmlspecialchars($pesquisar); ?>" aria-label="Next">
-                        <span aria-hidden="true">&raquo;</span>
+                        <span aria-hidden="true">Próximo</span>
                     </a>
                 </li>
             <?php } ?>

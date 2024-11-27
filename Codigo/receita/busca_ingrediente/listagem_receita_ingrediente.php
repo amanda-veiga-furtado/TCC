@@ -1,14 +1,14 @@
 <?php
-session_start(); // Inicia a sessão do usuário.
-ob_start(); // Inicia o buffer de saída.
+session_start();
+ob_start();
 
-include_once '../../conexao.php'; // Inclui o arquivo de conexão ao banco de dados.
-include '../../css/frontend.php'; // Inclui funções auxiliares de um arquivo CSS.
-include_once '../../menu.php'; // Inclui o menu de navegação.
+include_once '../../conexao.php';
+include '../../css/frontend.php';
+include_once '../../menu.php';
 
 // Verifica se nenhum ingrediente foi passado na URL
 if (empty($_GET['ingredientes'])) {
-    $_SESSION['mensagem'] = "Nenhum ingrediente foi selecion.";
+    $_SESSION['mensagem'] = "Nenhum ingrediente foi selecionado.";
     header("Location: busca_ingrediente.php");
     exit;
 }
@@ -63,17 +63,16 @@ function buscarIngredientesDaReceita($idReceita)
                 </div>
 
                 <?php
-                $search = filter_input(INPUT_GET, "search", FILTER_SANITIZE_FULL_SPECIAL_CHARS) ?? '';
                 $pagina_atual = filter_input(INPUT_GET, "page", FILTER_SANITIZE_NUMBER_INT);
                 $pagina = !empty($pagina_atual) ? $pagina_atual : 1;
-                $limite_resultado = 5;
+                $limite_resultado = 1;
                 $inicio = ($limite_resultado * $pagina) - $limite_resultado;
 
                 $selectedIngredients = isset($_GET['ingredientes']) ? explode(',', urldecode($_GET['ingredientes'])) : [];
                 exibirIngredientes($selectedIngredients);
 
                 $receitasComIngredientes = [];
-                $matchingReceitas = [];
+                $totalPaginas = 0;
 
                 try {
                     // Obter receitas que têm os ingredientes selecionados
@@ -90,23 +89,24 @@ function buscarIngredientesDaReceita($idReceita)
                     foreach ($matchingReceitas as $idReceita) {
                         $ingredientesDaReceita = buscarIngredientesDaReceita($idReceita);
                         if (empty(array_diff($ingredientesDaReceita, $selectedIngredients))) {
-                            $receitasComIngredientes[] = $idReceita; // Armazena apenas o ID da receita
+                            $receitasComIngredientes[] = $idReceita;
                         }
                     }
+
+                    $totalReceitas = count($receitasComIngredientes);
+                    $totalPaginas = ceil($totalReceitas / $limite_resultado);
+                    $receitasExibidas = array_slice($receitasComIngredientes, $inicio, $limite_resultado);
                 } catch (PDOException $e) {
                     echo "Erro: " . $e->getMessage();
                 }
 
-                // Imprime o array de receitas compatíveis
-                if (!empty($receitasComIngredientes)) {
-                    foreach ($receitasComIngredientes as $idReceita) {
-                        // Busca os detalhes da receita
+                if (!empty($receitasExibidas)) {
+                    foreach ($receitasExibidas as $idReceita) {
                         try {
                             $query_receita_detalhes = "SELECT r.id_receita, r.nome_receita, r.numeroPorcao_receita, 
                                 p.nome_singular_porcao, p.nome_plural_porcao, 
                                 r.tempoPreparoHora_receita, r.tempoPreparoMinuto_receita, 
-                                r.modoPreparo_receita, r.imagem_receita, 
-                                c.nome_categoria_culinaria
+                                r.imagem_receita, c.nome_categoria_culinaria
                                 FROM receita r
                                 LEFT JOIN categoria_culinaria c ON r.categoria_receita = c.id_categoria_culinaria
                                 JOIN porcao_quantidade p ON r.tipoPorcao_receita = p.id_porcao
@@ -118,44 +118,36 @@ function buscarIngredientesDaReceita($idReceita)
                             $receita = $stmt_detalhes->fetch(PDO::FETCH_ASSOC);
 
                             if ($receita) {
-                                $id_receita = $receita['id_receita'];
-                                $nome_receita = $receita['nome_receita'];
-                                $numeroPorcao = $receita['numeroPorcao_receita'];
-                                $porcao_nome = $receita['nome_singular_porcao']; // ou plural dependendo do contexto
-                                $tempoPreparoHora_receita = $receita['tempoPreparoHora_receita'];
-                                $tempoPreparoMinuto_receita = $receita['tempoPreparoMinuto_receita'];
-                                $categoria_receita = $receita['nome_categoria_culinaria'];
                 ?>
+                             <div class="projcard-small">
+                                <a href="registro_receita.php?id_receita=<?php echo htmlspecialchars($idReceita); ?>"
+                                    style="text-decoration: none; display: block;">
+                                    <div class="projcard-innerbox">
+                                    <img class="projcard-img" src="<?php echo htmlspecialchars('../' . $receita['imagem_receita']); ?>" alt="Imagem da receita">                                            alt="Imagem da receita">
+                                        <div class="projcard-textbox">
+                                            <div class="projcard-title" style="color: var(--cinza-secundario); margin-bottom: 10px; margin-top: 10px" title="<?php echo htmlspecialchars($receita['nome_receita']); ?>">
+                                                <?php echo htmlspecialchars($receita['nome_receita']); ?>
+                                            </div>
 
-                                <div class="projcard-small">
-                                    <a href="registro_receita.php?id_receita=<?php echo htmlspecialchars($id_receita); ?>"
-                                        style="text-decoration: none; display: block;">
-                                        <div class="projcard-innerbox">
-                                            <img class="projcard-img" src="<?php echo htmlspecialchars('../' . $receita['imagem_receita']); ?>" alt="Imagem da receita">
-
-                                            <div class="projcard-textbox">
-                                                <div class="projcard-title" style="color: var(--cinza-secundario); margin-bottom: 10px; margin-top: 10px" title="<?php echo htmlspecialchars($nome_receita); ?>">
-                                                    <?php echo htmlspecialchars($nome_receita ?? ''); ?>
-                                                </div>
-
-                                                <div class="projcard-subtitle">
-                                                    <?php echo '<i class="fa-solid fa-utensils" style="color: #fe797b;"></i>&nbsp'
-                                                        . htmlspecialchars($numeroPorcao ?? '0') . " "
-                                                        . htmlspecialchars($porcao_nome ?? 'porções') . '<span style="margin-left: 10px;"></span><i class="fa-solid fa-clock" style="color: #ffb750;"></i>&nbsp' . htmlspecialchars($tempoPreparoHora_receita ?? '0') . "h e " . htmlspecialchars($tempoPreparoMinuto_receita ?? '0') . "min"; ?>
-                                                </div>
-                                                <div class="projcard-bar"></div>
-                                                <div class="projcard-description">
-                                                    <?php
-                                                    echo '<div style="margin-bottom: 5px;">' .
-                                                        '<i class="fa-solid fa-bookmark" style="color: #a587ca;"></i>&nbsp' . htmlspecialchars($categoria_receita ?? 'Sem Categoria') .
-                                                        '</div>';
-                                                    ?>
-                                                </div>
+                                            <div class="projcard-subtitle">
+                                                <?php
+                                                echo '<i class="fa-solid fa-utensils" style="color: #fe797b;"></i>&nbsp'
+                                                    . htmlspecialchars($receita['numeroPorcao_receita']) . " "
+                                                    . htmlspecialchars($receita['nome_singular_porcao']) . '<span style="margin-left: 10px;"></span><i class="fa-solid fa-clock" style="color: #ffb750;"></i>&nbsp' . htmlspecialchars($receita['tempoPreparoHora_receita']) . "h e " . htmlspecialchars($receita['tempoPreparoMinuto_receita']) . "min";
+                                                ?>
+                                            </div>
+                                            <div class="projcard-bar"></div>
+                                            <div class="projcard-description">
+                                                <?php
+                                                echo '<div style="margin-bottom: 5px;">' . 
+                                                    '<i class="fa-solid fa-bookmark" style="color: #a587ca;"></i>&nbsp' . htmlspecialchars($receita['nome_categoria_culinaria']) . 
+                                                    '</div>';
+                                                ?>
                                             </div>
                                         </div>
-                                    </a>
-                                </div>
-
+                                    </div>
+                                </a>
+                            </div>
                 <?php
                             }
                         } catch (PDOException $e) {
@@ -166,6 +158,41 @@ function buscarIngredientesDaReceita($idReceita)
                     echo "<p>Nenhuma receita encontrada com os ingredientes selecionados.</p>";
                 }
                 ?>
+
+                <!-- Paginação -->
+                <div class="pagination">
+                    <?php
+                    $intervalo_paginas = 2;
+                    $inicio_pag = max(1, $pagina - $intervalo_paginas);
+                    $fim_pag = min($totalPaginas, $pagina + $intervalo_paginas);
+
+                    if ($pagina > 1) {
+                        echo '<a href="?page=' . ($pagina - 1) . '&ingredientes=' . urlencode(implode(',', $selectedIngredients)) . '">Anterior</a>';
+                    }
+
+                    if ($inicio_pag > 1) {
+                        echo '<a href="?page=1&ingredientes=' . urlencode(implode(',', $selectedIngredients)) . '">1</a>';
+                        if ($inicio_pag > 2) echo '<span></span>';
+                    }
+
+                    for ($i = $inicio_pag; $i <= $fim_pag; $i++) {
+                        if ($i == $pagina) {
+                            echo '<a href="#" class="active">' . $i . '</a>';
+                        } else {
+                            echo '<a href="?page=' . $i . '&ingredientes=' . urlencode(implode(',', $selectedIngredients)) . '">' . $i . '</a>';
+                        }
+                    }
+
+                    if ($fim_pag < $totalPaginas) {
+                        if ($fim_pag < $totalPaginas - 1) echo '<span></span>';
+                        echo '<a href="?page=' . $totalPaginas . '&ingredientes=' . urlencode(implode(',', $selectedIngredients)) . '">' . $totalPaginas . '</a>';
+                    }
+
+                    if ($pagina < $totalPaginas) {
+                        echo '<a href="?page=' . ($pagina + 1) . '&ingredientes=' . urlencode(implode(',', $selectedIngredients)) . '">Próximo</a>';
+                    }
+                    ?>
+                </div>
             </div>
         </div>
     </div>
