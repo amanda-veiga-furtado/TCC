@@ -338,7 +338,7 @@ $ingredientes = $stmt->fetchAll(PDO::FETCH_ASSOC); // Obtém todos os registros 
     <script id="cartItemTemplate" type="text/x-custom-template">
         <li>
             <span class="item-name"></span>
-            <span class="item-id" style="margin-left: 10px;"></span>
+            <!-- <span class="item-id" style="margin-left: 10px;"></span> -->
             <button class="button remove-from-cart" style=" padding: 6px;  border: none; border-radius: 8px; margin-left: auto; margin-bottom:10px; color: white;                 font-size: 16px;justify-content: center;                align-items: center; 
             text-align: center; 
             
@@ -403,6 +403,7 @@ $ingredientes = $stmt->fetchAll(PDO::FETCH_ASSOC); // Obtém todos os registros 
                     // Adiciona os ingredientes padrão somente se ainda não estiverem no carrinho
                     if (!cartItemsArray.some(item => item.id == <?php echo htmlspecialchars($ingrediente['id_ingrediente']); ?>)) {
                         addToCart('<?php echo htmlspecialchars($ingrediente['nome_ingrediente']); ?>', <?php echo htmlspecialchars($ingrediente['id_ingrediente']); ?>);
+                        
                     }
                 <?php } ?>
             }
