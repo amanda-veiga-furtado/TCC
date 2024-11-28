@@ -50,7 +50,7 @@ include_once '../menu.php';
                                 $usuario = $stmt->fetch(PDO::FETCH_ASSOC);
 
                                 if ($usuario['statusAdministrador_usuario'] == 'b') {
-                                    $_SESSION['mensagem'] = "Você foi suspenso pelo Administrador!";
+                                    $_SESSION['mensagem'] = "Você foi suspenso pelo administrador!";
                                 } elseif (password_verify($senha_usuario, $usuario['senha_usuario'])) {
                                     $_SESSION['id_usuario'] = $usuario['id_usuario'];
                                     $_SESSION['nome_usuario'] = $usuario['nome_usuario'];

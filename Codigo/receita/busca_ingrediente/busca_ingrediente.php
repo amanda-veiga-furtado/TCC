@@ -234,6 +234,7 @@ $ingredientes = $stmt->fetchAll(PDO::FETCH_ASSOC); // Obtém todos os registros 
         } else { ?>
             <?php foreach ($ingredientes as $ingrediente) { ?>
                 <div class="card-wrapper">
+                    
                     <div class="card">
                         <img src="<?php echo htmlspecialchars($ingrediente['imagem_ingrediente']); ?>" alt="Ingrediente Image">
                         <div class="container">

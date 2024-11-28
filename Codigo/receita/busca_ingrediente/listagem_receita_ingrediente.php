@@ -119,35 +119,43 @@ function buscarIngredientesDaReceita($idReceita)
 
                             if ($receita) {
                 ?>
-                             <div class="projcard-small">
-                                <a href="../registro_receita.php?id_receita=<?php echo htmlspecialchars($idReceita); ?>"
-                                    style="text-decoration: none; display: block;">
-                                    <div class="projcard-innerbox">
-                                    <img class="projcard-img" src="<?php echo htmlspecialchars('../' . $receita['imagem_receita']); ?>" alt="Imagem da receita">                                            alt="Imagem da receita">
-                                        <div class="projcard-textbox">
-                                            <div class="projcard-title" style="color: var(--cinza-secundario); margin-bottom: 10px; margin-top: 10px" title="<?php echo htmlspecialchars($receita['nome_receita']); ?>">
-                                                <?php echo htmlspecialchars($receita['nome_receita']); ?>
-                                            </div>
+                                <div class="projcard-small">
+                                    <a href="../registro_receita.php?id_receita=<?php echo htmlspecialchars($idReceita); ?>"
+                                        style="text-decoration: none; display: block;">
+                                        <div class="projcard-innerbox">
+                                            <img class="projcard-img" src="<?php echo htmlspecialchars('../' . $receita['imagem_receita']); ?>" alt="Imagem da receita"> alt="Imagem da receita">
+                                            <div class="projcard-textbox">
+                                                <div class="projcard-title" style="color: var(--cinza-secundario); margin-bottom: 10px; margin-top: 10px" title="<?php echo htmlspecialchars($receita['nome_receita']); ?>">
+                                                    <?php
+                                                    // Exibe apenas os primeiros 17 caracteres do nome da receita com "..." se for maior que 17 caracteres
+                                                    $nome_receita = htmlspecialchars($receita['nome_receita']);
+                                                    echo strlen($nome_receita) > 17 ? substr($nome_receita, 0, 17) . '...' : $nome_receita;
+                                                    ?>
+                                                </div>
 
-                                            <div class="projcard-subtitle">
-                                                <?php
-                                                echo '<i class="fa-solid fa-utensils" style="color: #fe797b;"></i>&nbsp'
-                                                    . htmlspecialchars($receita['numeroPorcao_receita']) . " "
-                                                    . htmlspecialchars($receita['nome_singular_porcao']) . '<span style="margin-left: 10px;"></span><i class="fa-solid fa-clock" style="color: #ffb750;"></i>&nbsp' . htmlspecialchars($receita['tempoPreparoHora_receita']) . "h e " . htmlspecialchars($receita['tempoPreparoMinuto_receita']) . "min";
-                                                ?>
-                                            </div>
-                                            <div class="projcard-bar"></div>
-                                            <div class="projcard-description">
-                                                <?php
-                                                echo '<div style="margin-bottom: 5px;">' . 
-                                                    '<i class="fa-solid fa-bookmark" style="color: #a587ca;"></i>&nbsp' . htmlspecialchars($receita['nome_categoria_culinaria']) . 
-                                                    '</div>';
-                                                ?>
+
+                                                <div class="projcard-subtitle">
+                                                    <?php
+                                                    // Exibe a porção sem os zeros após a vírgula
+                                                    $porcao = floatval($receita['numeroPorcao_receita']); // Converte para número
+                                                    echo '<i class="fa-solid fa-utensils" style="color: #fe797b;"></i>&nbsp'
+                                                        . number_format($porcao, 0, ',', '') . " " // Mostra a porção sem decimais
+                                                        . htmlspecialchars($receita['nome_singular_porcao']) . '<span style="margin-left: 10px;"></span><i class="fa-solid fa-clock" style="color: #ffb750;"></i>&nbsp'
+                                                        . htmlspecialchars($receita['tempoPreparoHora_receita']) . "h e " . htmlspecialchars($receita['tempoPreparoMinuto_receita']) . "min";
+                                                    ?>
+                                                </div>
+                                                <div class="projcard-bar"></div>
+                                                <div class="projcard-description">
+                                                    <?php
+                                                    echo '<div style="margin-bottom: 5px;">' .
+                                                        '<i class="fa-solid fa-bookmark" style="color: #a587ca;"></i>&nbsp' . htmlspecialchars($receita['nome_categoria_culinaria']) .
+                                                        '</div>';
+                                                    ?>
+                                                </div>
                                             </div>
                                         </div>
-                                    </div>
-                                </a>
-                            </div>
+                                    </a>
+                                </div>
                 <?php
                             }
                         } catch (PDOException $e) {
