@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1:3306
--- Tempo de geração: 29/11/2024 às 01:14
+-- Tempo de geração: 29/11/2024 às 02:13
 -- Versão do servidor: 8.2.0
 -- Versão do PHP: 8.2.13
 
@@ -168,7 +168,7 @@ CREATE TABLE IF NOT EXISTS `ingrediente` (
   PRIMARY KEY (`id_ingrediente`),
   UNIQUE KEY `nome_ingrediente` (`nome_ingrediente`,`nome_plural_ingrediente`),
   KEY `fk_categoria_ingrediente` (`fk_id_categoria_ingrediente`)
-) ENGINE=InnoDB AUTO_INCREMENT=7936 DEFAULT CHARSET=utf8mb3 COLLATE=utf8mb3_unicode_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=7938 DEFAULT CHARSET=utf8mb3 COLLATE=utf8mb3_unicode_ci;
 
 --
 -- Despejando dados para a tabela `ingrediente`
@@ -770,7 +770,9 @@ INSERT INTO `ingrediente` (`id_ingrediente`, `nome_ingrediente`, `nome_plural_in
 (7932, 'nata', 'Natas', '../../css/img/ingrediente/no_image.png', 8),
 (7933, 'ricota', 'Ricotas', '../../css/img/ingrediente/no_image.png', 8),
 (7934, 'requeijão', 'Requeijões', '../../css/img/ingrediente/no_image.png', 8),
-(7935, 'yogurte', 'Yogurtes', '../../css/img/ingrediente/no_image.png', 8);
+(7935, 'yogurte', 'Yogurtes', '../../css/img/ingrediente/no_image.png', 8),
+(7936, 'Ovo Tipo 2', 'Ovos Tipo 2', '../../css/img/ingrediente/no_image.png', NULL),
+(7937, 'Ovo Tipo 1', 'Ovos Tipo 1', '../../css/img/ingrediente/no_image.png', NULL);
 
 -- --------------------------------------------------------
 
