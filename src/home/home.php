@@ -4,75 +4,131 @@ ob_start();
 
 include_once '../conexao.php';
 include '../css/frontend.php';
-include_once '../menu.php';
+
+// Get random images from carousel folder
+$imageDir = '../css/img/carousel/';
+$images = glob($imageDir . '*.{jpg,png,jpeg,gif,JPG,PNG,JPEG,GIF}', GLOB_BRACE);
+shuffle($images);
+$selectedImages = array_slice($images, 0, 5); // Get 5 unique random images
 ?>
 <!DOCTYPE html>
 <html lang="pt-br">
 
 <head>
-	<meta charset="utf-8">
-	<meta http-equiv="X-UA-Compatible" content="IE=edge">
-	<meta name="viewport" content="width=device-width, initial-scale=1">
-	<title>Home</title>
-	<link rel="stylesheet" href="css/bootstrap.min.css">
-	<!-- Site CSS -->
-	<link rel="stylesheet" href="css/style.css">
-	<!-- Responsive CSS -->
-	<link rel="stylesheet" href="css/responsive.css">
-	<!-- Custom CSS -->
-	<link rel="stylesheet" href="css/custom.css">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/js/bootstrap.bundle.min.js"></script>
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            padding-top: 80px;
+        }
+        nav {
+            margin: 0;
+            padding: 0;
+            position: fixed;
+            top: 0;
+            width: 100%;
+            z-index: 1000;
+        }
+        .carousel {
+            height: calc(100vh - 80px);
+            margin-top: 0;
+        }
+        .carousel-item {
+            height: calc(100vh - 80px);
+            background-size: cover;
+            background-position: center;
+        }
+        .carousel-caption {
+            bottom: 20%;
+            text-align: center;
+            z-index: 1000;
+        }
+        .carousel-caption a {
+            pointer-events: auto;
+        }
+        .carousel-caption h5 {
+            font-size: 2.5rem;
+            font-weight: bold;
+            color: white;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.7);
+        }
+        .carousel-caption p {
+            font-size: 1.2rem;
+            color: white;
+            text-shadow: 1px 1px 3px rgba(0,0,0,0.7);
+        }
+        .btn-primary {
+            background-color: var(--vermelho-primario);
+            border-color: var(--vermelho-primario);
+        }
+        .btn-primary:hover {
+            background-color: var(--vermelho-secundario);
+            border-color: var(--vermelho-secundario);
+        }
+    </style>
 </head>
 
 <body>
-	<div id="slides" class="cover-slides">
-		<ul class="slides-container">
-			<li class="text-center">
-				<img src="../css/img/receita/italian-cream-soda.png" alt="">
-				<div class="container">
-					<div class="row">
-						<div class="col-md-12">
-							<h1 class="m-b-20"><strong>Welcome To <br> Yamifood Restaurant</strong></h1>
-							<p class="m-b-40">See how your users experience your website in realtime or view <br>
-								trends to see any changes in performance over time.</p>
-							<p><a class="btn btn-lg btn-circle btn-outline-new-white" href="#">Reservation</a></p>
-						</div>
-					</div>
-				</div>
-			</li>
-			<li class="text-center">
-				<img src="../css/img/receita/brigadeiro-de-pistache.png" alt="">
-				<div class="container">
-					<div class="row">
-						<div class="col-md-12">
-							<h1 class="m-b-20"><strong>Welcome To <br> Yamifood Restaurant</strong></h1>
-							<p class="m-b-40">See how your users experience your website in realtime or view <br>
-								trends to see any changes in performance over time.</p>
-							<p><a class="btn btn-lg btn-circle btn-outline-new-white" href="#">Reservation</a></p>
-						</div>
-					</div>
-				</div>
-			</li>
-			<li class="text-center">
-				<img src="images/slider-03.jpg" alt="">
-				<div class="container">
-					<div class="row">
-						<div class="col-md-12">
-							<h1 class="m-b-20"><strong>Welcome To <br> Yamifood Restaurant</strong></h1>
-							<p class="m-b-40">See how your users experience your website in realtime or view <br>
-								trends to see any changes in performance over time.</p>
-							<p><a class="btn btn-lg btn-circle btn-outline-new-white" href="#">Reservation</a></p>
-						</div>
-					</div>
-				</div>
-			</li>
-		</ul>
-		<div class="slides-navigation">
-			<a href="#" class="next"><i class="fa fa-angle-right" aria-hidden="true"></i></a>
-			<a href="#" class="prev"><i class="fa fa-angle-left" aria-hidden="true"></i></a>
-		</div>
+    <?php include_once '../menu.php'; ?>
+	<div id="carouselExampleIndicators" class="carousel slide" data-ride="carousel" data-interval="3000">
+	  <ol class="carousel-indicators">
+	    <li data-target="#carouselExampleIndicators" data-slide-to="0" class="active"></li>
+	    <li data-target="#carouselExampleIndicators" data-slide-to="1"></li>
+	    <li data-target="#carouselExampleIndicators" data-slide-to="2"></li>
+	    <li data-target="#carouselExampleIndicators" data-slide-to="3"></li>
+	    <li data-target="#carouselExampleIndicators" data-slide-to="4"></li>
+	  </ol>
+	  <div class="carousel-inner">
+	    <div class="carousel-item active" style="background-image: url('<?php echo $selectedImages[0]; ?>');">
+	      <div class="carousel-caption d-block">
+	        <h5>Explore Receitas</h5>
+	        <p>Descubra uma variedade de receitas deliciosas.</p>
+	        <a class="btn btn-primary" href="/TCC/src/receita/listagem_receitas.php">Ver Receitas</a>
+	      </div>
+	    </div>
+	    <div class="carousel-item" style="background-image: url('<?php echo $selectedImages[1]; ?>');">
+	      <div class="carousel-caption d-block">
+	        <h5>Crie Sua Receita</h5>
+	        <p>Compartilhe suas próprias receitas com a comunidade.</p>
+	        <a class="btn btn-primary" href="/TCC/src/receita/cadastrar_receita.php">Cadastrar Receita</a>
+	      </div>
+	    </div>
+	    <div class="carousel-item" style="background-image: url('<?php echo $selectedImages[2]; ?>');">
+	      <div class="carousel-caption d-block">
+	        <h5>Busca por Ingredientes</h5>
+	        <p>Encontre receitas baseadas nos ingredientes que você tem.</p>
+	        <a class="btn btn-primary" href="/TCC/src/receita/busca_ingrediente/busca_ingrediente.php">Buscar Receitas</a>
+	      </div>
+	    </div>
+	    <div class="carousel-item" style="background-image: url('<?php echo $selectedImages[3]; ?>');">
+	      <div class="carousel-caption d-block">
+	        <h5>Sugestões Personalizadas</h5>
+	        <p>Receba sugestões de receitas baseadas em suas preferências.</p>
+	        <a class="btn btn-primary" href="/TCC/src/receita/sugestao.php">Ver Sugestões</a>
+	      </div>
+	    </div>
+	    <div class="carousel-item" style="background-image: url('<?php echo $selectedImages[4]; ?>');">
+	      <div class="carousel-caption d-block">
+	        <h5>Faça Login</h5>
+	        <p>Acesse sua conta para gerenciar suas receitas e avaliações.</p>
+	        <a class="btn btn-primary" href="/TCC/src/usuario/login.php">Login</a>
+	      </div>
+	    </div>
+	  </div>
+	  <a class="carousel-control-prev" href="#carouselExampleIndicators" role="button" data-slide="prev">
+	    <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+	    <span class="sr-only">Previous</span>
+	  </a>
+	  <a class="carousel-control-next" href="#carouselExampleIndicators" role="button" data-slide="next">
+	    <span class="carousel-control-next-icon" aria-hidden="true"></span>
+	    <span class="sr-only">Next</span>
+	  </a>
 	</div>
-	<script src="js/jquery.superslides.min.js"></script>
-	<script src="js/custom.js"></script><!-- slides-->
 </body>
 
 </html>
