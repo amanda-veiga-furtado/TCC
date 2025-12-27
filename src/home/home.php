@@ -20,57 +20,6 @@ $selectedImages = array_slice($images, 0, 5); // Get 5 unique random images
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/css/bootstrap.min.css" rel="stylesheet">
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/js/bootstrap.bundle.min.js"></script>
-    <style>
-        body {
-            margin: 0;
-            padding: 0;
-            padding-top: 80px;
-        }
-        nav {
-            margin: 0;
-            padding: 0;
-            position: fixed;
-            top: 0;
-            width: 100%;
-            z-index: 1000;
-        }
-        .carousel {
-            height: calc(100vh - 80px);
-            margin-top: 0;
-        }
-        .carousel-item {
-            height: calc(100vh - 80px);
-            background-size: cover;
-            background-position: center;
-        }
-        .carousel-caption {
-            bottom: 20%;
-            text-align: center;
-            z-index: 1000;
-        }
-        .carousel-caption a {
-            pointer-events: auto;
-        }
-        .carousel-caption h5 {
-            font-size: 2.5rem;
-            font-weight: bold;
-            color: white;
-            text-shadow: 2px 2px 4px rgba(0,0,0,0.7);
-        }
-        .carousel-caption p {
-            font-size: 1.2rem;
-            color: white;
-            text-shadow: 1px 1px 3px rgba(0,0,0,0.7);
-        }
-        .btn-primary {
-            background-color: var(--vermelho-primario);
-            border-color: var(--vermelho-primario);
-        }
-        .btn-primary:hover {
-            background-color: var(--vermelho-secundario);
-            border-color: var(--vermelho-secundario);
-        }
-    </style>
 </head>
 
 <body>
