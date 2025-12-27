@@ -56,7 +56,7 @@ include_once '../menu.php';
                 try {
                     // Consulta para buscar receitas com base na busca
                     $query_receita = "SELECT r.id_receita, r.nome_receita, r.numeroPorcao_receita, 
-                    p.nome_singular_porcao, p.nome_plural_porcao, 
+                    p.nome_porcao, p.nome_porcao, 
                     r.tempoPreparoHora_receita, r.tempoPreparoMinuto_receita, 
                     r.modoPreparo_receita, r.imagem_receita, 
                     c.nome_categoria_culinaria, r.fk_id_usuario
@@ -92,7 +92,7 @@ include_once '../menu.php';
                             $numeroPorcao = intval($numeroPorcao_receita);
 
                             // Verificar quantidade de porções para determinar plural ou singular
-                            $porcao_nome = ($numeroPorcao_receita > 1) ? $nome_plural_porcao : $nome_singular_porcao;
+                            $porcao_nome = ($numeroPorcao_receita > 1) ? $nome_porcao : $nome_porcao;
 
                             $nome_receita = (strlen($nome_receita) > 17) ? substr($nome_receita, 0, 17) . '...' : $nome_receita;
 

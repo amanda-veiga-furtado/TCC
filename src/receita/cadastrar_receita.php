@@ -170,10 +170,10 @@ function addIngredientes($dados, $id_receita, &$erro)
                     <select name="tipoPorcao_receita" style="width: 84%;" required>
                         <!-- Preencha as opções a partir do banco -->
                         <?php
-                        $query = $conn->query("SELECT id_porcao, nome_plural_porcao FROM porcao_quantidade ORDER BY nome_plural_porcao ASC");
+                        $query = $conn->query("SELECT id_porcao, nome_porcao FROM porcao_quantidade ORDER BY nome_porcao ASC");
                         $porcao_opcoes = $query->fetchAll(PDO::FETCH_ASSOC);
                         foreach ($porcao_opcoes as $option) {
-                            echo "<option value='{$option['id_porcao']}'>{$option['nome_plural_porcao']}</option>";
+                            echo "<option value='{$option['id_porcao']}'>{$option['nome_porcao']}</option>";
                         }
                         ?>
                     </select>
@@ -201,10 +201,10 @@ function addIngredientes($dados, $id_receita, &$erro)
                             <input type="number" name="quantidadeIngrediente[]" min="0.001" step="0.001" value="1" style="width: 15%;">
                             <select name="tipoIngrediente[]" style="width: 38%;">
                                 <?php
-                                $query = $conn->query("SELECT id_ingrediente_quantidade, nome_plural_ingrediente_quantidade FROM ingrediente_quantidade ORDER BY nome_plural_ingrediente_quantidade ASC");
+                                $query = $conn->query("SELECT id_ingrediente_quantidade, nome_ingrediente_quantidade FROM ingrediente_quantidade ORDER BY nome_ingrediente_quantidade ASC");
                                 $tipos = $query->fetchAll(PDO::FETCH_ASSOC);
                                 foreach ($tipos as $option) {
-                                    echo "<option value='{$option['id_ingrediente_quantidade']}'>{$option['nome_plural_ingrediente_quantidade']}</option>";
+                                    echo "<option value='{$option['id_ingrediente_quantidade']}'>{$option['nome_ingrediente_quantidade']}</option>";
                                 }
                                 ?>
                             </select>

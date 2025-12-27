@@ -104,7 +104,7 @@ function buscarIngredientesDaReceita($idReceita)
                     foreach ($receitasExibidas as $idReceita) {
                         try {
                             $query_receita_detalhes = "SELECT r.id_receita, r.nome_receita, r.numeroPorcao_receita, 
-                                p.nome_singular_porcao, p.nome_plural_porcao, 
+                                p.nome_porcao, p.nome_porcao, 
                                 r.tempoPreparoHora_receita, r.tempoPreparoMinuto_receita, 
                                 r.imagem_receita, c.nome_categoria_culinaria
                                 FROM receita r
@@ -140,7 +140,7 @@ function buscarIngredientesDaReceita($idReceita)
                                                     $porcao = floatval($receita['numeroPorcao_receita']); // Converte para número
                                                     echo '<i class="fa-solid fa-utensils" style="color: #fe797b;"></i>&nbsp'
                                                         . number_format($porcao, 0, ',', '') . " " // Mostra a porção sem decimais
-                                                        . htmlspecialchars($receita['nome_singular_porcao']) . '<span style="margin-left: 10px;"></span><i class="fa-solid fa-clock" style="color: #ffb750;"></i>&nbsp'
+                                                        . htmlspecialchars($receita['nome_porcao']) . '<span style="margin-left: 10px;"></span><i class="fa-solid fa-clock" style="color: #ffb750;"></i>&nbsp'
                                                         . htmlspecialchars($receita['tempoPreparoHora_receita']) . "h e " . htmlspecialchars($receita['tempoPreparoMinuto_receita']) . "min";
                                                     ?>
                                                 </div>

@@ -20,7 +20,7 @@ try {
         SELECT 
             r.id_receita, r.nome_receita, r.numeroPorcao_receita, r.tempoPreparoHora_receita, r.tempoPreparoMinuto_receita, r.modoPreparo_receita, r.imagem_receita,
             c.nome_categoria_culinaria,
-            p.nome_singular_porcao, p.nome_plural_porcao,
+            p.nome_porcao, p.nome_porcao,
             u.nome_usuario,
             u.id_usuario AS fk_id_usuario
         FROM 
@@ -51,8 +51,8 @@ try {
      SELECT 
          i.nome_ingrediente, 
          li.qtdIngrediente_lista,
-         iq.nome_singular_ingrediente_quantidade,
-         iq.nome_plural_ingrediente_quantidade
+         iq.nome_ingrediente_quantidade,
+         iq.nome_ingrediente_quantidade
      FROM 
          lista_de_ingredientes li
      INNER JOIN 
@@ -74,12 +74,12 @@ try {
         $categoria = $row_receita['nome_categoria_culinaria'];
         $usuario = $row_receita['nome_usuario'];
         $numeroPorcao = $row_receita['numeroPorcao_receita'];
-        // $porcao_nome = ($numeroPorcao == 1) ? $row_receita['nome_singular_porcao'] : $row_receita['nome_plural_porcao'];
+        // $porcao_nome = ($numeroPorcao == 1) ? $row_receita['nome_porcao'] : $row_receita['nome_porcao'];
         // Formata o número de porções para remover casas decimais desnecessárias
         $numeroPorcao_formatado = ($numeroPorcao == floor($numeroPorcao)) ? (int)$numeroPorcao : $numeroPorcao;
 
         // Exibe o nome no singular ou plural conforme a quantidade de porções
-        $porcao_nome = ($numeroPorcao_formatado < 2) ? $row_receita['nome_singular_porcao'] : $row_receita['nome_plural_porcao'];
+        $porcao_nome = ($numeroPorcao_formatado < 2) ? $row_receita['nome_porcao'] : $row_receita['nome_porcao'];
         $numeroPorcao_formatado = str_replace('.', ',', $numeroPorcao_formatado); // Substitui $numeroPorcao_formatado = str_replace('.', ',', $numeroPorcao_formatado);
         if (strpos($numeroPorcao_formatado, ',') !== false) {
             $numeroPorcao_formatado = rtrim($numeroPorcao_formatado, '0');
@@ -362,10 +362,10 @@ try {
                                         // Define o nome do ingrediente e o tipo de quantidade (singular ou plural)
                                         if ($quantidade_formatada == 1) {
                                             $nomeIngrediente = $row_ingrediente['nome_ingrediente']; // Nome do ingrediente
-                                            $tipoQuantidade = htmlspecialchars($row_ingrediente['nome_plural_ingrediente_quantidade']); // Plural para quantidade igual a 1
+                                            $tipoQuantidade = htmlspecialchars($row_ingrediente['nome_ingrediente_quantidade']); // Plural para quantidade igual a 1
                                         } else {
                                             $nomeIngrediente = $row_ingrediente['nome_ingrediente'];
-                                            $tipoQuantidade = htmlspecialchars($row_ingrediente['nome_singular_ingrediente_quantidade']); // Singular normalmente
+                                            $tipoQuantidade = htmlspecialchars($row_ingrediente['nome_ingrediente_quantidade']); // Singular normalmente
                                         }
 
                                         // Formata a quantidade para substituir o ponto por vírgula

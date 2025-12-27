@@ -133,11 +133,11 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') { // Verifica se o formulário foi en
                     <input type="number" name="numeroPorcao_receita" id="numeroPorcao_receita" min="0.001" step="0.001" value="<?php echo htmlspecialchars($dados['numeroPorcao_receita'], ENT_QUOTES); ?>" style="width: 15%;" required>
                     <select name="tipoPorcao_receita" style="width: 84%;" required>
                         <?php
-                        $query = $conn->query("SELECT id_porcao, nome_plural_porcao FROM porcao_quantidade ORDER BY nome_plural_porcao ASC");
+                        $query = $conn->query("SELECT id_porcao, nome_porcao FROM porcao_quantidade ORDER BY nome_porcao ASC");
                         $porcao_opcoes = $query->fetchAll(PDO::FETCH_ASSOC);
                         foreach ($porcao_opcoes as $option) {
                             $selected = ($option['id_porcao'] == $dados['tipoPorcao_receita']) ? 'selected' : '';
-                            echo "<option value='{$option['id_porcao']}' {$selected}>{$option['nome_plural_porcao']}</option>";
+                            echo "<option value='{$option['id_porcao']}' {$selected}>{$option['nome_porcao']}</option>";
                         }
                         ?>
                     </select>
@@ -174,11 +174,11 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') { // Verifica se o formulário foi en
                                         style="width: 15%;">
                                     <select class="select-field" name="tipoIngrediente[]" style="width: 38%;">
                                         <?php
-                                        $query = $conn->query("SELECT id_ingrediente_quantidade, nome_plural_ingrediente_quantidade FROM ingrediente_quantidade ORDER BY nome_plural_ingrediente_quantidade ASC");
+                                        $query = $conn->query("SELECT id_ingrediente_quantidade, nome_ingrediente_quantidade FROM ingrediente_quantidade ORDER BY nome_ingrediente_quantidade ASC");
                                         $porcao_opcoes = $query->fetchAll(PDO::FETCH_ASSOC);
                                         foreach ($porcao_opcoes as $option) {
                                             $selected = ($option['id_ingrediente_quantidade'] == $ingrediente['tipoQtdIngrediente_lista']) ? 'selected' : '';
-                                            echo "<option value='{$option['id_ingrediente_quantidade']}' {$selected}>{$option['nome_plural_ingrediente_quantidade']}</option>";
+                                            echo "<option value='{$option['id_ingrediente_quantidade']}' {$selected}>{$option['nome_ingrediente_quantidade']}</option>";
                                         }
                                         ?>
                                     </select>
@@ -202,10 +202,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') { // Verifica se o formulário foi en
                                 <select class="select-field" name="tipoIngrediente[]" style="width: 38%;">
                                     <!-- <option value="">Selecione o tipo de medida</option> -->
                                     <?php
-                                    $query = $conn->query("SELECT id_ingrediente_quantidade, nome_plural_ingrediente_quantidade FROM ingrediente_quantidade ORDER BY nome_plural_ingrediente_quantidade ASC");
+                                    $query = $conn->query("SELECT id_ingrediente_quantidade, nome_ingrediente_quantidade FROM ingrediente_quantidade ORDER BY nome_ingrediente_quantidade ASC");
                                     $porcao_opcoes = $query->fetchAll(PDO::FETCH_ASSOC);
                                     foreach ($porcao_opcoes as $option) {
-                                        echo "<option value='{$option['id_ingrediente_quantidade']}'>{$option['nome_plural_ingrediente_quantidade']}</option>";
+                                        echo "<option value='{$option['id_ingrediente_quantidade']}'>{$option['nome_ingrediente_quantidade']}</option>";
                                     }
                                     ?>
                                 </select>
