@@ -8,7 +8,7 @@ include_once '../menu.php';
 
 if (!isset($_SESSION['id_usuario'])) {
     // header("Location: login.php");
-    header("Location: http://localhost/TCC/Codigo/usuario/login.php?mensagem=" . urlencode("Para prosseguir, é necessário estar logado."));
+    header("Location: http://localhost/TCC/src/usuario/login.php?mensagem=" . urlencode("Para prosseguir, é necessário estar logado."));
     exit();
 }
 

@@ -3,7 +3,7 @@ session_start();
 ob_start();
 
 if (!isset($_SESSION['id_usuario'])) {
-    header('Location: http://localhost/TCC/Codigo/usuario/login.php');
+    header('Location: http://localhost/TCC/src/usuario/login.php');
     $_SESSION['mensagem'] = "Para prosseguir, é necessário estar logado.";
     exit();
 }

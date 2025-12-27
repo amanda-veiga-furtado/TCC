@@ -10,7 +10,7 @@ include_once '../menu_admin.php';
 // Verificar se o usuário está logado e se é administrador
 if (!isset($_SESSION['id_usuario']) || $_SESSION['statusAdministrador_usuario'] !== 'a') {
     $_SESSION['mensagem'] = "Acesso negado! Somente administradores podem acessar esta página.";
-    header("Location: http://localhost/TCC/Codigo/usuario/login.php");
+    header("Location: http://localhost/TCC/src/usuario/login.php");
     exit();
 }
 ?>
