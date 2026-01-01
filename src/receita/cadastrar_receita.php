@@ -8,9 +8,7 @@ if (!isset($_SESSION['id_usuario'])) {
     exit();
 }
 
-include_once '../conexao.php';
-include '../css/frontend.php';
-include_once '../menu.php';
+include_once '../include_once.php';
 
 $erro = ""; // Inicializa uma variável para mensagens de erro
 
@@ -34,7 +32,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') { // Verifica envio do formulário
                                     VALUES 
                                     (:nome_receita, :numeroPorcao_receita, :tipoPorcao_receita, :tempoPreparoHora_receita, 
                                     :tempoPreparoMinuto_receita, :modoPreparo_receita, :imagem_receita, :categoria_receita, :fk_id_usuario)";
-                    
+
                     $statement_insert = $conn->prepare($query_insert);
                     $statement_insert->bindParam(':nome_receita', $dados['nome_receita']);
                     $statement_insert->bindParam(':numeroPorcao_receita', $numeroPorcao_receita);
@@ -165,7 +163,20 @@ function addIngredientes($dados, $id_receita, &$erro)
                     <h2>Nome da Receita</h2>
                     <input type="text" name="nome_receita" style="width: 100%;" placeholder="Bolo de Cenoura com Cobertura de Chocolate Amargo" required>
 
-                    <h2>Porção</h2>
+                    <h2>Porção
+                        <i class="fa-solid fa-circle-info" style="color: #74C0FC;"
+                            title="
+                                Para medida fracionadas use: 
+                                1/2 = 0.500
+                                1/3 = 0.333
+                                2/3 = 0.667
+                                1/4 = 0.250
+                                3/4 = 0.750
+                                1/8 = 0.125
+                                1/16 = 0.063">
+                        </i>
+                    </h2>
+
                     <input type="number" name="numeroPorcao_receita" min="0.001" step="0.001" style="width: 15%;" value="0" required>
                     <select name="tipoPorcao_receita" style="width: 84%;" required>
                         <!-- Preencha as opções a partir do banco -->
@@ -185,7 +196,20 @@ function addIngredientes($dados, $id_receita, &$erro)
                     <h2>Imagem</h2>
                     <input type="file" name="imagem_receita">
 
-                    <h2>Ingredientes</h2>
+                    <h2>Ingredientes
+                        <i class="fa-solid fa-circle-info" style="color: #74C0FC;"
+                            title="
+                                Para medida fracionadas use: 
+                                1/2 = 0.500
+                                1/3 = 0.333
+                                2/3 = 0.667
+                                1/4 = 0.250
+                                3/4 = 0.750
+                                1/8 = 0.125
+                                1/16 = 0.063">
+                        </i>
+                    </h2>
+
                     <div id="ingredientes-container">
                         <div class="ingrediente">
                             <select name="nome_ingrediente[]" class="select-field" style="width: 45%;">
@@ -210,7 +234,7 @@ function addIngredientes($dados, $id_receita, &$erro)
                             </select>
                         </div>
                     </div>
-                    <button type="button" id="add-ingrediente" class="button-round button-plus" title="Adicione 1 Ingrediente a Sua Receita"><i class="fa-solid fa-pencil"></i></button>                    <button type="button" id="remove-ingrediente" class="button-round button-minus" title="Remova 1 Ingrediente da Sua Receita"><i class="fa-solid fa-trash"></i></button>
+                    <button type="button" id="add-ingrediente" class="button-round button-plus" title="Adicione 1 Ingrediente a Sua Receita"><i class="fa-solid fa-pencil"></i></button> <button type="button" id="remove-ingrediente" class="button-round button-minus" title="Remova 1 Ingrediente da Sua Receita"><i class="fa-solid fa-trash"></i></button>
 
 
                     <?php $placeholder_text = file_get_contents('receita.txt'); ?>
@@ -319,4 +343,5 @@ function addIngredientes($dados, $id_receita, &$erro)
         });
     </script>
 </body>
+
 </html>

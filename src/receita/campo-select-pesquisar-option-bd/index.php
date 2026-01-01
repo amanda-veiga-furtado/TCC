@@ -2,8 +2,7 @@
     session_start();
     ob_start();
 
-    include_once '../../conexao.php';
-    include_once '../../css/frontend.php';
+    include_once '../../include_once.php';
 
     // Query para buscar os ingredientes
     $query = "SELECT id_ingrediente, nome_ingrediente FROM ingrediente";

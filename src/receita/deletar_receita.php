@@ -2,7 +2,7 @@
 session_start();
 ob_start();
 
-include_once '../conexao.php';
+include_once '../include_once.php';
 
 $id_receita = filter_input(INPUT_GET, 'id_receita', FILTER_VALIDATE_INT);
 

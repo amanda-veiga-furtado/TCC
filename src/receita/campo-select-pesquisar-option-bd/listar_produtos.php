@@ -1,7 +1,7 @@
 <?php
 
 // Incluir o arquivo com a conexao com banco de dados
-include_once "./conexao.php";
+include_once "./include_once.php";
 
 $nome_produto = filter_input(INPUT_GET, "nome", FILTER_DEFAULT);
 

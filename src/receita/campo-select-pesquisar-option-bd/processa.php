@@ -5,7 +5,7 @@ session_start(); // Iniciar a sessão
 ob_start();
 
 // Incluir o arquivo com a conexao com banco de dados
-include_once "./conexao.php";
+include_once "./include_once.php";
 
 // Receber os dados do formulário
 $dados = filter_input_array(INPUT_POST, FILTER_DEFAULT);
