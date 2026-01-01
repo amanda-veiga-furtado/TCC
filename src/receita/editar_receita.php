@@ -9,9 +9,7 @@ if (!isset($_SESSION['id_usuario'])) {
     exit();
 }
 
-include_once '../conexao.php';
-include '../css/frontend.php';
-include_once '../menu.php';
+include_once '../include_once.php';
 
 $erro = ""; // Inicializa uma variável para armazenar mensagens de erro
 $dados = []; // Inicializa uma variável para armazenar mensagens de erro

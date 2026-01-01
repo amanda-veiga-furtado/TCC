@@ -1,6 +1,6 @@
 <?php
-include_once '..\menu.php';
-include_once '..\conexao.php';
+
+include_once '..\include_once.php';
 
 session_start(); // Iniciar a sessão
 ?>

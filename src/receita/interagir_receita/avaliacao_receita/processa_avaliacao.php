@@ -1,7 +1,7 @@
 <?php
 session_start(); // Iniciar a sessão
 
-include_once '..\conexao.php';
+include_once '..\include_once.php';
 
 // Definir fuso horário de São Paulo
 date_default_timezone_set('America/Sao_Paulo');

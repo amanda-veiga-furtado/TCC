@@ -2,10 +2,8 @@
 session_start();
 ob_start();
 
-include_once '../conexao.php';
-include '../css/frontend.php';
-include_once '../menu.php';
-include_once '../menu_admin.php';
+include_once '../include_once.php';
+
 
 // Debug para verificar o conteúdo da sessão
 // var_dump($_SESSION);
