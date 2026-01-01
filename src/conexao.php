@@ -1,5 +1,4 @@
 <?php
-include 'css/frontend.php';
 
 $host = "localhost";
 $user = "root";
