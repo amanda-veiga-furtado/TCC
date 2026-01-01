@@ -2,8 +2,7 @@
 session_start();
 ob_start();
 
-include_once '../conexao.php';
-include '../css/frontend.php';
+include_once '../include_once.php';
 
 // Get random images from carousel folder
 $imageDir = '../css/img/carousel/';
@@ -23,7 +22,6 @@ $selectedImages = array_slice($images, 0, 5); // Get 5 unique random images
 </head>
 
 <body>
-    <?php include_once '../menu.php'; ?>
 	<div id="carouselExampleIndicators" class="carousel slide" data-ride="carousel" data-interval="3000">
 	  <ol class="carousel-indicators">
 	    <li data-target="#carouselExampleIndicators" data-slide-to="0" class="active"></li>

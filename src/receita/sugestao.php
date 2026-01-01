@@ -2,9 +2,7 @@
 session_start();
 ob_start();
 
-include_once '../conexao.php';
-include '../css/frontend.php';
-include_once '../menu.php';
+include_once '../include_once.php';
 
 if (!isset($_SESSION['id_usuario'])) {
     header('Location: http://localhost/TCC/src/usuario/login.php'); // Redireciona para a página de login

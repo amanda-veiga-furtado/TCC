@@ -2,9 +2,7 @@
 session_start(); // Inicia a sessão
 ob_start();
 
-include_once '../conexao.php';
-include '../css/frontend.php';
-include_once '../menu.php';
+include_once '../include_once.php';
 
 $id_receita = filter_input(INPUT_GET, "id_receita", FILTER_SANITIZE_NUMBER_INT); // Obtém o ID da receita da URL
 
