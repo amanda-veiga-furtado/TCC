@@ -3,9 +3,7 @@
 session_start();
 ob_start();
 
-include_once '../../conexao.php';
-include '../../css/frontend.php';
-include_once '../../menu.php';
+include_once '../../include_once.php';
 
 $pagina = isset($_GET['pagina']) ? intval($_GET['pagina']) : 1; // Verifica se o parâmetro 'pagina' está definido na URL, senão define como 1
 $quantidade_pg = 6; // Define a quantidade de ingredientes por página

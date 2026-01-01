@@ -2,9 +2,7 @@
 session_start();
 ob_start();
 
-include_once '../../conexao.php';
-include '../../css/frontend.php';
-include_once '../../menu.php';
+include_once '../../include_once.php';
 
 // Verifica se nenhum ingrediente foi passado na URL
 if (empty($_GET['ingredientes'])) {
