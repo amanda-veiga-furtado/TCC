@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1:3306
--- Tempo de geração: 29/12/2025 às 01:07
+-- Tempo de geração: 01/01/2026 às 18:06
 -- Versão do servidor: 8.2.0
 -- Versão do PHP: 8.2.13
 
@@ -918,7 +918,7 @@ INSERT INTO `porcao_quantidade` (`id_porcao`, `nome_porcao`) VALUES
 (11, 'mililitro(s)'),
 (2, 'pedaço(s)'),
 (5, 'pessoa(s)'),
-(1, 'porção(s)'),
+(1, 'porção(ões)'),
 (3, 'prato(s)'),
 (6, 'quilo(s)'),
 (8, 'unidade(s)'),
