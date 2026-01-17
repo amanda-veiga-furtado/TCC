@@ -1,5 +1,3 @@
-// RFN003 - Os campos de texto, com exceção dos de e-mail e senha, não aceitarão caracteres como , /, @, <, >, #, $, %, &, *, {, }, [ e ]
-
 // Seleciona todos os inputs de texto e textareas, excluindo email e senha
 var inputs = document.querySelectorAll('input[type="text"], textarea');
 
