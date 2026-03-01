@@ -77,12 +77,8 @@
         /* Ícone Hamburger mobile */
         .menuIcon {
             display: none;
-            position: absolute;
-            right: 20px;
-            top: 15px;
             font-size: 28px;
             cursor: pointer;
-            z-index: 1000;
         }
 
         /* MOBILE */
@@ -97,7 +93,6 @@
 
             .menuIcon {
                 display: block;
-                margin-bottom: 10px;
                 color: var(--cinza-secundario);
             }
 
