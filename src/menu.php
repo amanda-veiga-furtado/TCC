@@ -1,69 +1,178 @@
-<?php
-if (session_status() === PHP_SESSION_NONE) {
-    session_start();
-}
+<!DOCTYPE html>
+<html lang="pt-BR">
 
-$isLogged = isset($_SESSION['id_usuario']);
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Menu Horizontal e Responsivo</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
 
-$isAdmin = $isLogged &&
-           isset($_SESSION['statusAdministrador_usuario']) &&
-           $_SESSION['statusAdministrador_usuario'] === 'a';
-?>
+    <style>
+        html,
+        body {
+            font-family: Hack, monospace;
+            margin: 0;
+            padding: 0;
+        }
 
-<nav>
-    <ul class="menuItems">
-        <li>
-            <a href="/TCC/src/home/home.php">
-                <i class="fa-solid fa-house fa-sm"></i> Home
-            </a>
-        </li>
+        /* Paleta de cores */
+        :root {
+            --vermelho-primario: #fe797b;
+            --laranja-primario: #ffb750;
+            --amarelo-primario: #ffea56;
+            --verde-primario: #8fe968;
+            --azul-primario: #36cedc;
+            --roxo-primario: #a587ca;
+            --cinza-primario: #f9f9f9;
+            --cinza-secundario: #8f8f8f;
+        }
 
-        <?php if (!$isLogged): ?>
-            <li>
-                <a href="/TCC/src/usuario/login.php">Login</a>
-            </li>
-        <?php endif; ?>
+        /* Navegação */
+        nav {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            position: relative;
+            width: 100%;
+            background: var(--cinza-primario);
+            padding: 10px 0;
+        }
 
-        <li>
-            <a href="/TCC/src/receita/busca_ingrediente/busca_ingrediente.php">
-                Busca por Ingrediente
-            </a>
-        </li>
+        /* Menu Horizontal */
+        .menuItems {
+            list-style: none;
+            display: flex;
+            justify-content: center;
+            margin: 0;
+            padding: 0;
+        }
 
-        <li>
-            <a href="/TCC/src/receita/listagem_receitas.php">Receitas</a>
-        </li>
+        .menuItems li {
+            display: flex;
+            align-items: center;
+            margin: 0 30px;
+            position: relative;
+        }
 
-        <?php if ($isLogged): ?>
-            <li>
-                <a href="/TCC/src/receita/cadastrar_receita.php">
-                    Postar Receita
-                </a>
-            </li>
+        .menuItems a {
+            text-decoration: none;
+            color: var(--cinza-secundario);
+            font-size: 24px;
+            font-weight: 400;
+            text-transform: uppercase;
+            position: relative;
+            padding: 5px 0;
+        }
 
-            <li>
-                <a href="/TCC/src/receita/sugestao.php">Sugestão</a>
-            </li>
+        /* Efeito gradiente no hover */
+        .menuItems a::before {
+            content: '';
+            position: absolute;
+            width: 100%;
+            height: 3px;
+            bottom: -6px;
+            background: linear-gradient(90deg, var(--vermelho-primario), var(--laranja-primario), var(--amarelo-primario), var(--verde-primario), var(--azul-primario), var(--roxo-primario));
+            visibility: hidden;
+            transform: scaleX(0);
+            transition: transform 0.3s ease, visibility 0s linear 0.3s;
+        }
 
-            <li>
-                <a href="/TCC/src/usuario/dashboard.php">
-                    <i class="fa-solid fa-circle-user fa-lg"></i>
-                </a>
-            </li>
-        <?php endif; ?>
+        .menuItems a:hover::before {
+            visibility: visible;
+            transform: scaleX(1);
+            transition: transform 0.3s ease, visibility 0s linear;
+        }
 
-        <?php if ($isAdmin): ?>
-            <li>
-                <a href="/TCC/src/usuario/listagem_cadastros.php">
-                    Usuários <i class="fa-solid fa-lock-open"></i>
-                </a>
-            </li>
+        /* Ícone Hamburger (aparece apenas no mobile) */
+        .menuIcon {
+            display: none;
+            position: absolute;
+            right: 20px;
+            top: 15px;
+            font-size: 28px;
+            cursor: pointer;
+            z-index: 1000;
+        }
 
-            <li>
-                <a href="/TCC/src/receita/listagem_receitas_admin.php">
-                    Receitas <i class="fa-solid fa-lock-open"></i>
-                </a>
-            </li>
-        <?php endif; ?>
-    </ul>
-</nav>
+        /* MOBILE */
+        @media screen and (max-width: 768px) {
+            .menuItems {
+                display: none;
+                flex-direction: column;
+                width: 100%;
+                text-align: center;
+            }
+
+            .menuItems.show {
+                display: flex;
+            }
+
+            .menuItems li {
+                margin: 15px 0;
+            }
+
+            .menuIcon {
+                display: block;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <?php
+    if (session_status() === PHP_SESSION_NONE) {
+        session_start();
+    }
+
+    $isLogged = isset($_SESSION['id_usuario']);
+    $isAdmin = $isLogged && isset($_SESSION['statusAdministrador_usuario']) && $_SESSION['statusAdministrador_usuario'] === 'a';
+    ?>
+
+    <nav>
+        <!-- Ícone do menu mobile -->
+        <div class="menuIcon">
+            <i class="fa fa-bars"></i>
+        </div>
+
+        <!-- Menu -->
+        <ul class="menuItems" id="myLinks">
+            <li><a href="/TCC/src/home/home.php"><i class="fa fa-home"></i> Home</a></li>
+
+            <?php if (!$isLogged): ?>
+                <li><a href="/TCC/src/usuario/login.php">Login</a></li>
+            <?php endif; ?>
+
+            <li><a href="/TCC/src/receita/busca_ingrediente/busca_ingrediente.php">Busca por Ingrediente</a></li>
+            <li><a href="/TCC/src/receita/listagem_receitas.php">Receitas</a></li>
+
+            <?php if ($isLogged): ?>
+                <li><a href="/TCC/src/receita/cadastrar_receita.php">Postar Receita</a></li>
+                <li><a href="/TCC/src/receita/sugestao.php">Sugestão</a></li>
+                <li><a href="/TCC/src/usuario/dashboard.php"><i class="fa fa-user"></i></a></li>
+            <?php endif; ?>
+
+            <?php if ($isAdmin): ?>
+                <li><a href="/TCC/src/usuario/listagem_cadastros.php">Usuários <i class="fa fa-unlock"></i></a></li>
+                <li><a href="/TCC/src/receita/listagem_receitas_admin.php">Receitas <i class="fa fa-unlock"></i></a></li>
+            <?php endif; ?>
+        </ul>
+    </nav>
+
+    <script>
+        // Toggle do menu mobile
+        document.addEventListener("DOMContentLoaded", function () {
+            const menuIcon = document.querySelector(".menuIcon");
+            const menu = document.getElementById("myLinks");
+
+            if (menuIcon && menu) {
+                menuIcon.addEventListener("click", function () {
+                    menu.classList.toggle("show");
+                });
+            }
+        });
+    </script>
+
+</body>
+
+</html>
