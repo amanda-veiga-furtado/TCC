@@ -1,11 +1,13 @@
 <!DOCTYPE html>
 <html lang="pt-br">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <script src="https://kit.fontawesome.com/9572f9bae9.js" crossorigin="anonymous"></script>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css"><link href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free/css/all.min.css" rel="stylesheet">
-<!-- Símbolos -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
+    <link href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free/css/all.min.css" rel="stylesheet">
+    <!-- Símbolos -->
     <!-- <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet"/><script src="https://code.jquery.com/jquery-3.6.0.min.js"></script><script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script> --><!-- Campo Select Pesquisar Digitando -->
     <style>
         /* Reset */
@@ -14,9 +16,12 @@
             margin: 0;
             box-sizing: border-box;
         }
+
         body {
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: var(--vermelho-primario);
         }
+
         /* Paleta de Cores */
         :root {
             --vermelho-primario: #fe797b;
@@ -35,83 +40,54 @@
             --cinza-secundario: #8f8f8f;
             --cinza-terciario: #5E5E5E;
             --rosa-primario: #FE8FAA;
+
+            --background1: #FFBEF5;
+            --background2: #FFB6D6;
+            --background3: #FFB3BA;
+            --background4: #FFC8B3;
+            --background5: #FFDFBA;
+            --background6: #FFEEB8;
+            --background7: #FFFFBA;
+            --background8: #DEFFBD;
+            --background9: #BAFFC9;
+            --background10: #99F5F7;
+            --background11: #BAE1FF;
+            --background12: #C1D0FF;
+            --background13: #E7B7FF;
+            --background14: #E0A0FF;
+            --background15: #D889FF;
         }
-        /* Navegação */
-        nav {
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            align-items: center;
-            position: relative;
-            font-family: Hack, monospace;
-            width: 100%;
-            margin: 0px;
-            background: var(--cinza-primario);
-            padding: 0px;
-        }
-        .menuItems {
-            list-style: none;
-            display: flex;
-            justify-content: center;
-        }
-        .menuItems li {
-            display: flex;
-            align-items: center;
-            margin: 30px;
-            position: relative;
-            text-align: center;
-        }
-        .menuItems a {
-            text-decoration: none;
-            color: var(--cinza-secundario);
-            font-size: 24px;
-            font-weight: 400;
-            text-transform: uppercase;
-            position: relative;
-        }
-        .menuItems a::before {
-            content: '';
-            position: absolute;
-            width: 100%;
-            height: 3px;
-            bottom: -6px;
-            background: linear-gradient(90deg, var(--vermelho-primario), var(--laranja-primario), var(--amarelo-primario), var(--verde-primario), var(--azul-primario), var(--roxo-primario));
-            visibility: hidden;
-            transform: scaleX(0);
-            transition: transform 0.3s ease, visibility 0s linear 0.3s;
-        }
-        .menuItems a:hover::before {
-            visibility: visible;
-            transform: scaleX(1);
-            transition: transform 0.3s ease, visibility 0s linear;
-        }
+
         /* Fundo */
         <?php
         //Função Mudar Imagem Aleatóriamente
         $images = range(start: 1, end: 32); // Array com o nome das imagens
         $randomImage = $images[array_rand($images)]; // Seleciona uma imagem aleatória    
-        ?>.container_background_image_small {
+        ?>
+        .container_background_image_small {
             width: 100vw;
             height: 70.6vh;
             display: flex;
             justify-content: center;
             align-items: center;
-            background: url('../css/img/fundo/<?php echo $randomImage; ?>.jpg')no-repeat center center;
+            /*background: url('../css/img/fundo/<?php echo $randomImage; ?>.jpg')no-repeat center center;*/
             background-size: cover;
             background-position: center;
             background-attachment: fixed;
         }
+
         .container_background_image_medium {
             width: 100vw;
             height: 85.3vh;
             display: flex;
             justify-content: center;
             align-items: center;
-            background: url('../css/img/fundo/<?php echo $randomImage; ?>.jpg')no-repeat center center;
+            /*background: url('../css/img/fundo/<?php echo $randomImage; ?>.jpg')no-repeat center center;*/
             background-size: cover;
             background-position: center;
             background-attachment: fixed;
         }
+
         .container_background_image_grow {
             width: 100%;
             display: flex;
@@ -122,6 +98,7 @@
             background-position: center;
             background-attachment: fixed;
         }
+
         .container_background_image_grow_2 {
             width: 100%;
             display: flex;
@@ -132,6 +109,7 @@
             background-position: center;
             background-attachment: fixed;
         }
+
         /* Containers */
         .container_whitecard_small {
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
@@ -150,6 +128,7 @@
             margin-top: 8.45vh;
             margin-bottom: 8.45vh;
         }
+
         .container_whitecard_grow {
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
             position: relative;
@@ -167,6 +146,7 @@
             margin-top: 8.45vh;
             margin-bottom: 8.45vh;
         }
+
         .whitecard_form_type_1 {
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
             position: relative;
@@ -183,7 +163,9 @@
             overflow: hidden;
             margin-top: 8.45vh;
             margin-bottom: 8.45vh;
+            /* Cartão Branco no meio da pagina */
         }
+
         .container_form {
             display: flex;
             flex-direction: column;
@@ -193,11 +175,25 @@
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
             margin-top: 1.9vh;
         }
+
         .form_switch {
             position: relative;
             width: 100%;
             height: 100%;
+            /* background-color: black; */
+            /* margin-top: 0.5vh;
+                margin-bottom: 5vh; */
         }
+
+        .form-toggle {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 28px;
+            width: 100%;
+            position: relative;
+            /* background-color: red; */
+        }
+
         /* Formulários */
         .form-title-big {
             display: flex;
@@ -207,13 +203,7 @@
             width: 100%;
             position: relative;
         }
-        .form-toggle {
-            display: flex;
-            justify-content: space-between;
-            margin-bottom: 28px;
-            width: 100%;
-            position: relative;
-        }
+
         .form-toggle button,
         .form-title-big button {
             background: none;
@@ -226,15 +216,18 @@
             flex-grow: 1;
             text-align: center;
         }
+
         .form-title-big button {
             font-size: 32px;
         }
+
         .form-toggle button:hover,
         .form-title-big button:hover,
         .form-toggle button:focus,
         .form-title-big button:focus {
             color: #333;
         }
+
         /* Linha Colorida */
         .toggle-line-big {
             position: absolute;
@@ -246,6 +239,7 @@
             transition: transform 0.3s;
             transform: translateX(-100%);
         }
+
         .toggle-line-small {
             position: absolute;
             bottom: -5px;
@@ -255,6 +249,7 @@
             background: linear-gradient(90deg, var(--vermelho-primario), var(--laranja-primario), var(--amarelo-primario), var(--verde-primario), var(--azul-primario), var(--roxo-primario));
             transition: transform 0.3s;
         }
+
         /* Cards */
         .projcard {
             position: relative;
@@ -270,6 +265,7 @@
             box-shadow: 0 4px 21px -12px rgba(0, 0, 0, .66);
             transition: box-shadow 0.2s ease, transform 0.2s ease;
         }
+
         .projcard-small {
             position: relative;
             width: 90%;
@@ -287,11 +283,13 @@
             align-content: center;
             justify-content: center;
         }
+
         .projcard:hover,
         .projcard-small:hover {
             box-shadow: 0 34px 32px -33px rgba(0, 0, 0, .18);
             transform: translate(0px, -3px);
         }
+
         .projcard-bar {
             left: -2px;
             width: 100%;
@@ -301,19 +299,23 @@
             background: linear-gradient(90deg, var(--vermelho-primario), var(--laranja-primario), var(--amarelo-primario), var(--verde-primario), var(--azul-primario), var(--roxo-primario));
             transition: transform 0.3s;
         }
+
         .projcard-container {
             margin: 15px 0;
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
         }
+
         .projcard-container,
         .projcard-container * {
             box-sizing: border-box;
         }
+
         .projcard-container {
             margin-left: auto;
             margin-right: auto;
             width: 90%;
         }
+
         .projcard::before {
             content: "";
             position: absolute;
@@ -323,6 +325,7 @@
             left: 0;
             opacity: 0.07;
         }
+
         .projcard-innerbox {
             position: absolute;
             top: 0;
@@ -330,6 +333,7 @@
             bottom: 0;
             left: 0;
         }
+
         .projcard-img {
             position: absolute;
             height: 100%;
@@ -339,14 +343,17 @@
             background-color: #f0f0f0;
             transition: transform 0.2s ease;
         }
+
         .projcard:nth-child(2n) .projcard-img {
             left: initial;
             right: 0;
         }
+
         .projcard:nth-child(2n) {
             left: initial;
             right: 0;
         }
+
         .projcard-textbox {
             position: absolute;
             top: 7%;
@@ -356,11 +363,13 @@
             font-size: 17px;
             padding-right: 30px;
         }
+
         .projcard:nth-child(2n) .projcard-textbox {
             left: 0;
             right: calc(60% + 30px);
             padding-left: 30px;
         }
+
         .projcard-textbox::before,
         .projcard-textbox::after {
             content: "";
@@ -373,30 +382,38 @@
             width: 60px;
             transform: rotate(8deg);
         }
+
         .projcard:nth-child(2n) .projcard-textbox::before {
             display: none;
         }
+
         .projcard-textbox::after {
             display: none;
             left: initial;
             right: -55px;
         }
+
         .projcard:nth-child(2n) .projcard-textbox::after {
             display: block;
         }
+
         .projcard-textbox * {
             position: relative;
         }
+
         .projcard-title {
             font-size: 24px;
         }
+
         .projcard-subtitle {
             color: #888;
         }
+
         .projcard-subtitle-2 {
             color: #888;
             font-size: 24px;
         }
+
         .projcard-description,
         projcard-description:nth-child(2n) {
             z-index: 10;
@@ -408,6 +425,7 @@
             text-align: justify;
             text-justify: inter-word;
         }
+
         .projcard-tagbox {
             position: absolute;
             bottom: 3%;
@@ -416,6 +434,7 @@
             user-select: none;
             pointer-events: none;
         }
+
         .projcard-tag {
             display: inline-block;
             background: #F2F2F2;
@@ -429,6 +448,7 @@
             user-select: none;
             transition: color 0.2s;
         }
+
         .projcard-tag::before {
             content: '';
             position: absolute;
@@ -440,6 +460,7 @@
             width: 6px;
             top: 10px;
         }
+
         .projcard-tag::after {
             content: '';
             position: absolute;
@@ -449,6 +470,7 @@
             right: -10px;
             top: 0;
         }
+
         /* Inputs */
         .container_form input[type="text"],
         .container_form input[type="email"],
@@ -469,9 +491,11 @@
             color: var(--cinza-secundario);
             transition: border-color 0.3s, box-shadow 0.3s;
         }
+
         .container_form textarea {
             height: 460px;
         }
+
         input[type="file"] {
             margin-bottom: 15px;
             border: 1px solid rgba(143, 143, 143, 0.5);
@@ -482,6 +506,7 @@
             box-sizing: border-box;
             width: 100%;
         }
+
         input[type="file"]::file-selector-button {
             background-color: #36cedc;
             border: none;
@@ -491,9 +516,11 @@
             cursor: pointer;
             height: 100%;
         }
+
         input[type="file"]::file-selector-button:hover {
             background-color: #30B5C2;
         }
+
         input[type="text"]:focus,
         .container_form input[type="email"]:focus,
         .container_form input[type="password"]:focus,
@@ -503,6 +530,7 @@
             border-color: var(--azul-primario);
             outline: none;
         }
+
         /* Select Customizado */
         .js-example-basic-single {
             margin-bottom: 17px;
@@ -518,6 +546,7 @@
             color: var(--cinza-secundario);
             transition: background-color 0.3s, border-color 0.3s;
         }
+
         #search-input,
         #ingredient-select {
             margin-bottom: 10px;
@@ -530,10 +559,12 @@
             color: rgba(143, 143, 143, 0.5) !important;
             transition: border-color 0.3s;
         }
+
         #search-input:focus,
         #ingredient-select:focus {
             border-color: var(--azul-primario) !important;
         }
+
         .whitecard_form_type_1 {
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
             position: relative;
@@ -550,8 +581,8 @@
             overflow: hidden;
             margin-top: 8.45vh;
             margin-bottom: 8.45vh;
-            /* Cartão Branco no meio da pagina */
         }
+
         /* Carrinho */
         .cart-close {
             position: absolute;
@@ -562,15 +593,18 @@
             cursor: pointer;
             z-index: 10;
         }
+
         .cart-close:hover,
         .cart-close:focus {
             color: var(--vermelho-secundario);
         }
+
         .cart-header {
             display: flex;
             justify-content: space-between;
             align-items: center;
         }
+
         /* Texto */
         .container_form h1,
         .h1 {
@@ -579,6 +613,7 @@
             margin-top: 19px;
             margin-bottom: 1px;
         }
+
         .container_form h2,
         .h2 {
             margin-bottom: 15px;
@@ -586,12 +621,14 @@
             font-size: 24px;
             margin-top: 15px;
         }
+
         .container_form h3,
         .h3 {
             margin-bottom: 10px;
             color: #333;
             font-size: 20px;
         }
+
         .container_form p,
         .p {
             margin: 5px;
@@ -600,12 +637,14 @@
             font-weight: bold;
             color: white;
         }
+
         .container_form hr,
         hr {
             border: none;
             height: 1px;
             background-color: rgba(54, 206, 220, 0.5);
         }
+
         /* Botões */
         .button-search {
             padding: 12px !important;
@@ -622,13 +661,16 @@
             align-items: center;
             text-align: center;
         }
+
         .button-search:hover {
             background-color: #30B5C2;
         }
+
         .container-buttons {
             display: flex;
             gap: 100px;
         }
+
         .button-short {
             padding: 12px;
             border: none;
@@ -643,6 +685,7 @@
             align-items: center;
             text-align: center;
         }
+
         .button-long {
             background-color: var(--roxo-primario);
             color: white;
@@ -657,10 +700,12 @@
             align-items: center;
             text-align: center;
         }
+
         .button-long:hover,
         .button-short:hover {
             background-color: #8c6db6;
         }
+
         .button-yellow {
             background-color: var(--amarelo-primario);
             padding: 12px;
@@ -675,9 +720,11 @@
             align-items: center;
             text-align: center;
         }
+
         .button-yellow:hover {
             background-color: var(--amarelo-secundario);
         }
+
         .button-red {
             background-color: var(--vermelho-primario);
             padding: 12px;
@@ -692,9 +739,11 @@
             align-items: center;
             text-align: center;
         }
+
         .button-red:hover {
             background-color: var(--vermelho-secundario);
         }
+
         .button-orange {
             background-color: var(--laranja-primario);
             padding: 12px;
@@ -709,9 +758,11 @@
             align-items: center;
             text-align: center;
         }
+
         .button-orange:hover {
             background-color: var(--laranja-secundario);
         }
+
         .button-purple {
             background-color: var(--roxo-primario);
             padding: 12px;
@@ -726,9 +777,11 @@
             align-items: center;
             text-align: center;
         }
+
         .button-purple:hover {
             background-color: var(--roxo-secundario);
         }
+
         .button-round {
             border: none;
             color: white;
@@ -745,47 +798,53 @@
             width: 40px;
             border-radius: 50%;
         }
+
         .button-plus {
             background-color: #8fe968;
         }
+
         .button-plus:hover {
             background-color: #7BDB47;
         }
+
         .button-minus {
             background-color: #fe797b;
         }
+
         .button-minus:hover {
             background-color: #FC445D;
         }
+
         /* Links */
         .div_link {
             margin-top: 0.1cm;
             text-align: center;
         }
+
         a {
             color: #8c6db6;
             text-decoration: none;
         }
+
         a.forgot {
             padding-bottom: 3px;
             border-bottom: 2px solid #a587ca;
         }
+
         .form_switch {
             position: relative;
             width: 100%;
             height: 100%;
-            /* background-color: black; */
-            /* margin-top: 0.5vh;
-                margin-bottom: 5vh; */
         }
+
         .form-toggle {
             display: flex;
             justify-content: space-between;
             margin-bottom: 28px;
             width: 100%;
             position: relative;
-            /* background-color: red; */
         }
+
         /* Paginação */
         .pagination {
             display: flex;
@@ -795,6 +854,7 @@
             flex-wrap: wrap;
             padding: 10px;
         }
+
         .pagination a {
             color: white;
             background-color: #a587ca;
@@ -812,36 +872,43 @@
             width: 60px;
             height: 40px;
         }
+
         .pagination a:hover {
             background-color: #8c6db6;
         }
+
         .pagination a.active,
         .active {
             background-color: #36cedc;
             pointer-events: none;
         }
+
         .pagination a:first-child:not(.active),
         .pagination a:last-child:not(.active) {
             padding: 8px 18px;
             width: 85px;
         }
+
         /* Imagens */
         .lista-receita-imagem {
             justify-content: center;
             align-items: center;
             width: 5%;
         }
+
         .banner {
             background-position: center;
             background-size: cover;
             height: 300px;
         }
+
         /* Carousel Home */
         body {
             margin: 0;
             padding: 0;
             padding-top: 80px;
         }
+
         nav {
             margin: 0;
             padding: 0;
@@ -850,44 +917,53 @@
             width: 100%;
             z-index: 1000;
         }
+
         .carousel {
             height: calc(100vh - 80px);
             margin-top: 0;
         }
+
         .carousel-item {
             height: calc(100vh - 80px);
             background-size: cover;
             background-position: center;
         }
+
         .carousel-caption {
             bottom: 20%;
             text-align: center;
             z-index: 1000;
         }
+
         .carousel-caption a {
             pointer-events: auto;
         }
+
         .carousel-caption h5 {
             font-size: 2.5rem;
             font-weight: bold;
             color: white;
-            text-shadow: 2px 2px 4px rgba(0,0,0,0.7);
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.7);
         }
+
         .carousel-caption p {
             font-size: 1.2rem;
             color: white;
-            text-shadow: 1px 1px 3px rgba(0,0,0,0.7);
+            text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.7);
         }
+
         .btn-primary {
             background-color: var(--vermelho-primario);
             border-color: var(--vermelho-primario);
         }
+
         .btn-primary:hover {
             background-color: var(--vermelho-secundario);
             border-color: var(--vermelho-secundario);
         }
     </style>
 </head>
+
 <body>
     <script>
         // login.php (css)
@@ -902,5 +978,23 @@
             document.getElementById('toggleLine').style.transform = 'translateX(100%)'; // Move a linha indicadora para a posição do cadastro
         }
     </script>
+
+    <script>
+        document.addEventListener("DOMContentLoaded", function() {
+            const colors = [
+                "#FFBEF5", "#FFB6D6", "#FFB3BA", "#FFC8B3", "#FFDFBA", 
+                "#FFEEB8", "#FFFFBA", "#DEFFBD", "#BAFFC9", "#99F5F7", 
+                "#BAE1FF", "#C1D0FF", "#E7B7FF", "#E0A0FF", "#D889FF"
+            ];
+
+            function setRandomBackground() {
+                const randomColor = colors[Math.floor(Math.random() * colors.length)];
+                document.body.style.backgroundColor = randomColor;
+            }
+
+            setRandomBackground();
+        });
+    </script>
 </body>
+
 </html>
