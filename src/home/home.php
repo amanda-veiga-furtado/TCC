@@ -17,7 +17,7 @@ include_once '../menu.php';
 <body>
 
     <!-- Carrossel isolado -->
-    <iframe src="carousel.php" style="width:100%; height:86.6vh; border:none; display:block;" loading="lazy"
+    <iframe src="carousel.php" style="width:100%; height:87vh; border:none; display:block;" loading="lazy"
         aria-label="Carrossel de destaques">
     </iframe>
 
