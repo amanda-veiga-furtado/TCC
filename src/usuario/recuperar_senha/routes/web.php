@@ -1,44 +1,44 @@
 <?php
 
-use App\Http\Controllers\AuthController;
-use App\Http\Controllers\ImportCSVUserController;
-use App\Http\Controllers\UserController;
+use App\Http\Controllers\Tasks\TaskController;
 use Illuminate\Support\Facades\Route;
+use Inertia\Inertia;
+use Laravel\Fortify\Features;
 
 Route::get('/', function () {
-    return view('welcome');
-})->name('dashboard');
-
-// Tela de login
-Route::get('/login', [AuthController::class, 'index'])->name('login');
-
-// Processar os dados do login
-Route::post('/login', [AuthController::class, 'loginProcess'])->name('login.process');
-
-// Logout
-Route::get('/logout', [AuthController::class, 'logout'])->name('logout');
+    return Inertia::render('Welcome', [
+        'canRegister' => Features::enabled(Features::registration()),
+    ]);
+})->name('home');
 
 // Grupo de rotas restritas
-Route::group(['middleware' => 'auth'], function () {
+Route::group(['middleware' => 'auth', 'verified'], function () {
 
-    Route::get('/index-user', [UserController::class, 'index'])->name('user.index');
-    Route::get('/show-user/{user}', [UserController::class, 'show'])->name('user.show');
+    // Dashboard
+    Route::get('dashboard', function () {
+        return Inertia::render('Dashboard');
+    })->name('dashboard');
 
-    Route::get('/create-user', [UserController::class, 'create'])->name('user.create');
-    Route::post('/store-user', [UserController::class, 'store'])->name('user.store');
+    // Tarefas
+    Route::prefix('tasks')->group(function () {
 
-    Route::get('/edit-user/{user}', [UserController::class, 'edit'])->name('user.edit');
-    Route::put('/update-user/{user}', [UserController::class, 'update'])->name('user.update');
+        // Listar
+        Route::get('/', [TaskController::class, 'index'])->name('tasks.index');
 
-    Route::get('/edit-user-password/{user}', [UserController::class, 'editPassword'])->name('user.edit-password');
-    Route::put('/update-user-password/{user}', [UserController::class, 'updatePassword'])->name('user.update-password');
+        // Cadastrar
+        Route::get('/create', [TaskController::class, 'create'])->name('tasks.create');
+        Route::post('/', [TaskController::class, 'store'])->name('tasks.store');
 
-    Route::delete('/destroy-user/{user}', [UserController::class, 'destroy'])->name('user.destroy');
+        // Visualizar
+        Route::get('/{task}', [TaskController::class, 'show'])->name('tasks.show');
 
-    Route::get('/generate-pdf-user/{user}', [UserController::class, 'generatePdf'])->name('user.generate-pdf');
-    Route::get('/generate-pdf-user', [UserController::class, 'generatePdfUsers'])->name('user.generate-pdf-users');
+        // Editar
+        Route::get('/{task}/edit', [TaskController::class, 'edit'])->name('tasks.edit');
+        Route::put('/{task}', [TaskController::class, 'update'])->name('tasks.update');
 
-    Route::get('/generate-csv-user', [UserController::class, 'generateCSVUsers'])->name('user.generate-csv-users');
-
-    Route::post('/import-csv-user', [ImportCSVUserController::class, 'importCSVUsers'])->name('user.import-csv-users');
+        // Apagar
+        Route::delete('/{task}', [TaskController::class, 'destroy'])->name('tasks.destroy');
+    });
 });
+
+require __DIR__.'/settings.php';
