@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1:3306
--- Tempo de geração: 24/01/2026 às 18:40
+-- Tempo de geração: 15/03/2026 às 03:55
 -- Versão do servidor: 8.2.0
 -- Versão do PHP: 8.2.13
 
@@ -20,6 +20,34 @@ SET time_zone = "+00:00";
 --
 -- Banco de dados: `tcc_receitas`
 --
+
+-- --------------------------------------------------------
+
+--
+-- Estrutura para tabela `cache`
+--
+
+DROP TABLE IF EXISTS `cache`;
+CREATE TABLE IF NOT EXISTS `cache` (
+  `key` varchar(255) COLLATE utf8mb3_unicode_ci NOT NULL,
+  `value` mediumtext COLLATE utf8mb3_unicode_ci NOT NULL,
+  `expiration` int NOT NULL,
+  PRIMARY KEY (`key`)
+) ENGINE=MyISAM DEFAULT CHARSET=utf8mb3 COLLATE=utf8mb3_unicode_ci;
+
+-- --------------------------------------------------------
+
+--
+-- Estrutura para tabela `cache_locks`
+--
+
+DROP TABLE IF EXISTS `cache_locks`;
+CREATE TABLE IF NOT EXISTS `cache_locks` (
+  `key` varchar(255) COLLATE utf8mb3_unicode_ci NOT NULL,
+  `owner` varchar(255) COLLATE utf8mb3_unicode_ci NOT NULL,
+  `expiration` int NOT NULL,
+  PRIMARY KEY (`key`)
+) ENGINE=MyISAM DEFAULT CHARSET=utf8mb3 COLLATE=utf8mb3_unicode_ci;
 
 -- --------------------------------------------------------
 
@@ -154,6 +182,25 @@ CREATE TABLE IF NOT EXISTS `comentario` (
   KEY `fk_id_usuario` (`fk_id_usuario`),
   KEY `fk_id_receita` (`fk_id_receita`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3 COLLATE=utf8mb3_unicode_ci;
+
+-- --------------------------------------------------------
+
+--
+-- Estrutura para tabela `failed_jobs`
+--
+
+DROP TABLE IF EXISTS `failed_jobs`;
+CREATE TABLE IF NOT EXISTS `failed_jobs` (
+  `id` bigint UNSIGNED NOT NULL AUTO_INCREMENT,
+  `uuid` varchar(255) COLLATE utf8mb3_unicode_ci NOT NULL,
+  `connection` text COLLATE utf8mb3_unicode_ci NOT NULL,
+  `queue` text COLLATE utf8mb3_unicode_ci NOT NULL,
+  `payload` longtext COLLATE utf8mb3_unicode_ci NOT NULL,
+  `exception` longtext COLLATE utf8mb3_unicode_ci NOT NULL,
+  `failed_at` timestamp NULL DEFAULT CURRENT_TIMESTAMP,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `uuid` (`uuid`)
+) ENGINE=MyISAM DEFAULT CHARSET=utf8mb3 COLLATE=utf8mb3_unicode_ci;
 
 -- --------------------------------------------------------
 
@@ -822,6 +869,46 @@ INSERT INTO `ingrediente_quantidade` (`id_ingrediente_quantidade`, `nome_ingredi
 -- --------------------------------------------------------
 
 --
+-- Estrutura para tabela `jobs`
+--
+
+DROP TABLE IF EXISTS `jobs`;
+CREATE TABLE IF NOT EXISTS `jobs` (
+  `id` bigint UNSIGNED NOT NULL AUTO_INCREMENT,
+  `queue` varchar(255) COLLATE utf8mb3_unicode_ci NOT NULL,
+  `payload` longtext COLLATE utf8mb3_unicode_ci NOT NULL,
+  `attempts` tinyint UNSIGNED NOT NULL,
+  `reserved_at` int UNSIGNED DEFAULT NULL,
+  `available_at` int UNSIGNED NOT NULL,
+  `created_at` int UNSIGNED NOT NULL,
+  PRIMARY KEY (`id`),
+  KEY `idx_jobs_queue` (`queue`)
+) ENGINE=MyISAM DEFAULT CHARSET=utf8mb3 COLLATE=utf8mb3_unicode_ci;
+
+-- --------------------------------------------------------
+
+--
+-- Estrutura para tabela `job_batches`
+--
+
+DROP TABLE IF EXISTS `job_batches`;
+CREATE TABLE IF NOT EXISTS `job_batches` (
+  `id` varchar(255) COLLATE utf8mb3_unicode_ci NOT NULL,
+  `name` varchar(255) COLLATE utf8mb3_unicode_ci NOT NULL,
+  `total_jobs` int NOT NULL,
+  `pending_jobs` int NOT NULL,
+  `failed_jobs` int NOT NULL,
+  `failed_job_ids` longtext COLLATE utf8mb3_unicode_ci NOT NULL,
+  `options` mediumtext COLLATE utf8mb3_unicode_ci,
+  `cancelled_at` int DEFAULT NULL,
+  `created_at` int NOT NULL,
+  `finished_at` int DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=MyISAM DEFAULT CHARSET=utf8mb3 COLLATE=utf8mb3_unicode_ci;
+
+-- --------------------------------------------------------
+
+--
 -- Estrutura para tabela `lista_de_ingredientes`
 --
 
@@ -891,6 +978,34 @@ INSERT INTO `lista_de_ingredientes` (`fk_id_receita`, `fk_id_ingrediente`, `qtdI
 (88, 19, 10.000, 8),
 (88, 110, 225.000, 7),
 (88, 252, 225.000, 7);
+
+-- --------------------------------------------------------
+
+--
+-- Estrutura para tabela `migrations`
+--
+
+DROP TABLE IF EXISTS `migrations`;
+CREATE TABLE IF NOT EXISTS `migrations` (
+  `id` int UNSIGNED NOT NULL AUTO_INCREMENT,
+  `migration` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `batch` int NOT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=MyISAM DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+-- --------------------------------------------------------
+
+--
+-- Estrutura para tabela `password_reset_tokens`
+--
+
+DROP TABLE IF EXISTS `password_reset_tokens`;
+CREATE TABLE IF NOT EXISTS `password_reset_tokens` (
+  `email` varchar(255) COLLATE utf8mb3_unicode_ci NOT NULL,
+  `token` varchar(255) COLLATE utf8mb3_unicode_ci NOT NULL,
+  `created_at` timestamp NULL DEFAULT NULL,
+  PRIMARY KEY (`email`)
+) ENGINE=MyISAM DEFAULT CHARSET=utf8mb3 COLLATE=utf8mb3_unicode_ci;
 
 -- --------------------------------------------------------
 
@@ -965,6 +1080,32 @@ INSERT INTO `receita` (`id_receita`, `nome_receita`, `numeroPorcao_receita`, `ti
 -- --------------------------------------------------------
 
 --
+-- Estrutura para tabela `sessions`
+--
+
+DROP TABLE IF EXISTS `sessions`;
+CREATE TABLE IF NOT EXISTS `sessions` (
+  `id` varchar(255) COLLATE utf8mb3_unicode_ci NOT NULL,
+  `user_id` bigint UNSIGNED DEFAULT NULL,
+  `ip_address` varchar(45) COLLATE utf8mb3_unicode_ci DEFAULT NULL,
+  `user_agent` text COLLATE utf8mb3_unicode_ci,
+  `payload` longtext COLLATE utf8mb3_unicode_ci NOT NULL,
+  `last_activity` int NOT NULL,
+  PRIMARY KEY (`id`),
+  KEY `idx_sessions_user_id` (`user_id`),
+  KEY `idx_sessions_last_activity` (`last_activity`)
+) ENGINE=MyISAM DEFAULT CHARSET=utf8mb3 COLLATE=utf8mb3_unicode_ci;
+
+--
+-- Despejando dados para a tabela `sessions`
+--
+
+INSERT INTO `sessions` (`id`, `user_id`, `ip_address`, `user_agent`, `payload`, `last_activity`) VALUES
+('JQyFuVmeuGqV3hJYRKEyP8rs3uAGt6TMqrMTCcrQ', NULL, '127.0.0.1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/145.0.0.0 Safari/537.36', 'YTozOntzOjY6Il90b2tlbiI7czo0MDoiOHZKbTM0anV5bDg1SGNnN2ZPVGRqb3RadlRHaGZqamFucjNBU3NjUyI7czo5OiJfcHJldmlvdXMiO2E6Mjp7czozOiJ1cmwiO3M6MjE6Imh0dHA6Ly8xMjcuMC4wLjE6ODAwMCI7czo1OiJyb3V0ZSI7czo0OiJob21lIjt9czo2OiJfZmxhc2giO2E6Mjp7czozOiJvbGQiO2E6MDp7fXM6MzoibmV3IjthOjA6e319fQ==', 1773541617);
+
+-- --------------------------------------------------------
+
+--
 -- Estrutura para tabela `sugestao`
 --
 
@@ -981,6 +1122,54 @@ CREATE TABLE IF NOT EXISTS `sugestao` (
 -- --------------------------------------------------------
 
 --
+-- Estrutura para tabela `tasks`
+--
+
+DROP TABLE IF EXISTS `tasks`;
+CREATE TABLE IF NOT EXISTS `tasks` (
+  `id` bigint UNSIGNED NOT NULL AUTO_INCREMENT,
+  `name` varchar(255) COLLATE utf8mb3_unicode_ci NOT NULL,
+  `started_at` datetime DEFAULT NULL,
+  `finished_at` datetime DEFAULT NULL,
+  `created_at` timestamp NULL DEFAULT NULL,
+  `updated_at` timestamp NULL DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=MyISAM AUTO_INCREMENT=4 DEFAULT CHARSET=utf8mb3 COLLATE=utf8mb3_unicode_ci;
+
+--
+-- Despejando dados para a tabela `tasks`
+--
+
+INSERT INTO `tasks` (`id`, `name`, `started_at`, `finished_at`, `created_at`, `updated_at`) VALUES
+(1, 'Create login page', '2026-03-12 23:21:12', '2026-03-13 23:21:12', '2026-03-15 02:21:12', '2026-03-15 02:21:12'),
+(2, 'Implement user authentication', '2026-03-13 23:21:12', '2026-03-14 23:21:12', '2026-03-15 02:21:12', '2026-03-15 02:21:12'),
+(3, 'Test system cache cleaning', '2026-03-14 23:21:12', NULL, '2026-03-15 02:21:12', '2026-03-15 02:21:12');
+
+-- --------------------------------------------------------
+
+--
+-- Estrutura para tabela `users`
+--
+
+DROP TABLE IF EXISTS `users`;
+CREATE TABLE IF NOT EXISTS `users` (
+  `id` bigint UNSIGNED NOT NULL AUTO_INCREMENT,
+  `name` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `email` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `email_verified_at` timestamp NULL DEFAULT NULL,
+  `password` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `two_factor_secret` text COLLATE utf8mb4_unicode_ci,
+  `two_factor_recovery_codes` text COLLATE utf8mb4_unicode_ci,
+  `two_factor_confirmed_at` timestamp NULL DEFAULT NULL,
+  `remember_token` varchar(100) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `created_at` timestamp NULL DEFAULT NULL,
+  `updated_at` timestamp NULL DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=MyISAM DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+-- --------------------------------------------------------
+
+--
 -- Estrutura para tabela `usuario`
 --
 
@@ -990,8 +1179,6 @@ CREATE TABLE IF NOT EXISTS `usuario` (
   `nome_usuario` varchar(220) CHARACTER SET utf8mb3 COLLATE utf8mb3_unicode_ci NOT NULL,
   `email_usuario` varchar(220) CHARACTER SET utf8mb3 COLLATE utf8mb3_unicode_ci NOT NULL,
   `senha_usuario` varchar(220) CHARACTER SET utf8mb3 COLLATE utf8mb3_unicode_ci NOT NULL,
-  `token_recuperacao` varchar(64) CHARACTER SET utf8mb3 COLLATE utf8mb3_unicode_ci DEFAULT NULL,
-  `token_expira` datetime DEFAULT NULL,
   `imagem_usuario` varchar(220) CHARACTER SET utf8mb3 COLLATE utf8mb3_unicode_ci NOT NULL DEFAULT '../css/img/usuario/no_image.png',
   `statusAdministrador_usuario` char(1) CHARACTER SET utf8mb3 COLLATE utf8mb3_unicode_ci NOT NULL DEFAULT 'c',
   PRIMARY KEY (`id_usuario`),
@@ -1003,9 +1190,9 @@ CREATE TABLE IF NOT EXISTS `usuario` (
 -- Despejando dados para a tabela `usuario`
 --
 
-INSERT INTO `usuario` (`id_usuario`, `nome_usuario`, `email_usuario`, `senha_usuario`, `token_recuperacao`, `token_expira`, `imagem_usuario`, `statusAdministrador_usuario`) VALUES
-(1, 'Admin', 'amandaveigafurtado@gmail.com', '$2y$10$QZEMW75b3179MRkwDPWsJ.FvMeSFvyB2b7KmbBir2y/G/PL9iWbEC', '16ae4028ba8e7b0d2fa388b01fe7f9aac11f0a64f7237954fcc4fe56d6a4b4bf', '2026-01-24 01:48:08', '../css/img/usuario/67479c0e59df9_67439abc6ae64_image.png', 'a'),
-(2, 'Usuario Teste', 'usuarioteste@gmail.com', '$2y$10$cBTGvDRyGEBSkuwt8QRng.RILjK9bnQ9yuwjHKG/H5pe0o8dprlMW', '$2y$10$dK3SGRRgT8jfSGLCjeM91Og0PQze0TMsOC1YIjTB9N69Vvy5Ftifu', NULL, '../css/img/usuario/6748ce5de7220_6326055.png', 'c');
+INSERT INTO `usuario` (`id_usuario`, `nome_usuario`, `email_usuario`, `senha_usuario`, `imagem_usuario`, `statusAdministrador_usuario`) VALUES
+(1, 'Admin', 'amandaveigafurtado@gmail.com', '$2y$10$QZEMW75b3179MRkwDPWsJ.FvMeSFvyB2b7KmbBir2y/G/PL9iWbEC', '../css/img/usuario/67479c0e59df9_67439abc6ae64_image.png', 'a'),
+(2, 'Usuario Teste', 'usuarioteste@gmail.com', '$2y$10$cBTGvDRyGEBSkuwt8QRng.RILjK9bnQ9yuwjHKG/H5pe0o8dprlMW', '../css/img/usuario/6748ce5de7220_6326055.png', 'c');
 
 -- --------------------------------------------------------
 
