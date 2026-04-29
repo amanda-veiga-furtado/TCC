@@ -2,7 +2,7 @@
 
 ## 📌 Visão Geral do Projeto
 
-Este projeto consiste em um **Sistema Web de Compartilhamento de Receitas**, permitindo que usuários publiquem, pesquisem e interajam com receitas culinárias.  
+Este projeto consiste em um **Sistema Web de Compartilhamento de Receitas**, permitindo que usuários publiquem, pesquisem e interajam com receitas culinárias.
 
 O sistema possui dois perfis principais:
 
@@ -11,11 +11,11 @@ O sistema possui dois perfis principais:
 
 A aplicação deve seguir arquitetura em **três camadas** (cliente, servidor web e servidor de aplicação/banco de dados) e utilizar:
 
-- HTML  
-- CSS  
-- PHP  
-- JavaScript  
-- MySQL  
+- HTML
+- CSS
+- PHP
+- JavaScript
+- MySQL
 
 Todo o sistema deve ser apresentado **exclusivamente em língua portuguesa**.
 
@@ -25,9 +25,10 @@ Todo o sistema deve ser apresentado **exclusivamente em língua portuguesa**.
 
 ## RF001 – Registrar e Manter Perfil de Acesso
 
-**Prioridade:** Essencial  
+**Prioridade:** Essencial
 
 ### Descrição
+
 - Permitir auto cadastro com:
   - Nome de usuário
   - E-mail
@@ -38,6 +39,7 @@ Todo o sistema deve ser apresentado **exclusivamente em língua portuguesa**.
   - Alteração de foto de perfil
 
 ### Regras
+
 - E-mail e nome de usuário devem ser únicos.
 - E-mail deve ter formato válido.
 - Senha deve ser criptografada com `password_hash()` do PHP.
@@ -46,14 +48,16 @@ Todo o sistema deve ser apresentado **exclusivamente em língua portuguesa**.
 
 ## RF002 – Login
 
-**Prioridade:** Essencial  
+**Prioridade:** Essencial
 
 ### Descrição
+
 - Permitir login via:
   - E-mail
   - Senha
 
 ### Regras
+
 - Validar formato do e-mail.
 - Validar credenciais.
 - Redirecionar para perfil após login.
@@ -63,9 +67,10 @@ Todo o sistema deve ser apresentado **exclusivamente em língua portuguesa**.
 
 ## RF003 – Recuperar Conta
 
-**Prioridade:** Importante  
+**Prioridade:** Importante
 
 ### Descrição
+
 - Permitir redefinição de senha via e-mail.
 - Enviar link de recuperação.
 - Permitir criação de nova senha.
@@ -75,15 +80,16 @@ Todo o sistema deve ser apresentado **exclusivamente em língua portuguesa**.
 
 ## RF004 – Consultar Receitas
 
-**Prioridade:** Essencial  
+**Prioridade:** Essencial
 
 ### Deve permitir busca por:
 
-1. Nome da receita  
-2. Categoria  
-3. Ingredientes selecionados  
+1. Nome da receita
+2. Categoria
+3. Ingredientes selecionados
 
 ### Regras
+
 - Exibir mensagem quando não houver resultados.
 - Pesquisa por ingrediente só é válida se pelo menos um for selecionado.
 - Ingredientes pré-selecionados:
@@ -103,23 +109,26 @@ Todo o sistema deve ser apresentado **exclusivamente em língua portuguesa**.
 
 ## RF005 – Interagir com Receita
 
-**Prioridade:** Desejável  
+**Prioridade:** Desejável
 
 ### Permitir:
+
 - Favoritar receita
 - Denunciar receita
 - Comentar receita
 
 ### Regra
+
 - Apenas usuários logados podem interagir.
 
 ---
 
 ## RF006 – Postar Receita
 
-**Prioridade:** Essencial  
+**Prioridade:** Essencial
 
 ### Campos obrigatórios:
+
 - Nome da receita
 - Tempo de preparo
 - Quantidade de porções
@@ -128,17 +137,19 @@ Todo o sistema deve ser apresentado **exclusivamente em língua portuguesa**.
 - Modo de preparo
 
 ### Campos opcionais:
+
 - Categoria
 - Imagem (PNG ou formato válido)
 
 ### Regra
+
 - Apenas usuários logados podem postar.
 
 ---
 
 ## RF007 – Deletar Receita (Administrador)
 
-**Prioridade:** Importante  
+**Prioridade:** Importante
 
 - Administrador pode excluir qualquer receita.
 
@@ -146,7 +157,7 @@ Todo o sistema deve ser apresentado **exclusivamente em língua portuguesa**.
 
 ## RF008 – Banir Usuário
 
-**Prioridade:** Importante  
+**Prioridade:** Importante
 
 - Administrador pode suspender contas.
 - Usuário banido não pode acessar o sistema.
@@ -155,7 +166,7 @@ Todo o sistema deve ser apresentado **exclusivamente em língua portuguesa**.
 
 ## RF009 – Sugerir Ingrediente ou Categoria
 
-**Prioridade:** Desejável  
+**Prioridade:** Desejável
 
 - Usuário logado pode enviar sugestões.
 - Sistema deve exibir confirmação.
@@ -164,7 +175,7 @@ Todo o sistema deve ser apresentado **exclusivamente em língua portuguesa**.
 
 ## RF010 – Editar e Deletar Receitas (Autor)
 
-**Prioridade:** Essencial  
+**Prioridade:** Essencial
 
 - Usuário pode editar suas próprias receitas.
 - Usuário pode excluir suas próprias receitas.
@@ -175,7 +186,7 @@ Todo o sistema deve ser apresentado **exclusivamente em língua portuguesa**.
 
 ## RF011 – Ver Categorias
 
-**Prioridade:** Desejável  
+**Prioridade:** Desejável
 
 - Permitir visualizar receitas por categoria.
 - Exemplo:
@@ -186,7 +197,7 @@ Todo o sistema deve ser apresentado **exclusivamente em língua portuguesa**.
 
 ## RF012 – Calcular Porção
 
-**Prioridade:** Desejável  
+**Prioridade:** Desejável
 
 - Permitir inserir nova quantidade de porções.
 - Sistema deve recalcular automaticamente os ingredientes.
@@ -197,36 +208,42 @@ Todo o sistema deve ser apresentado **exclusivamente em língua portuguesa**.
 # 🔐 Requisitos Não Funcionais
 
 ## RNF001 – Senha Criptografada
+
 - Utilizar `password_hash()` do PHP.
 - Não permitir recuperação da senha original.
 
 ## RNF002 – Usabilidade
+
 - Interface simples.
 - Navegação intuitiva.
 
 ## RNF003 – Segurança Básica
+
 - Prevenir códigos maliciosos.
 - Campos (exceto e-mail e senha) não aceitar:
 
-, /, @, <, >, #, $, %, &, *, {, }, [, ]
-
+, /, @, <, >, #, $, %, &, \*, {, }, [, ]
 
 ## RNF004 – Idioma
+
 - Todo o sistema deve estar em português.
 
 ## RNF005 – Arquitetura
+
 - Arquitetura de 3 camadas:
   - Cliente
   - Servidor Web
   - Servidor de Aplicação + Banco
 
 ## RNF006 – Tecnologias
+
 - HTML
 - CSS
 - PHP
 - JavaScript
 
 ## RNF007 – Banco de Dados
+
 - MySQL
 
 ---
@@ -234,12 +251,15 @@ Todo o sistema deve ser apresentado **exclusivamente em língua portuguesa**.
 # 📏 Regras de Negócio
 
 ## RN001
+
 - E-mail e nome de usuário devem ser únicos.
 
 ## RN002
+
 - Pesquisa de receita pode ser feita logado ou não.
 
 ## RN003
+
 - Apenas usuários logados podem:
   - Favoritar
   - Comentar
@@ -250,15 +270,19 @@ Todo o sistema deve ser apresentado **exclusivamente em língua portuguesa**.
   - Sugerir ingredientes/categorias
 
 ## RN004
+
 - Validar formato de e-mail antes do cadastro.
 
 ## RN005
+
 - Recuperação de senha deve ocorrer via e-mail.
 
 ## RN006
+
 - Pesquisa por ingrediente exige pelo menos um selecionado.
 
 ## RN007
+
 - Ingredientes básicos devem estar pré-selecionados.
 
 ---
@@ -266,13 +290,17 @@ Todo o sistema deve ser apresentado **exclusivamente em língua portuguesa**.
 # 👥 Atores
 
 ## Usuário
+
 Pessoa que utiliza o site para:
+
 - Pesquisar receitas
 - Publicar receitas
 - Interagir com receitas
 
 ## Administrador
+
 Responsável por:
+
 - Gerenciar receitas
 - Banir usuários
 - Moderar conteúdo
