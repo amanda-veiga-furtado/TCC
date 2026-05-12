@@ -21,6 +21,19 @@ include_once '../include_once.php';
 </head>
 
 <body>
+        <script>
+        // login.php (css)
+        function showLogin() {
+            document.getElementById('loginForm').style.display = 'block'; // Mostra o formulário de login -->
+            document.getElementById('signupForm').style.display = 'none'; // Esconde o formulário de cadastro 
+            document.getElementById('toggleLine').style.transform = 'translateX(0)'; // Move a linha indicadora para a posição do login
+        }
+        function showSignup() {
+            document.getElementById('loginForm').style.display = 'none'; // Esconde o formulário de login -->
+            document.getElementById('signupForm').style.display = 'block'; // Mostra o formulário de cadastro 
+            document.getElementById('toggleLine').style.transform = 'translateX(100%)'; // Move a linha indicadora para a posição do cadastro
+        }
+    </script>
     <div class="container_background_image_medium">
         <div class="whitecard_form_type_1">
             <div class="container_form">
@@ -47,24 +60,25 @@ include_once '../include_once.php';
                             if ($stmt->rowCount() > 0) {
                                 $usuario = $stmt->fetch(PDO::FETCH_ASSOC);
 
+                                // Adicionar logs para falhas de login
                                 if ($usuario['statusAdministrador_usuario'] == 'b') {
                                     $_SESSION['mensagem'] = "Você foi suspenso pelo administrador!";
+                                    error_log("Usuário suspenso tentou login: $email_usuario", 0);
                                 } elseif (password_verify($senha_usuario, $usuario['senha_usuario'])) {
                                     $_SESSION['id_usuario'] = $usuario['id_usuario'];
                                     $_SESSION['nome_usuario'] = $usuario['nome_usuario'];
                                     $_SESSION['email_usuario'] = $email_usuario;
-
                                     $_SESSION['statusAdministrador_usuario'] = $usuario['statusAdministrador_usuario'];
 
                                     header("Location: dashboard.php");
                                     exit();
                                 } else {
-                                    // $_SESSION['mensagem'] = "Senha incorreta!";
-                                    $_SESSION['mensagem'] = "Login Invalido!";
+                                    $_SESSION['mensagem'] = "Senha incorreta!";
+                                    error_log("Tentativa de login com senha incorreta: $email_usuario", 0);
                                 }
                             } else {
-                                // $_SESSION['mensagem'] = "Usuário não encontrado!";
-                                $_SESSION['mensagem'] = "Login Invalido!";
+                                $_SESSION['mensagem'] = "Usuário não encontrado!";
+                                error_log("Tentativa de login com e-mail não cadastrado: $email_usuario", 0);
                             }
                         } catch (PDOException $e) {
                             $_SESSION['mensagem'] = "Erro ao verificar o usuário!";
@@ -137,7 +151,7 @@ include_once '../include_once.php';
                             <!-- <div class="div_link"><a href="recuperar_senha/recuperar_senha.php" style="color: white;">Recuperar Acesso</a></div></div> -->
 
                             <div class="div_link">
-                                <a href="recuperar_senha/recuperar_senha.php" style="color: white; pointer-events: none;">Recuperar Acesso</a>
+                                <a href="/recuperar_senha/recuperar_senha.php" style="color: white; pointer-events: none;">Recuperar Acesso</a>
                             </div>
 
 

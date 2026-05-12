@@ -45,6 +45,7 @@
             <?php if ($isAdmin): ?>
                 <li><a href="/TCC/src/admin/dashboard_admin.php"><i class="fa-solid fa-eye-slash"></i></a></li>
             <?php endif; ?>
+            <!-- <li><a href="/TCC/src/receita/calculadora.php"><i class="fa-solid fa-calculator"></i></a></li> -->
         </ul>
     </nav>
 

@@ -9,7 +9,7 @@ $pagina = isset($_GET['pagina']) ? intval($_GET['pagina']) : 1; // Verifica se o
 $quantidade_pg = 6; // Define a quantidade de ingredientes por página
 $inicio = ($quantidade_pg * $pagina) - $quantidade_pg; // Calcula o início da seleção dos registros
 
-$pesquisar = isset($_GET['pesquisar']) ? $_GET['pesquisar'] : ''; // Verifica se o parâmetro 'pesquisar' está definido na URL
+$pesquisar = isset($_GET['pesquisar']) ? validarEntradaTexto($_GET['pesquisar']) : ''; // Valida o parâmetro 'pesquisar'
 
 if ($pesquisar) {
     // Prepara a query para contar o número de registros encontrados pela pesquisa no nome do ingrediente ou nome da categoria
@@ -315,7 +315,7 @@ $ingredientes = $stmt->fetchAll(PDO::FETCH_ASSOC); // Obtém todos os registros 
 
 
                 <!-- <div style="position: absolute; top: 10; bottom: -5px; left: 85%; width: 85%; height: 3px; background: linear-gradient(90deg, var(--vermelho-primario), var(--laranja-primario), var(--amarelo-primario), var(--verde-primario), var(--azul-primario), var(--roxo-primario)); 
- transition: transform 0.3s; transform: translateX(-91%);"></div> -->
+ transition: transform 0.3s; transform: translateX(0); margin-left: auto; margin-right: auto;"></div> -->
             </div>
         </div>
         <!-- 

@@ -4,7 +4,7 @@ ob_start();
 
 include_once '../include_once.php';
 
-$id_receita = filter_input(INPUT_GET, "id_receita", FILTER_SANITIZE_NUMBER_INT); // Obtém o ID da receita da URL
+$id_receita = validarEntradaTexto(filter_input(INPUT_GET, "id_receita", FILTER_SANITIZE_NUMBER_INT)); // Valida o ID da receita
 
 if (empty($id_receita)) { // Verifica se o ID da receita está vazio
     $_SESSION['msg'] = "<p style='color: #f00;'>Erro: Receita não encontrada!</p>";

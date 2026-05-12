@@ -13,7 +13,6 @@ if (!isset($_SESSION['id_usuario'])) {
 $id_usuario = $_SESSION['id_usuario'];
 
 if (isset($_SESSION['statusAdministrador_usuario']) && $_SESSION['statusAdministrador_usuario'] === 'a') {
-    include_once '../menu_admin.php';
 }
 
 $nome_usuario = $_SESSION['nome_usuario'];

@@ -1,0 +1,1 @@
+<!-- Todos os campos de inserção de texto devem ter segurança básica para evitar a digitação de códigos maliciosos.  Os campos de texto, com exceção dos de e-mail e senha, não aceitarão caracteres como \, /, @, <, >, #, $, %, &, *, {, }, [ e ]. -->

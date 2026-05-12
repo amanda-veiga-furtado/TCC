@@ -15,6 +15,11 @@ $erro = ""; // Inicializa uma variável para mensagens de erro
 if ($_SERVER['REQUEST_METHOD'] === 'POST') { // Verifica envio do formulário
     $dados = filter_input_array(INPUT_POST, FILTER_DEFAULT);
 
+    // Valida os campos de texto
+    $dados['nome_receita'] = validarEntradaTexto($dados['nome_receita']);
+    $dados['modoPreparo_receita'] = validarEntradaTexto($dados['modoPreparo_receita']);
+    $dados['categoria_receita'] = validarEntradaTexto($dados['categoria_receita']);
+
     if (!empty($dados['CadastrarReceita'])) { // Botão "Cadastrar Receita" foi pressionado
         list($numeroPorcao_receita, $tipoPorcao_receita, $tempoPreparoHora, $tempoPreparoMinuto, $erro) = validateAndPrepareData($dados);
 
